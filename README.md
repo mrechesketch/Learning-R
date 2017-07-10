@@ -1,6 +1,3 @@
-# Table of Contents 
-1. [Session 1: Recursion](README.md#session-0:-recursion)
-
 # Session 1: Recursion
 
 ## Writing Tests
