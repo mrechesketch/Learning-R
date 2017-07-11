@@ -20,8 +20,8 @@ s <- c("hello")
 b <- c(TRUE)
 
 test1 <- identical(n[-1], numeric(0))
-test2 <- identical(c[-1], numeric(0))
-test3 <- identical(s[-1], numeric(0))
+test2 <- identical(s[-1], numeric(0))
+test3 <- identical(b[-1], numeric(0))
 
 test4 <- identical(n[-1], character(0))
 test5 <- identical(s[-1], character(0))
