@@ -1,6 +1,8 @@
 # Session 1: Recursion
 
 ## Writing Tests
+i love tests!
+
 
 ## Triangle Numbers and Factorial
 
