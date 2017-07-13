@@ -1,11 +1,39 @@
-nv1 -> c(1:10) # 1 through 10 in compact notation!
+# courtesy of https://www.datacamp.com/community/tutorials/tutorial-on-loops-in-r#gs.PeS3dwU
+rm(list = ls()) # handy command for clearing workspace
 
-# remember numeric(0), logical(0) and character(0)?
 
-nv2 -> numeric(length(nv1)) # if the length(nv1) == 0 then we would have the null numeric vector right?
-
-for(i in 1:length(nv1)){
-    nv2[i] -> nv1[i]**2
+readinteger <- function(){
+  n <- readline(prompt="Please, enter your ANSWER: ") 
 }
 
-# that was sorta a boring example 
+repeatEx <- function(someNumber){
+    repeat {   
+    response <- as.integer(readinteger());
+    if (response == someNumber) {
+        print("Well done!");
+        break
+    } else cat("Sorry, the answer to whatever the question MUST be ", someNumber, "\n");
+    }
+}
+
+
+
+# lets see what a while loop looks like
+whileEx <- function(n){
+    nums <- c(1:10)
+    i <- 1
+    while(!is.na(nums[i])){
+        print(nums[i])
+        i <- i + n
+    }
+}
+
+# lets return to our previously defined matrices
+source("Session 2/introductionToLoops.R") # this is pretty cool by the way ;)
+
+# FUNCTIONAL PROGRAMMING!!!
+
+mystery1 <- apply(ourMatrix, 1, sum)
+mystery2 <- apply(anotherMatrix, 2, function(x) sum(x))
+testMystery <- identical(mystery1, mystery2) # what is going on here???
+
