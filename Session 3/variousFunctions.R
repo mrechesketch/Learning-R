@@ -85,3 +85,47 @@ recursivePower <- function(base, power){
     return(0)
 }
 
+
+# ================================= #
+# we're going to have some fun with strings now
+# ================================= #
+
+
+
+# this function takes in a string 
+    # two letters followed by seven numbers
+    # the sum of the 1,3,5 + 2*sum of 2,4,6
+    # should equal a number whose last digit is the 7th
+
+# example: BJ6125341 -> (6+2+3) + 2*(1+5+4) = 31
+        # the last digit of 31 is 1 which is the 7th number
+        # return true 
+checkDEANumHardCode <- function(stringCode){
+    # first split the code into a vector of characters
+    chars <- strsplit(stringCode, "")
+    odds <- as.integer(chars[[1]][3]) + as.integer(chars[[1]][5]) + as.integer(chars[[1]][7])
+    evens <- as.integer(chars[[1]][4]) + as.integer(chars[[1]][6]) + as.integer(chars[[1]][8])
+    summation <- odds + evens
+    return(summation%%10==as.integer(chars[[1]][9]))
+}
+
+# that approach took only 5 lines of code but 3 of those lines are awful to look at
+    # lets try this again with a slicker approach
+
+checkDEACode <- function(stringCode){
+    charnums <- strsplit(substr(stringCode,3,9), "")
+    nums <- lapply(charnums, function(x) as.integer(x))
+    return(nums) #TODO FINISH THIS WITH A FOR LOOP!
+}
+
+
+# tHiS funCtiOn ShOUld RAndOmLY dO tALl cASe
+# aNd LowerCaSe
+spongeBobMemer <- function(phrase){
+    # useful functions tolower(char) and toupper(char)
+    if runif(1, 0, 1) <= 0.5{
+        # 50/50 chance of this occuring
+    }
+
+}
+
