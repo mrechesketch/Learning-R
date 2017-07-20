@@ -3,7 +3,7 @@ rm(list = ls()) # handy command for clearing workspace
 
 
 readinteger <- function(){
-  n <- readline(prompt="Please, enter your ANSWER: ") 
+  readline(prompt="Please, enter your ANSWER: ")
 }
 
 repeatEx <- function(someNumber){
