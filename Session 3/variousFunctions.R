@@ -115,17 +115,32 @@ checkDEANumHardCode <- function(stringCode){
 checkDEACode <- function(stringCode){
     charnums <- strsplit(substr(stringCode,3,9), "")
     nums <- lapply(charnums, function(x) as.integer(x))
+    summation <- 0
     return(nums) #TODO FINISH THIS WITH A FOR LOOP!
 }
 
+deaCodeTest1 <- identical(checkDEACode("BJ6125341"), checkDEANumHardCode("BJ6125341"))
+deaCodeTest11 <- identical(checkDEACode("BJ6125341"), TRUE)
+deaCodeTest12 <- identical(TRUE, checkDEANumHardCode("BJ6125341"))
+deaCodeTest2 <- identical(checkDEACode("FN5623740"), checkDEANumHardCode("FN5623740"))
+deaCodeTest21 <- identical(checkDEACode("FN5623740"), TRUE)
+deaCodeTest22 <- identical(TRUE, checkDEANumHardCode("FN5623740"))
+deaCodeTest3 <- identical(checkDEACode("AR3221377"), checkDEANumHardCode("AR3221377"))
+deaCodeTest31 <- identical(checkDEACode("AR3221377"), FALSE)
+deaCodeTest32 <- identical(FALSE, checkDEANumHardCode("AR3221377"))
 
-# tHiS funCtiOn ShOUld RAndOmLY dO tALl cASe
-# aNd LowerCaSe
+
+# tHiS funCtiOn ShOUld RAndOmLY cHaNGE CaSIng
 spongeBobMemer <- function(phrase){
     # useful functions tolower(char) and toupper(char)
-    if runif(1, 0, 1) <= 0.5{
-        # 50/50 chance of this occuring
-    }
+    # useful page: https://stackoverflow.com/questions/7201341/how-can-2-strings-be-concatenated
+        # consider splitting characters as above.. apply some function with sapply.. then collapse
+    return(phrase)
 
+}
+
+changeCase <- function(char){
+    randNum <- runif(1, 0, 1)
+    if(randNum <= 0.5) toupper(char) else tolower(char)
 }
 
