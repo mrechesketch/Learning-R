@@ -39,9 +39,10 @@ rangeAppend <- function(n){
 
     # TODO WRITE A RECURSIVE FUNCTION THAT DOES THE SAME STUFF AS ABOVE
 rangeRecursive <- function(n){
-    # base case for functions that return vectors usually return an empty vector 
-    # your recursive call should look like c(rangeRecursive(somethinghere), something else here..)
-    return(c()) # this is just a place holder, change me!
+    if(n==0){
+        return(c())
+    }
+    return(c(rangeRecursive(n-1),n))
 }
 
 
@@ -56,33 +57,35 @@ rangeRecursive <- function(n){
 
 # TODO use the native R syntax, if you forget... Google it!
 nativePower <- function(base, power){
-    return(0)
+    return(base**power)
+
 }
 
 # TODO use a for loop to compute power
 forLoopPower <- function(base, power){
     returnValue <- 1
     for(i in 1:power){
-        returnValue <- 0 #0 is a place holder... change it!
+        returnValue <- returnValue * base
     }
     return(returnValue)
 }
 
 # TODO use a while loop, I have graciously provided your stopping condition ;)
 whileLoopPower <- function(base, power){
+    returnValue <- 1
     while(!power==0){
-        # do something in here.. maybe we need an additional variable
-        # like we use in the above function
-        # but something definitely needs to happen to power in here
+        returnValue <- returnValue * base
+        power <-power-1
     }
-    return(0)
+        # returnvalue <- base**(base, power-1)
+    return(returnValue)
 }
 
 recursivePower <- function(base, power){
-    # our base case is similar to what the condition 
-    # of the above functions while loop!
-    # this function is remarkably similar to triangleNumber lol
-    return(0)
+   while(!power==0){
+       return(1)
+   }
+   return(n * recursivePower(power-1))
 }
 
 
@@ -105,7 +108,7 @@ checkDEANumHardCode <- function(stringCode){
     chars <- strsplit(stringCode, "")
     odds <- as.integer(chars[[1]][3]) + as.integer(chars[[1]][5]) + as.integer(chars[[1]][7])
     evens <- as.integer(chars[[1]][4]) + as.integer(chars[[1]][6]) + as.integer(chars[[1]][8])
-    summation <- odds + evens
+    summation <- odds + 2*evens
     return(summation%%10==as.integer(chars[[1]][9]))
 }
 
@@ -114,9 +117,18 @@ checkDEANumHardCode <- function(stringCode){
 
 checkDEACode <- function(stringCode){
     charnums <- strsplit(substr(stringCode,3,9), "")
-    nums <- lapply(charnums, function(x) as.integer(x))
+    nums <- unlist(lapply(charnums, function(x) as.integer(x)))
     summation <- 0
-    return(nums) #TODO FINISH THIS WITH A FOR LOOP!
+    for(i in 1:(length(nums)-1)){
+    #     if (i %% 2 == 0){
+    #         summation <- summation + (nums[i]*2)
+    # }
+    # else{
+    #     summation <- summation + (nums[i])
+    # }
+    summation <- summation + if(i%%2) 2*nums[i] else nums[i]
+    }
+    return(summation%%10 == nums[7]) #TODO FINISH THIS WITH A FOR LOOP!
 }
 
 deaCodeTest1 <- identical(checkDEACode("BJ6125341"), checkDEANumHardCode("BJ6125341"))
@@ -132,15 +144,20 @@ deaCodeTest32 <- identical(FALSE, checkDEANumHardCode("AR3221377"))
 
 # tHiS funCtiOn ShOUld RAndOmLY cHaNGE CaSIng
 spongeBobMemer <- function(phrase){
+    charmeme<- unlist(strsplit(phrase,""))
+    charVec <- sapply(charmeme, function(x) alwaysblue(x))
     # useful functions tolower(char) and toupper(char)
     # useful page: https://stackoverflow.com/questions/7201341/how-can-2-strings-be-concatenated
         # consider splitting characters as above.. apply some function with sapply.. then collapse
-    return(phrase)
+    return(paste(charVec, collapse = ""))
 
 }
 
-changeCase <- function(char){
-    randNum <- runif(1, 0, 1)
-    if(randNum <= 0.5) toupper(char) else tolower(char)
+
+alwaysblue <- function(char){
+    chance <- runif(1, 0, 1)
+    return(if(chance>=0.5) tolower(char) else toupper(char))
 }
+
+
 
