@@ -17,7 +17,6 @@ repeatEx <- function(someNumber){
 }
 
 
-
 # lets see what a while loop looks like
 whileEx <- function(n){
     nums <- c(1:10)
@@ -34,6 +33,6 @@ source("Session 2/introductionToLoops.R") # this is pretty cool by the way ;)
 # FUNCTIONAL PROGRAMMING!!!
 
 mystery1 <- apply(ourMatrix, 1, sum)
-mystery2 <- apply(anotherMatrix, 2, function(x) sum(x))
+mystery2 <- apply(anotherMatrix, 2, function(x) x**2)
 testMystery <- identical(mystery1, mystery2) # what is going on here???
 

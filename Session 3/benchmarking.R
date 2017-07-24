@@ -21,3 +21,14 @@ makeTimes <- function(func, numberOfElements){
     return(unlist(times))
 }
 
+timeFunc <- function(func,parameter){
+    startTime < Sys.time()
+    func(parameter)
+    endTime <- Sys.time()
+    timeTaken <- endTime - startTime
+    return(as.numeric(timeTaken))
+}
+
+
+
+

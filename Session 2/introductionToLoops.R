@@ -5,7 +5,7 @@ nv1 <- c(1:10) # 1 through 10 in compact notation!
 nv2 <- numeric(length(nv1)) # if the length(nv1) == 0 then we would have the null numeric vector right?
 
 for(i in 1:length(nv1)){
-    nv2[i] <- nv1[i]**2
+    nv2[i] <- nv1[i]
 }
 
 # what is the difference if we were to do (taken from https://stackoverflow.com/questions/22235809/append-value-to-empty-vector-in-r)
@@ -13,7 +13,7 @@ for(i in 1:length(nv1)){
 nv2 <- c()
 
 for(i in 1:length(nv1)){
-    nv2[i] <- nv1[i]**2
+    nv2[i] <- nv1[i]
 }
 
 # that was sorta a boring example.. lets go to the next dimension
@@ -29,9 +29,9 @@ dims <- dim(ourMatrix) # another way to express the above, dims[1] is rows and d
 
 emptyMatrix = matrix(nrow=cols, ncol=rows)
 
-for(c in 1:cols){
-    for(r in 1:rows){
-        emptyMatrix[c, r] <- ourMatrix[c, r] + anotherMatrix[c, r]
+for(r in 1:rows){
+    for(c in 1:cols){
+        emptyMatrix[r, c] <- ourMatrix[r, c] + anotherMatrix[r, c]
     }
 }
 
@@ -39,5 +39,6 @@ for(c in 1:cols){
 whatIsThis <- ourMatrix + anotherMatrix
 
 # now try printing ourMatrix and anotherMatrix in order using a nested for loop
+
 
 

@@ -72,3 +72,22 @@ test7 <- identical( odd(0), FALSE)
 test8 <- identical( odd(1), TRUE)
 test9 <- identical( odd(2), FALSE)
 
+
+coins <- c(1,12,15,42,25)
+
+
+
+change <- function (amount, coins){
+    if (length(coins) == 0) {
+        return(amount==0)
+    }
+    useIt = change(amount-coins[1],coins[-1] )
+    loseIt = change(amount,coins[-1])
+    return(useIt || loseIt)
+}
+
+changeTest1 = identical(change(38, c(1, 12, 15, 42, 25)), TRUE)
+changeTest2 = identical(change(37, c(1, 12, 15, 42, 25)), TRUE)
+changeTest3 = identical(change(0, c()), TRUE)
+changeTest4 = identical(change(1, c()), FALSE)
+changeTest5 = identical(change(36, c(1, 2, 3, 25)), FALSE) 

@@ -14,9 +14,9 @@ Lets think about the base case? When should this function stop? When the __coins
 HINT: when we *use it* we subtract the first element of __coins__ from __amount__; when we *lose it*, we don't!  
 
 
-    useIt = change(~, ~)
-    lostIt = change(~. ~)
-    return useIt || loseIt
+    useIt = change(you need to figure this, out)
+    lostIt = change(not gonna give you all the , answers)
+    return(useIt || loseIt)
 
 Here are some tasty tests for you:
 
