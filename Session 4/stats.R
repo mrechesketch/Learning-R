@@ -30,16 +30,16 @@ stdLoop <- function(numVec){
 
 # this function is for testing.. don't worry about it
 std <- function(numVec){
-    return stdLoop(numVec) #we could change to stdApply to test that 
+    return(stdLoop(numVec)) #we could change to stdApply to test that 
 }
 
-meanTest0 <- identical( mean(c(1,1,1,1)), 1)
-meanTest1 <- identical( mean(1,2,10), 4.333333)
-meanTest2 <- identical( mean(1,2,10,99,33,10), 25.83333)
+meanTest0 <- identical( mean( c(1,1,1,1)), 1)
+meanTest1 <- identical( mean( c(1,2,10)), 4.333333)
+meanTest2 <- identical( mean( c(1,2,10,99,33,10)), 25.83333)
 meanTest3 <- identical( mean( c(19, 25, 29, 30, 22)), 25 )
 
-stdTest1 <- identical( std(1,2,10), 4.027682)
-stdTest2 <- identical( std(1,2,10,99,33,10), 34.3774)
+stdTest1 <- identical( std( c(1,2,10)), 4.027682)
+stdTest2 <- identical( std( c(1,2,10,99,33,10)), 34.3774)
 stdTest3 <- identical( std( c(19, 25, 29, 30, 22)), 4.147288 )
 
 
