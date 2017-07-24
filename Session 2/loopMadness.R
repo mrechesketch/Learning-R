@@ -17,7 +17,6 @@ repeatEx <- function(someNumber){
 }
 
 
-
 # lets see what a while loop looks like
 whileEx <- function(n){
     nums <- c(1:10)
