@@ -151,7 +151,7 @@ spongeBobMemer <- function(phrase){
         # consider splitting characters as above.. apply some function with sapply.. then collapse
     return(paste(charVec, collapse = ""))
 
-}
+} 
 
 
 alwaysblue <- function(char){
