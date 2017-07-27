@@ -20,17 +20,28 @@ LinkedList <- setRefClass("LinkedList",
         },
 
         add = function(datum) {
-            # add a piece of data to the list
-            print("TODO")
+            node <- MyNode$new(data = datum, nxt = head)
+            addNode(node)
+            # head <<- node
+            # size <<- size + 1
         },
 
         append = function(otherLinkedList) {
-            # append two linked lists
-            # parameter should go on end
-            print("TODO")
+            node <- head
+            while(!is.null(node$nxt)){
+                node <- node$nxt
+            }
+            node$nxt <- otherLinkedList$head
+            size <<- size + otherLinkedList$size
+        },
 
-        }
-
+        pop = function(){
+            node <- head
+            head <<- head$nxt
+            size <<- size - 1
+            node$nxt <- NULL
+            return(node)
+        }        
     ))
 
 
@@ -40,6 +51,11 @@ second <- MyNode$new(data = 88, nxt = first)
 MyList <- LinkedList$new(head = second, size = 2)
 third <- MyNode$new(data = 0, nxt = NULL)
 MyList$addNode(third)
+
+fourth <- MyNode$new(data = 33, nxt = NULL)
+fifth <- MyNode$new(data = 32, nxt = fourth)
+OtherLinked <- LinkedList$new(head = fifth, size = 2)
+MyList$append(OtherLinked)
 
 
 

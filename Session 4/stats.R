@@ -5,8 +5,9 @@
 # the parameter numVec is a vector of numerics
     # calculate the mean of this vector
     # HINT: consdier commands like sum and length
+
 mean <- function(numVec){
-    return(0)
+    return(sum(numVec)/length(numVec))
 }
 
 # the parameter numVec is a vector of numerics
@@ -16,21 +17,26 @@ mean <- function(numVec){
     # use sapply(numVec, function(x) (WHAT GOES HERE)**? )
 stdApply <- function(numVec){
     avg <- mean(numVec)
-    quadraticVec <- c() # place holder.. put your sapply call here instead of c()
-    return(0)
+    quadraticVec <- sapply(numVec, function(x) (x-avg)**2)
+    return( ( (sum(quadraticVec))/length(numVec))**0.5)
 }
 
 stdLoop <- function(numVec){
     avg <- mean(numVec)
+    n <- length(numVec)
     quadraticSum <- 0
-    # begin your loop now and use quadraticSum
-    # as your intermediate variable
-    return(0)
+    for(i in 1:n){
+        quadraticTerm <- (numVec[i]-avg)**2
+        quadraticSum <- quadraticSum + quadraticTerm 
+    }
+    return((quadraticSum/n)**0.5)
 }
+
+
 
 # this function is for testing.. don't worry about it
 std <- function(numVec){
-    return(stdLoop(numVec)) #we could change to stdApply to test that 
+    return(stdApply(numVec)) #we could change to stdApply to test that 
 }
 
 meanTest0 <- identical( mean( c(1,1,1,1)), 1)
@@ -46,6 +52,8 @@ stdTest3 <- identical( std( c(19, 25, 29, 30, 22)), 4.147288 )
 start <- function(){
     myArray <- c()
     len <- 0
+    sum <-0
+    
     printHelpMenu()
     repeat{
         input <- readline(prompt="input: ")
@@ -59,17 +67,18 @@ start <- function(){
             print(len)
         }
         else if (input == "s"){
-            print("sum")
+            print(sum)
         }
         else if (input == "m"){
-            print(mean(myArray))
+            print(sum/len)
         }
         else if (input == "q"){
-            print(myArray)
             break
         }
         else if (!is.na(as.numeric(input))){
             myArray[len+1] <- as.numeric(input)
+            len <- len+1
+            sum <- sum+ as.numeric(input)
         }
     }
 }
