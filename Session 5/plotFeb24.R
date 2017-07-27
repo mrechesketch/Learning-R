@@ -53,3 +53,8 @@ hyperSpec <- function(dataFrame){
 
 bl <- baseline (spc [[]], method = "modpolyfit", degree = 4)
 spc [[]] <- getCorrected(bl)
+
+offsets1 <- c(-123.3, -124.5, -126.6, -128.2, -130.5, -132.1, -133.9, -135, -136.4, -138.6, -139.3) #6-15
+offsets2 <- c(124, 126, 128, 130, 132, 134, 136, 138) #16-23
+offsets3 <- c(11.1, 13, 15, 17, 19) #24-28
+offsets4 <- c(17.5, 16.5, 15.5, 14.5, 13.5, 12.5, 11.5, 10.5, 9.5) #29-37
