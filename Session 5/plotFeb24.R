@@ -44,11 +44,15 @@ feb24 <- t(feb24) # transpose it
 wavelengthVector <- feb24[1:1,]
 spectraMatrix <- feb24[2:nrow(feb24),]
 
-spc <- new("hyperSpec", spc = spectraMatrix, wavelength = wavelengthVector, data = NULL)
+spchso <- new("hyperSpec", spc = spectraMatrix, wavelength = wavelengthVector, data = NULL)
 
 # this function should basically do what the above lines do..
 hyperSpec <- function(dataFrame){
-    return(0)
+    dataFrame <-t(dataFrame)
+    wavelengthVector <- dataFrame[1:1,]
+    spectraMatrix <- dataFrame[2:nrow(dataFrame,)]
+    spc <- new("hyperSpec", spc = spectraMatrix, wavelength = wavelengthVector, data = NULL)
+    return(spc)
 }
 
 bl <- baseline (spc [[]], method = "modpolyfit", degree = 4)

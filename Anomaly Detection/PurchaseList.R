@@ -13,34 +13,67 @@
 Purchase_ <- setRefClass("Purchase_",
 
     fields = list(purchaser = "character", 
-    amount = "numeric", amountsq = "numeric",
-    nxt = "ANY", prev = "ANY"))
+    amount = "numeric", amountsq = "numeric"))
 
 # Puchase constructor is a function that returns a ref object
 Purchase <- function(ID, amount){
     newPurchase <- Purchase_$new(purchaser = ID, amount = amount, 
-    amountsq = amount**2, nxt = NULL, prev = NULL)
+    amountsq = amount**2)
     return(newPurchase)
 }
+
+
+Pnode_ <- setRefClass("Pnode_",
+
+    fields = list(purchase = "Purchase_", nxt = "ANY", prev = "ANY"),
+    methods = list(
+        getAmount = function(){
+            return(purchase$amount)
+        },
+        getID = function(){
+            return(purchase$purchaser)
+        },
+        getSq = function(){
+            return(purchase$amountsq)
+        }
+    )
+    )
+
+Pnode <- function(purchase){
+    newPnode <- Pnode_$new(purchase = purchase, nxt = NULL, prev = NULL)
+    return(newPnode)
+}
+
+
 
 PurchaseList_ <- setRefClass("PurchaseList_",
     
     fields = list(tracked = "numeric", 
-    tail = "Purchase_", Tth = "Purchase_", head = "Purchase_",
+    tail = "Pnode_", Tth = "Pnode_", head = "Pnode_",
     len = "numeric", sum = "numeric", sqsum = "numeric"),
 
     methods = list(
 
         # with add we can assume we have len of at least 1
         add = function(purchase){
+            #check if we need to Tup
+            if(len>=tracked){
+                Tup()
+            }
             # update member variables
             len <<- len + 1
             sum <<- sum + purchase$amount
             sqsum <<- sqsum + purchase$amountsq
+            #deal with Pnode pointers
+            pnode_ <- Pnode(purchase)
+            pnode_$prev <- head
+            head$nxt <<- pnode_
+            head <<-pnode_
         },
 
         remove = function(purchaserID){
             # this one is tricky!
+
         },
 
         calcMean = function(){
@@ -49,7 +82,7 @@ PurchaseList_ <- setRefClass("PurchaseList_",
 
         calcStd = function(){
             avg <- calcMean()
-            return(0)
+            return((sqsum/len-avg**2)**0.5)
         },
 
     # ========================================== #
@@ -59,18 +92,21 @@ PurchaseList_ <- setRefClass("PurchaseList_",
         # use in add
         Tup = function(){
             # subtract out old data
-            sum <<- sum - Tth$amount
-            sqsum <<- sqsum - Tth$amountsq
+            sum <<- sum - Tth$getAmount()
+            sqsum <<- sqsum - Tth$getSq()
             # move it toward head
             Tth <<- Tth$nxt
-            # add in new data 
-            sum <<- sum + Tth$amount
-            sqsum <<- sqsum + Tth$amountsq
+
         },
 
         # moves T pointer towards tail
         # use in remove
         Tdown = function(){
+            Tth <<- Tth$prev
+            sum <<- sum + Tth$getAmount()
+            sqsum <<- sqsum + Tth$getSq()
+            # move it toward head
+            
             # TODO
         }
 
@@ -80,8 +116,9 @@ PurchaseList_ <- setRefClass("PurchaseList_",
 
 # PurchaseList constructor is a function that returns a ref object
 PurchaseList <- function(T, purchase){
+    pnode_ <- Pnode(purchase)
     newPL <- PurchaseList_$new(tracked = T,
-    tail = purchase, Tth = purchase, head = purchase,
+    tail = pnode_, Tth = pnode_, head = pnode_,
     len = 1, sum = purchase$amount, sqsum = purchase$amountsq)
     return(newPL)
 }
