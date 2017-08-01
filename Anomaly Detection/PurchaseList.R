@@ -81,7 +81,11 @@ PurchaseList_ <- setRefClass("PurchaseList_",
         },
 
         remove = function(purchaserID){
-            # this one is tricky!
+            # we're going to loop through this list backards [WHY?]
+            start <- tail
+            while(start != NULL){
+                return
+            }
 
         },
 
