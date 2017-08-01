@@ -49,13 +49,27 @@ Pnode <- function(purchase){
 PurchaseList_ <- setRefClass("PurchaseList_",
     
     fields = list(tracked = "numeric", 
-    tail = "Pnode_", Tth = "Pnode_", head = "Pnode_",
+    tail = "ANY", Tth = "ANY", head = "ANY",
     len = "numeric", sum = "numeric", sqsum = "numeric"),
 
     methods = list(
 
-        # with add we can assume we have len of at least 1
+        # with add we can assume we could have a len of 0
         add = function(purchase){
+            # first step: create pnode_
+            pnode_ <- Pnode(purchase)
+            # check if list is empty
+            if(len == 0){
+                tail <<- pnode_
+                head <<- pnode_
+                Tth <<- pnode_
+            }
+            #otherwise link existing Pnodes 
+            else{
+                pnode_$prev <- head
+                head$nxt <<- pnode_
+                head <<-pnode_
+            }
             #check if we need to Tup
             if(len>=tracked){
                 Tup()
@@ -64,11 +78,6 @@ PurchaseList_ <- setRefClass("PurchaseList_",
             len <<- len + 1
             sum <<- sum + purchase$amount
             sqsum <<- sqsum + purchase$amountsq
-            #deal with Pnode pointers
-            pnode_ <- Pnode(purchase)
-            pnode_$prev <- head
-            head$nxt <<- pnode_
-            head <<-pnode_
         },
 
         remove = function(purchaserID){

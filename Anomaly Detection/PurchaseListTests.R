@@ -42,33 +42,33 @@ addSumTest <- function(){
 
 addSumSqTest <- function(){
     PL <- PurchaseList(T, pen)
-    stopifnot(PL$sum == 1089)
+    stopifnot(PL$sqsum == 1089)
     # add two more items
     PL$add(book)
     PL$add(car)
-    stopifnot(PL$sum == 3955)
+    stopifnot(PL$sqsum == 3955)
     # add fourth item, should lose the last
     PL$add(disc)
-    stopifnot(PL$sum == 3010)
+    stopifnot(PL$sqsum == 3010)
 }
 
 addPointerTests <- function(){
     PL <- PurchaseList(T, pen)
     # test constructor
-    stopifnot(identical(PL$head, pen))
-    stopifnot(identical(PL$tail, pen))
-    stopifnot(identical(PL$Tth, pen))
+    stopifnot(identical(PL$head$purchase, pen))
+    stopifnot(identical(PL$tail$purchase, pen))
+    stopifnot(identical(PL$Tth$purchase, pen))
     # add two more items
     PL$add(book)
     PL$add(car)
-    stopifnot(identical(PL$head, car))
-    stopifnot(identical(PL$tail, pen))
-    stopifnot(identical(PL$Tth, pen))
+    stopifnot(identical(PL$head$purchase, car))
+    stopifnot(identical(PL$tail$purchase, pen))
+    stopifnot(identical(PL$Tth$purchase, pen))
     # add third item
     PL$add(disc)
-    stopifnot(identical(PL$head, disc))
-    stopifnot(identical(PL$tail, pen))
-    stopifnot(identical(PL$Tth, book))
+    stopifnot(identical(PL$head$purchase, disc))
+    stopifnot(identical(PL$tail$purchase, pen))
+    stopifnot(identical(PL$Tth$purchase, book))
 }
 
 runTests <- function(){
