@@ -59,10 +59,10 @@ PurchaseList_ <- setRefClass("PurchaseList_",
             # first step: create pnode_
             pnode_ <- Pnode(purchase)
             # check if list is empty
-            if(len == 0){
+            if (len == 0){
                 tail <<- pnode_
-                head <<- pnode_
                 Tth <<- pnode_
+                head <<- pnode_
             }
             #otherwise link existing Pnodes 
             else{
@@ -82,10 +82,30 @@ PurchaseList_ <- setRefClass("PurchaseList_",
 
         remove = function(purchaserID){
             # we're going to loop through this list backards [WHY?]
-            start <- tail
+            start <- head
             while(start != NULL){
-                return
+                # check if you should delete
+                isDelete <- (purchaserID == start$getID)
+                if(isDelete){
+                    len <<- len - 1
+                    sum <<- sum - start$getAmount
+                    sqsum <<- sqsum - start$amountsq
+                    if (len>Tth){
+                        Tdown()
+                    }
+                    deletenode(start)
+                }
+
+
+
+
+
+
+                # advance start to head
+                start <- start$prev
+
             }
+
 
         },
 
@@ -121,6 +141,40 @@ PurchaseList_ <- setRefClass("PurchaseList_",
             # move it toward head
             
             # TODO
+        }
+        deletenode = function(node){
+            isHead <- (node$nxt == NULL)
+            isTail <- (node$prev == NULL)
+            isOnly <- (isHead && isTail)
+            isBody <- !(isHead || isTail)
+            #$$ both must be true
+            #|| either statement must be true
+            if(isOnly){
+                head <<- NULL
+                tail <<- NULL
+                Tth <<- NULL
+            }
+            if(isHead){
+                node$prev$nxt <- NULL
+                head <<- node$prev
+                node$prev <- NULL
+            }
+            if(isTail){
+                # case where T and tail are  same
+                if(Tth == tail){
+                    Tth <<- node$nxt
+                }
+                node$nxt$prev <- NULL
+                tail <<- node$nxt
+                node$nxt <- NULL     
+            }
+            if(isBody){
+                node$prev$nxt <- node$nxt
+                node$nxt$prev <- node$prev
+                node$nxt <- NULL
+                node$prev <- NULL
+            }
+            rm(node) 
         }
 
         
