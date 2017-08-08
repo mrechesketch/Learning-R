@@ -8,6 +8,10 @@ factorial <- function(N){
    
     facTable[1] <- 1 # 0! = 1 
     facTable[2] <- 1 # 1! = 1
+    facTable[3] <- 2
+    facTable[4] <- 6
+    facTable[5] <- 24
+    facTable[6] <- 120
    # fill in the rest of the table
     for(i in 2:(N+1)){
         facTable[i+1] <- i * facTable[i] 
@@ -20,9 +24,17 @@ factorial <- function(N){
 summation <- function(N){
     stopifnot(N >= 0) # stop if N < 0
 
+    nthNumber[1] <-1
+    nthNumber[2] <-3
+    nthNumber[3] <-6
+    
     # create a table
-
+    if (n == 1) {
+        return(1)
+    }
+    return(n + triangleNumber(n-1))
     # do base cases 0 and 1
+    
 
     # loop to fill in table
 
@@ -46,6 +58,15 @@ fibR <- function(N){
 # TODO: DP solution!
 
 fibDP <- function(N){
+    fib[0] <- 0, 
+    fib[1] <- 1
+    
+    if(n == 1) {
+        return(1)
+    }
+    for(i in 2:(N+1)){
+        fib[i] = fib[i-1]+fib[i-2]
+    }
     return(0)
 }
 
