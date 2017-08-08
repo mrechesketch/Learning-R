@@ -155,18 +155,18 @@ PurchaseList_ <- setRefClass("PurchaseList_",
                 Tth <<- NULL
             }
             if(isHead){
-                node$prev$nxt <- NULL
-                head <<- node$prev
-                node$prev <- NULL
+                head <<- node$nxt
+                node$nxt$prev <- NULL
+                node$nxt <- NULL
             }
             if(isTail){
                 # case where T and tail are  same
                 if(Tth == tail){
-                    Tth <<- node$nxt
+                    Tth <<- node$prev
                 }
-                node$nxt$prev <- NULL
-                tail <<- node$nxt
-                node$nxt <- NULL     
+                tail <<- node$prev
+                node$prev$nxt <- NULL
+                node$prev <- NULL     
             }
             if(isBody){
                 node$prev$nxt <- node$nxt
