@@ -57,22 +57,20 @@ Stack <- function(){
 # here's the plan of attack: we're going to loop over the string with a moving window
 # this moving window can change size according to the lengths of the openers and closers!
 # lets have a crack at some practice exercies before we try to implement it
-
+library("hashmap")
 
 Checker_ <- setRefClass("Checker",
-        fields = list(patternList = "list", ourStack = "Stack_"),
+        fields = list(openers = "vector", closers = "vector", 
+        closureDict = "ANY", ourStack = "Stack_"),
         methods = list(
 
-            checkString <- function(string){
-                return(FALSE)
+            checkString = function(string){
+                return(TRUE)
             }
         ))
 
-Checker <- function(listOfPatterns){
-    listOfCounters <- list()
-    # see https://stackoverflow.com/questions/2436688/append-an-object-to-a-list-in-r-in-amortized-constant-time-o1
-    # on why this is ok
-    newStack <- Stack()
-    newChecker <- Checker_$new(patternList = listOfPatterns, ourStack = newStack)
+Checker <- function(os, cs){
+    newChecker <- Checker_$new(openers = os, closers = cs, 
+    closureDict = hashmap('a', 'b'), ourStack = Stack())
     return(newChecker)
 }

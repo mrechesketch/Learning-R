@@ -45,3 +45,14 @@ stackTests <- function(){
     popTest()
     print("STACK TESTS PASSED")
 }
+
+
+
+openers <- c("(", "{", "[", "<p>", "<h1>", "<title>")
+closers <- c(")", "}", "]", "</p>", "</h1>", "</title>")
+checker <- Checker(openers, closers)
+
+emptyTest <- function(){
+    stopifnot(checker$checkString(""))
+    print("empty test passed")
+}
