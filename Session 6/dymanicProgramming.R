@@ -7,13 +7,10 @@ factorial <- function(N){
     facTable <- numeric(N+1) # allocate an array of size N+1
    
     facTable[1] <- 1 # 0! = 1 
-    facTable[2] <- 1 # 1! = 1
-    facTable[3] <- 2
-    facTable[4] <- 6
-    facTable[5] <- 24
-    facTable[6] <- 120
+    # facTable[2] <- 1 # 1! = 1
+   
    # fill in the rest of the table
-    for(i in 2:(N+1)){
+    for(i in 1:(N+1)){
         facTable[i+1] <- i * facTable[i] 
     }
 
@@ -24,23 +21,22 @@ factorial <- function(N){
 summation <- function(N){
     stopifnot(N >= 0) # stop if N < 0
 
-    nthNumber[1] <-1
-    nthNumber[2] <-3
-    nthNumber[3] <-6
+    nthNumber <- numeric(N+1)
+
+    nthNumber[1] <-0
+  
     
     # create a table
-    if (n == 1) {
-        return(1)
+    for(i in 1:(N+1)){
+        nthNumber[i+1] <- i + nthNumber[i] 
     }
-    return(n + triangleNumber(n-1))
-    # do base cases 0 and 1
+
+    return(nthNumber[N+1])
     
-
-    # loop to fill in table
-
-    return(0)
 }
 
+stopifnot(summation(1)==1)
+stopifnot(summation(5)==15)
 # problems courtesy of https://www.codechef.com/wiki/tutorial-dynamic-programming
 
 # ============================================================================== #
@@ -58,21 +54,25 @@ fibR <- function(N){
 # TODO: DP solution!
 
 fibDP <- function(N){
-    fib[0] <- 0, 
-    fib[1] <- 1
-    
-    if(n == 1) {
-        return(1)
+
+    fibTab <- numeric(N+1)
+
+    fibTab[1] <- 1
+    fibTab[2] <- 1
+
+    if(N<=1){
+        return(fibTab[N+1])
     }
+
     for(i in 2:(N+1)){
-        fib[i] = fib[i-1]+fib[i-2]
+        fibTab[i+1] <- fibTab[i]+fibTab[i-1]
     }
-    return(0)
+    return(fibTab[N+1])
 }
 
 
 fib <- function(N){
-    return(fibR(N)) # switch this to fibDP when you want to test!
+    return(fibDP(N)) # switch this to fibDP when you want to test!
 }
 
 # fib tests 
@@ -129,22 +129,45 @@ stepsToOneR <- function(N){
 }
 
 # TODO steps to one DP!! 
-stepToOneDP <- function(N){
-    return(0)
+stepsToOneDP <- function(N){
+    stopifnot( N>= 0)
+    #allocate space for an array
+    stepsTable <- numeric(N+1)
+    #fill in base case
+    stepsTable[1] <- 0
+    if(N==1){
+        return(0)
+    }
+    
+    for( i in 2:N){ 
+        #minus 1 call
+        stepsTable[i] <- 1 + stepsTable[i-1] 
+        #div 2 call
+        if(i %% 2 == 0){
+            stepsTable[i] <-  min( stepsTable[i], 1 + stepsTable[i/2])
+        }
+        #div 3 call
+        if (i %% 3 == 0){
+            stepsTable[i] <-  min( stepsTable[i], 1 + stepsTable[i/3])
+        }
+
+    }
+
+    return(stepsTable[N])
 }
 
 stepsToOne <- function(N){
-    return(stepsToOneR(N))
+    return(stepsToOneDP(N))
 }
 
-# stopifnot( stepsToOne(1) == 0 )
-# stopifnot( stepsToOne(2) == 1 )
-# stopifnot( stepsToOne(3) == 1 )
-# stopifnot( stepsToOne(4) == 2 )
-# stopifnot( stepsToOne(5) == 3 )
-# stopifnot( stepsToOne(90) == 5 )
-# stopifnot( stepsToOne(99) == 6 )
-# stopifnot( stepsToOne(130) == 8 )
+stopifnot( stepsToOne(1) == 0 )
+stopifnot( stepsToOne(2) == 1 )
+stopifnot( stepsToOne(3) == 1 )
+stopifnot( stepsToOne(4) == 2 )
+stopifnot( stepsToOne(5) == 3 )
+stopifnot( stepsToOne(90) == 5 )
+stopifnot( stepsToOne(99) == 6 )
+stopifnot( stepsToOne(130) == 8 )
 
 
 
@@ -163,15 +186,23 @@ stepsToOne <- function(N){
 
 knapsackR <- function(size, weights, values, items){
     # base case, we have no more weights or values.. return 0
+    if(items == 0){
+        return(0)
+    }
+    #lose it first, see if otherwise
+    loseIt = knapsackR(size, weights[-1], values[-1], items-1)
+    if(size-weights[1]<0){
+        return(loseIt)
+    }
+    # useIt calls!
+    useIt = values[1] + knapsackR(size-weights[1],weights[-1], values[-1], items-1)
     
-    # useIt and loseIt calls!
-
     # return the max of useIt and loseIt (what is the data type of the function call??)
-
-    return( 0 )
+    return(max(useIt, loseIt))
 }
 
 # TODO, lets do this sucker! 
+#TWO DIMENSION MOFO
 # taken from http://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
 knapsackDP <- function(size, weights, values, items){
     return(0)
@@ -181,10 +212,10 @@ knapsack <- function(size, weights, values, items){
     return(knapsackR(size, weights, values, items))
 }
 
-stopifnot( knapsack(10, c(), c()) == 0)
-stopifnot( knapsack(10, c(5, 3, 5, 9), c(3, 44, 3, 69)) == 69)
+stopifnot( knapsack(10, c(), c(), 0) == 0)
+stopifnot( knapsack(10, c(5, 3, 5, 9), c(3, 44, 3, 69), 4) == 69)
 
-change function <- (amount, change)
+#change <- function(amount, change)
 
 
 

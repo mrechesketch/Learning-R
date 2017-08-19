@@ -18,6 +18,8 @@
 
 # there we see two types of closure: () and {} and they are nested! fuck..
 
+# ( {) }
+
 # so how are we going to do this? Lets use a stack!
     # a stack is like a linked list (Session 5)
     # it can push and pop and tell you if it's empty

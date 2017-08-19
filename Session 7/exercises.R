@@ -11,11 +11,12 @@ openers <- c("(", "{", "[", "<p>", "<h1>", "<title>")
 closers <- c(")", "}", "]", "</p>", "</h1>", "</title>")
 
 # does the hashmap come with a useful constructor? maybe...
-closerDict <- hashmap()
+closerDict <- hashmap(closers, openers)
 
 exercise_1 <- function(){
-    stopifnot( setequal(closerDict$keys(),closers) 
+    stopifnot( setequal(closerDict$keys(),closers)) 
     print("exercise_1 complete!")
+}
 
 # so when we are making our moving window.. we'll need to know how big it is
 # given two vectors of openers and closers return a vectors of the lengths of the strings
@@ -40,12 +41,28 @@ stopCodon <- "TAG"
 
 # how many times does the stop codon appear
 howMany <- function(sequence, pattern){
-    return(0)
+    len <- nchar(pattern)
+    counter <- 0
+    for(i in 1:(nchar(sequence)-len)){
+        window <- substr(sequence, i, (len-1+i)) #moving window
+        if( window == pattern){
+            counter <- counter+1
+        }
+
+    }
+    return(counter)
 }
 
 # return the string up to the stop codon
 upToFirst <- function(sequence, pattern){
-    return("")
+    len <- nchar(pattern)
+    for(i in 1:(nchar(sequence)-len)){
+        window <- substr(sequence, i, (len-1+i)) #moving window
+        if( window == pattern){
+            return(substr(sequence, 1, (i-1)))
+        }
+    }
+    return(FALSE)
 }
 
 exercise_3 <- function(){
