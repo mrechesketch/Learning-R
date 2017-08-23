@@ -67,7 +67,7 @@ splitN <- function(numVec, N){
     begin <- 1
     nList <- list()
     for(i in 1:N){
-        nList <- list( nList, numVec[begin:stops[i]])
+        nList <- append( nList, list(numVec[begin:stops[i]]) ) 
         begin <- stops[i]+1
     }
     return(nList)
