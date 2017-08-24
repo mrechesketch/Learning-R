@@ -33,7 +33,7 @@
 
 # I want you to implement a *stack*. The tests for your stack are already written!
 stackNode <- setRefClass("MyNode",
-fields = list(data = "ANY", nxt = "ANY"))
+fields = list(data = "character", nxt = "ANY"))
 
 openers <- c("(", "{", "[", "<p>", "<h1>", "<title>")
 closers <- c(")", "}", "]", "</p>", "</h1>", "</title>")
@@ -41,26 +41,27 @@ closers <- c(")", "}", "]", "</p>", "</h1>", "</title>")
 Stack_ <- setRefClass("Stack_",
         fields = list(len = "numeric", head = "ANY"),
         methods = list(
-            push = function(node){
-                is.null(head)){
+            push = function(string){
+                node <- stackNode$new(data = string, nxt = NULL)
+                if(is.null(head)){
                 head <<- node
                 }
                 else{
                 node$nxt <- head
                 head <<- node
                 }   
-                size <<- size + 1
+                len <<- len + 1
             },
 
             pop = function(){
                 node <- head
                 head <<- head$nxt
-                size <<- size - 1
+                len <<- len - 1
                 node$nxt <- NULL
                 return(node)
             },
 
-            isEmpty = function(len){
+            isEmpty = function(){
                 if(len == 0)
                 return(TRUE)
             }
