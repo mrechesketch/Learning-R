@@ -13,26 +13,67 @@
 Purchase_ <- setRefClass("Purchase_",
 
     fields = list(purchaser = "character", 
-    amount = "numeric", amountsq = "numeric",
-    nxt = "ANY", prev = "ANY"))
+    amount = "numeric", amountsq = "numeric"))
 
 # Puchase constructor is a function that returns a ref object
 Purchase <- function(ID, amount){
     newPurchase <- Purchase_$new(purchaser = ID, amount = amount, 
-    amountsq = amount**2, nxt = NULL, prev = NULL)
+    amountsq = amount**2)
     return(newPurchase)
 }
+
+
+Pnode_ <- setRefClass("Pnode_",
+
+    fields = list(purchase = "Purchase_", nxt = "ANY", prev = "ANY"),
+    methods = list(
+        getAmount = function(){
+            return(purchase$amount)
+        },
+        getID = function(){
+            return(purchase$purchaser)
+        },
+        getSq = function(){
+            return(purchase$amountsq)
+        }
+    )
+    )
+
+Pnode <- function(purchase){
+    newPnode <- Pnode_$new(purchase = purchase, nxt = NULL, prev = NULL)
+    return(newPnode)
+}
+
+
 
 PurchaseList_ <- setRefClass("PurchaseList_",
     
     fields = list(tracked = "numeric", 
-    tail = "Purchase_", Tth = "Purchase_", head = "Purchase_",
+    tail = "ANY", Tth = "ANY", head = "ANY",
     len = "numeric", sum = "numeric", sqsum = "numeric"),
 
     methods = list(
 
-        # with add we can assume we have len of at least 1
+        # with add we can assume we could have a len of 0
         add = function(purchase){
+            # first step: create pnode_
+            pnode_ <- Pnode(purchase)
+            # check if list is empty
+            if (len == 0){
+                tail <<- pnode_
+                Tth <<- pnode_
+                head <<- pnode_
+            }
+            #otherwise link existing Pnodes 
+            else{
+                pnode_$prev <- head
+                head$nxt <<- pnode_
+                head <<-pnode_
+            }
+            #check if we need to Tup
+            if(len>=tracked){
+                Tup()
+            }
             # update member variables
             len <<- len + 1
             sum <<- sum + purchase$amount
@@ -40,7 +81,32 @@ PurchaseList_ <- setRefClass("PurchaseList_",
         },
 
         remove = function(purchaserID){
-            # this one is tricky!
+            # we're going to loop through this list backards [WHY?]
+            start <- head
+            while(start != NULL){
+                # check if you should delete
+                isDelete <- (purchaserID == start$getID)
+                if(isDelete){
+                    len <<- len - 1
+                    sum <<- sum - start$getAmount
+                    sqsum <<- sqsum - start$amountsq
+                    if (len>Tth){
+                        Tdown()
+                    }
+                    deletenode(start)
+                }
+
+
+
+
+
+
+                # advance start to head
+                start <- start$prev
+
+            }
+
+
         },
 
         calcMean = function(){
@@ -49,7 +115,7 @@ PurchaseList_ <- setRefClass("PurchaseList_",
 
         calcStd = function(){
             avg <- calcMean()
-            return(0)
+            return((sqsum/len-avg**2)**0.5)
         },
 
     # ========================================== #
@@ -59,19 +125,56 @@ PurchaseList_ <- setRefClass("PurchaseList_",
         # use in add
         Tup = function(){
             # subtract out old data
-            sum <<- sum - Tth$amount
-            sqsum <<- sqsum - Tth$amountsq
+            sum <<- sum - Tth$getAmount()
+            sqsum <<- sqsum - Tth$getSq()
             # move it toward head
             Tth <<- Tth$nxt
-            # add in new data 
-            sum <<- sum + Tth$amount
-            sqsum <<- sqsum + Tth$amountsq
+
         },
 
         # moves T pointer towards tail
         # use in remove
         Tdown = function(){
+            Tth <<- Tth$prev
+            sum <<- sum + Tth$getAmount()
+            sqsum <<- sqsum + Tth$getSq()
+            # move it toward head
+            
             # TODO
+        }
+        deletenode = function(node){
+            isHead <- (node$nxt == NULL)
+            isTail <- (node$prev == NULL)
+            isOnly <- (isHead && isTail)
+            isBody <- !(isHead || isTail)
+            #$$ both must be true
+            #|| either statement must be true
+            if(isOnly){
+                head <<- NULL
+                tail <<- NULL
+                Tth <<- NULL
+            }
+            if(isHead){
+                head <<- node$nxt
+                node$nxt$prev <- NULL
+                node$nxt <- NULL
+            }
+            if(isTail){
+                # case where T and tail are  same
+                if(Tth == tail){
+                    Tth <<- node$prev
+                }
+                tail <<- node$prev
+                node$prev$nxt <- NULL
+                node$prev <- NULL     
+            }
+            if(isBody){
+                node$prev$nxt <- node$nxt
+                node$nxt$prev <- node$prev
+                node$nxt <- NULL
+                node$prev <- NULL
+            }
+            rm(node) 
         }
 
         
@@ -80,8 +183,9 @@ PurchaseList_ <- setRefClass("PurchaseList_",
 
 # PurchaseList constructor is a function that returns a ref object
 PurchaseList <- function(T, purchase){
+    pnode_ <- Pnode(purchase)
     newPL <- PurchaseList_$new(tracked = T,
-    tail = purchase, Tth = purchase, head = purchase,
+    tail = pnode_, Tth = pnode_, head = pnode_,
     len = 1, sum = purchase$amount, sqsum = purchase$amountsq)
     return(newPL)
 }

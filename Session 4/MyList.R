@@ -22,8 +22,6 @@ LinkedList <- setRefClass("LinkedList",
         add = function(datum) {
             node <- MyNode$new(data = datum, nxt = head)
             addNode(node)
-            # head <<- node
-            # size <<- size + 1
         },
 
         append = function(otherLinkedList) {

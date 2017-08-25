@@ -53,6 +53,8 @@ start <- function(){
     myArray <- c()
     len <- 0
     sum <-0
+    sqrsum <- 0
+
     
     printHelpMenu()
     repeat{
@@ -67,7 +69,8 @@ start <- function(){
             print(len)
         }
         else if (input == "s"){
-            print(sum)
+          mean <- sum/len
+          print((sqrsum/len-mean**2)**.5)
         }
         else if (input == "m"){
             print(sum/len)
@@ -76,9 +79,11 @@ start <- function(){
             break
         }
         else if (!is.na(as.numeric(input))){
-            myArray[len+1] <- as.numeric(input)
+            num <- as.numeric(input)
+            myArray[len+1] <-num
             len <- len+1
-            sum <- sum+ as.numeric(input)
+            sum <- sum+ num
+            sqrsum <- sqrsum+ num**2
         }
     }
 }
