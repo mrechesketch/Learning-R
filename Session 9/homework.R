@@ -178,6 +178,8 @@ sameAge_3 <- (vec_1[[1]]$age == vec_2[[1]]$age) # T or F
 sameAge_4 <- alex$age == 24 # T or F
 refClassSameness_3 <- identical(vec_1[[1]], vec_2[[1]]) # T or F
 refClassSameness_4 <- identical(vec_1[[1]], alex) # T or F
+wtf_1 <- identitcal(vec_1, vec_2) # T or F
+wtf_2 <- identitcal(c(), list()) # T or F
 
 
 S4ClassSameness_1 <- identical(S4ClassTaylor, taylor) # T or F
@@ -191,6 +193,7 @@ sameAge_5 <- vec_3[[1]]@age == taylor@age # T or F
 
 # Extra Credit: redo exercise 1 from Sesion 8 review (the hashtable of word counts)
 # using a factor data type : https://www.stat.berkeley.edu/classes/s133/factors.html
+# there is a very similar example!
 
 
 

@@ -73,6 +73,22 @@ splitN <- function(numVec, N){
     return(nList)
 }
 
+splitNN <- function(numVec, N){
+    len <- length(numVec)
+    stopifnot(len >= N) # you can't split a 3 element list into 4 parts... 
+    
+    fractions <-c(1:N)/N
+    stops <- floor(fractions*len)
+
+    begin <- 1
+    nList <- vector("list", N) # allocate a list of size N
+    for(i in 1:N){
+        nList[[i]] <- numVec[begin:stops[i]] # fill in spots rather than append :)
+        begin <- stops[i]+1
+    }
+    return(nList)
+}
+
 
 
 fiveVec <- c(5,4,2,3,1)
