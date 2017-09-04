@@ -14,15 +14,10 @@ treeNode_ <- setRefClass("treeNode_",
             methods = list(
 
             # prints out a list representation of the object
-                repr = function(node){
-                    if( is.null(node) ){ 
-                        return(NULL)
-                    } 
-                    else{
-                        leftr < node$left$repr()
-                        rightr <- node$right$repr()
-                        return( list( node$data, leftr, rightr ) )
-                    } 
+                repr = function(){
+                    leftr < if is.null(left) NULL else left$repr()
+                    rightr <- if is.null(right) NULL else right$repr()
+                    return( list( node$data, leftr, rightr ) )
                 },
 
             # tricky templating(?) can be overwritten using inheritance        
@@ -67,13 +62,9 @@ BST_ <- setRefClass("BST_",
         # =================================== #
 
             repr = function(){
-                # notice the structure of
-                if( is.null(root) ){
-                    return( NULL )
-                }
-                else{
-                    return( root$repr() )
-                }
+                # this structure might help on height..
+                # but maybe make more readable.. ternary operator not necessary
+                return( if( is.null(root) NULL else root$repr() )
             },
 
         # TODO
@@ -84,20 +75,18 @@ BST_ <- setRefClass("BST_",
                 return(-1)
             },
 
+        # returns right-most node, helpful for delete!
+            max = function(node){
+                return( if( is.null(node$right) ) node else max(node$right) )
+            },
+
             exists = function(data){
         # TODO
                 return(FALSE)
             },
 
             insert = function(data){
-                # if the tree is empty start it
-                if( is.null(root) ){
-                    root <<- treeNode(data, NULL, NULL)
-                }
-                # otherwise allow the nodes to add itself
-                else{
-                    insertAtNode(root, data)
-                }
+                insertAtNode(root, data)
             },
 
             remove = function(data){
@@ -125,10 +114,6 @@ BST_ <- setRefClass("BST_",
 
             insertAtNode = function(node, value){
         # TODO!
-            },
-
-            max = function(node){
-                return( if( is.null(node$right) ) node else max(node$right) )
             },
 
             deleteNode = function(node, value){
