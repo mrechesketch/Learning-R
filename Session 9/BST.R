@@ -32,7 +32,7 @@ treeNode_ <- setRefClass("treeNode_",
 
                 isSame = function(value){
                     return( data == value )
-                }
+                },
 
             # node height function
                 height = function(){
@@ -74,6 +74,10 @@ treeNode_ <- setRefClass("treeNode_",
                             right$add(value)
                         }
                     }
+                },
+
+                delete = function(value){
+                    return(NULL)
                 }
 
 
@@ -153,13 +157,13 @@ BST_ <- setRefClass("BST_",
 
         # VOID function 
         # inserts a piece of data into the tree
-            insert = function(data){
+            insert = function(value){
                 #insertAtNode(root, data)
                 if( is.null(root) ){
-                    root <<- treeNode(data, NULL, NULL)
+                    root <<- treeNode(value, NULL, NULL)
                 }
                 else{
-                    root$add(data)
+                    root$add(value)
                 }
             },
 
@@ -174,7 +178,7 @@ BST_ <- setRefClass("BST_",
                 }
                 else{
                     #deleteNode(root, data)
-                    root$delete(data)
+                    root$delete(value)
                 }
             },
 
