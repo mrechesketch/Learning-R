@@ -13,16 +13,13 @@ treeNode_ <- setRefClass("treeNode_",
 
             methods = list(
 
-<<<<<<< HEAD
             # prints out a list representation of the object
                 repr = function(){
-                    leftr < if is.null(left) NULL else left$repr()
-                    rightr <- if is.null(right) NULL else right$repr()
-                    return( list( node$data, leftr, rightr ) )
+                    leftr <- if( is.null(left) ) NULL else left$repr()
+                    rightr <- if( is.null(right) ) NULL else right$repr()
+                    return( list( data, leftr, rightr ) )
                 },
 
-=======
->>>>>>> 86f1ede47b9299a0fd4db84942232f6b4b90a5b0
             # tricky templating(?) can be overwritten using inheritance        
                 isLess = function(value){
                     return(data < value) # i.e. go right
@@ -32,6 +29,10 @@ treeNode_ <- setRefClass("treeNode_",
                 isGreater = function(value){
                     return( data > value )
                 },
+
+                isSame = function(value){
+                    return( data == value )
+                }
 
             # node height function
                 height = function(){
@@ -48,16 +49,52 @@ treeNode_ <- setRefClass("treeNode_",
                         return(1 + left$height())
                     }
                     return(1 + max(left$height(), right$height())) #if the node has children on both sides
+                },
+
+            # TODO READ AND UNDERSTAND WHY THIS WORKS AND NOT INSERT AT NODE
+                add = function(value){
+                    
+                    # node is greater, add to the left
+                    if( isGreater(value) ){
+                        if( is.null(left) ){
+                            # HINT IT HAS TO DO WITH THE DOUBLE <<-
+                            left <<- treeNode(value, NULL, NULL)
+                        }
+                        else{
+                            left$add(value)
+                        }
+                    }
+                    
+                    # node is less, add to the right
+                    if( isLess(value) ){
+                        if( is.null(right) ){
+                            right <<- treeNode(value, NULL, NULL)
+                        }
+                        else{
+                            right$add(value)
+                        }
+                    }
                 }
+
+
             )
 
             
         )
 
 
-# tree node constructor
+# tree node constructor TODO
 treeNode <- function(data, left, right){
-    newTreeNode <-treeNode_$new(data = data, left = left, right = right, size = 0) 
+    
+    # we need to handle size correctly
+    leftSize <- if( is.null(left) ) 0 else 0 # TODO "else 0" is not correct.. what goes here??
+    rightSize <- 0 # TODO same shit. you need to fix this!
+    parentSize <- 1 # TODO hint: a parents size is 1 + the size of it's children 
+
+    newTreeNode <-treeNode_$new(
+        data = data, left = left, 
+        right = right, size = parentSize) 
+    
     return(newTreeNode)
 }
 
@@ -74,23 +111,20 @@ BST_ <- setRefClass("BST_",
             ###### PUBLIC METHODS ####### # THESE GET TESTED!
         # =================================== #
 
+        # returns a list (LIST) representation of the tree
+        # where repr = list(data, leftTree, rightTree)
             repr = function(){
-<<<<<<< HEAD
-                # this structure might help on height..
-                # but maybe make more readable.. ternary operator not necessary
-                return( if( is.null(root) NULL else root$repr() )
-=======
                 # notice the structure of
                 if( is.null(root) ){
                     return( NULL )
                 }
                 else{
-                    return( reprAtNode(root) )
+                    return( root$repr() )
                 }
->>>>>>> 86f1ede47b9299a0fd4db84942232f6b4b90a5b0
             },
 
-        # TODO
+        # returns the height (NUMERIC) of the tree
+        # by taking the max of the child node heights
             height = function(){
                 if( is.null(root)){
                     return(-1)
@@ -101,10 +135,13 @@ BST_ <- setRefClass("BST_",
             },
 
         # returns right-most node, helpful for delete!
+        # returns TREENODE
             max = function(node){
                 return( if( is.null(node$right) ) node else max(node$right) )
             },
 
+        # sees if a piece of data exists
+        # returns BOOLEAN
             exists = function(data){
                 if( is.null(root) ){
                     return(FALSE)
@@ -114,15 +151,31 @@ BST_ <- setRefClass("BST_",
                 }
             },
 
+        # VOID function 
+        # inserts a piece of data into the tree
             insert = function(data){
-                insertAtNode(root, data)
+                #insertAtNode(root, data)
+                if( is.null(root) ){
+                    root <<- treeNode(data, NULL, NULL)
+                }
+                else{
+                    root$add(data)
+                }
             },
 
-            remove = function(data){
+        # VOID function 
+        # removes a piece of data from tree
+            remove = function(value){
                 if( is.null(root) ){
-                    return(NULL)
+                    root <<- NULL
                 }
-                removeAtNode(root, data)
+                else if( root$isSame(value) ){
+                    root <<- NULL
+                }
+                else{
+                    #deleteNode(root, data)
+                    root$delete(data)
+                }
             },
 
         # =================================== #
@@ -144,29 +197,20 @@ BST_ <- setRefClass("BST_",
                     return( TRUE )
             },
 
-            insertAtNode = function(node, value){
-                    if( is.null(node) ){
-                        node <- treeNode(data, NULL, NULL)
-                    }
-                    if( node$isLess(value )){
-                        insertAtNode(node$right, value) 
-                    }
-                    if( node$isGreater(value) ){
-                        insertAtNode(node$left, value) 
-                    }
-            },
+        # graveyarded
+            # insertAtNode = function(node, value){
+            #         if( is.null(node) ){
+            #             node <- treeNode(data, NULL, NULL)
+            #         }
+            #         else if( node$isLess(value )){
+            #             insertAtNode(node$right, value) 
+            #         }
+            #         else if( node$isGreater(value) ){
+            #             insertAtNode(node$left, value) 
+            #         }
+            # },
 
-            reprAtNode = function(node){
-                if( is.null(node) ){ 
-                        return(NULL)
-                } 
-                else{
-                    leftr <- reprAtNode(node$left)
-                    rightr <- reprAtNode(node$right)
-                    return( list( node$data, leftr, rightr ) )
-                }
-            },
-
+        # TODO - MAKE REMOVE A MEMBER FUNCTION OF NODE INSTEAD -- EXTRA CREDIT THIS WILL BE DIFFICULT ;)
             deleteNode = function(node, value){
             # find the target
                 if( node$isLess(value) ){
@@ -191,10 +235,12 @@ BST_ <- setRefClass("BST_",
                 if( isLeftSingleMom){
                     node <- left
                 }
+                else{
             # otherwise assume double parent
-                usurper <- node$left$max()
+                usurper <- max(node$left)
                 newLeft <- deleteNode(node$left, usurper$data)
                 node <- treeNode(usurper$data, newLeft, node$right)
+                }
             }
         )
     )
