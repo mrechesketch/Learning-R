@@ -1,6 +1,34 @@
 source("BST.R")
 
 
+
+# NODE TESTS
+
+nodeTests <- function(){
+    # make left
+    left <- treeNode(3, NULL, NULL)
+    leftr <- list(3, NULL, NULL)
+    # check size height and repr
+    stopifnot( left$size == 1 ) # default size
+    stopifnot( left$repr() == leftr ) # default repr
+    stopifnot( left$height() == 0 ) # default height
+    # make right
+    right <- treeNode(8, NULL, NULL)
+    rightr <- list(8, NULL, NULL)
+    # do root with left n right
+    root <- treeNode(5, left, right)
+    rootr <- list(5, leftr, rightr)
+    # check size, height and repr
+    stopifnot( root$size == 3 ) # size
+    stopifnot( root$height == 1 ) # height
+    stopifnot( root$repr() == rootr ) # repr
+    print("node tests passed")
+}
+
+
+
+
+
 insertTest <- function(){
     newBST <- BST()
     stopifnot( identical( newBST$repr(), NULL ) )

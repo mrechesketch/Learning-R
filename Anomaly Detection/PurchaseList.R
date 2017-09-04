@@ -17,7 +17,7 @@ Purchase_ <- setRefClass("Purchase_",
         purchaser = "character", 
         amount = "numeric", 
         amountsq = "numeric",
-        timestamp = "ANY"),
+        timestamp = "character"),
     
     methods = list(
 
