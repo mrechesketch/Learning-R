@@ -13,6 +13,7 @@ treeNode_ <- setRefClass("treeNode_",
 
             methods = list(
 
+<<<<<<< HEAD
             # prints out a list representation of the object
                 repr = function(){
                     leftr < if is.null(left) NULL else left$repr()
@@ -20,6 +21,8 @@ treeNode_ <- setRefClass("treeNode_",
                     return( list( node$data, leftr, rightr ) )
                 },
 
+=======
+>>>>>>> 86f1ede47b9299a0fd4db84942232f6b4b90a5b0
             # tricky templating(?) can be overwritten using inheritance        
                 isLess = function(value){
                     return(data < value) # i.e. go right
@@ -32,9 +35,19 @@ treeNode_ <- setRefClass("treeNode_",
 
             # node height function
                 height = function(){
-            # TODO!
-            # remember a single node has height = 0
-            # and a node's height is the max of it's children
+                    isLeaf <- is.null(left) && is.null(right)
+                    isRightSingleDad <- is.null(left) && !isLeaf 
+                    isLeftSingleMom <- is.null(right) && !isLeaf
+                    if(isLeaf){ #if the node has no children
+                        return(0)
+                    }
+                    if(isRightSingleDad){ #if the node has children only to the right
+                        return(1 + right$height()) 
+                    }
+                    if(isLeftSingleMom){ #if the node has children only to the left
+                        return(1 + left$height())
+                    }
+                    return(1 + max(left$height(), right$height())) #if the node has children on both sides
                 }
             )
 
@@ -44,8 +57,8 @@ treeNode_ <- setRefClass("treeNode_",
 
 # tree node constructor
 treeNode <- function(data, left, right){
-# TODO WRITE THIS PLEASE
-    return( list( data, left, right) )
+    newTreeNode <-treeNode_$new(data = data, left = left, right = right, size = 0) 
+    return(newTreeNode)
 }
 
 
@@ -62,17 +75,29 @@ BST_ <- setRefClass("BST_",
         # =================================== #
 
             repr = function(){
+<<<<<<< HEAD
                 # this structure might help on height..
                 # but maybe make more readable.. ternary operator not necessary
                 return( if( is.null(root) NULL else root$repr() )
+=======
+                # notice the structure of
+                if( is.null(root) ){
+                    return( NULL )
+                }
+                else{
+                    return( reprAtNode(root) )
+                }
+>>>>>>> 86f1ede47b9299a0fd4db84942232f6b4b90a5b0
             },
 
         # TODO
             height = function(){
-                # remember.. empty tree is height = -1
-                # tree with 1 node is height 0
-                # and so on...
-                return(-1)
+                if( is.null(root)){
+                    return(-1)
+                }
+                else{
+                    return(root$height())
+                }
             },
 
         # returns right-most node, helpful for delete!
@@ -81,8 +106,12 @@ BST_ <- setRefClass("BST_",
             },
 
             exists = function(data){
-        # TODO
-                return(FALSE)
+                if( is.null(root) ){
+                    return(FALSE)
+                }
+                else{
+                    return(existsNode(root, data))
+                }
             },
 
             insert = function(data){
@@ -90,6 +119,9 @@ BST_ <- setRefClass("BST_",
             },
 
             remove = function(data){
+                if( is.null(root) ){
+                    return(NULL)
+                }
                 removeAtNode(root, data)
             },
 
@@ -103,7 +135,7 @@ BST_ <- setRefClass("BST_",
                         return(FALSE)
                     }
                     if( node$isLess(value )){
-                        return( exists(node$right, value) ) # node is less, go right
+                        return( existsNode(node$right, value) ) # node is less, go right
                     }
                     if( node$isGreater(value) ){
                         return( exists(node$left, value) ) # node is more, go left
@@ -113,7 +145,26 @@ BST_ <- setRefClass("BST_",
             },
 
             insertAtNode = function(node, value){
-        # TODO!
+                    if( is.null(node) ){
+                        node <- treeNode(data, NULL, NULL)
+                    }
+                    if( node$isLess(value )){
+                        insertAtNode(node$right, value) 
+                    }
+                    if( node$isGreater(value) ){
+                        insertAtNode(node$left, value) 
+                    }
+            },
+
+            reprAtNode = function(node){
+                if( is.null(node) ){ 
+                        return(NULL)
+                } 
+                else{
+                    leftr <- reprAtNode(node$left)
+                    rightr <- reprAtNode(node$right)
+                    return( list( node$data, leftr, rightr ) )
+                }
             },
 
             deleteNode = function(node, value){

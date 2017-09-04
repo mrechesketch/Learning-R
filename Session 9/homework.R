@@ -34,11 +34,16 @@ numToFizzBuzz <- function(num){
 # D: can we do this with vectorization??? Extra credit :)
 
 fizzBuzzLoop <- function(N){
-    return( c(1:N) )
+    buzzFizz <- character(N)
+    for(i in 1:N){
+        buzzFizz[i] <- numToFizzBuzz(i)
+    }
+    return(buzzFizz)
 }
 
 fizzBuzzApply <- function(N){
-    return( c(1:N) )
+    return(sapply(c(1:N), function(x) numToFizzBuzz(x)))
+
 }
 
 problem_1 <- function(){
@@ -72,15 +77,15 @@ Animal <- setClass(
             age = "numeric"
         ),
     # default construction!
-    prototype = list(
-        age = 0
-    ),
+        prototype = list(
+            age = 0
+        ),
 
     # internal check.. not that important in this example
-    validity = function(object){
-        return( if( object@age < 0) "Age must be positive dummy!" else TRUE )
-    }
-        )
+        validity = function(object){
+            return( if( object@age < 0) "Age must be positive dummy!" else TRUE )
+        }
+            )
 
 # you have to reserve the name
 setGeneric(name="growUp",
@@ -162,30 +167,31 @@ bobsTwinBill <- PerSon(name = "Bill", profession = "contractor")
 
 # for the following booleans please indicate T or F
 # make sure you understand why they are T or F!
-refClassSameness_1 <- identical(refClassAlex, alex) # T or F
-refClassSameness_2 <- identical(alex, schmalex) # T or F
+refClassSameness_1 <- identical(refClassAlex, alex) # T 
+refClassSameness_2 <- identical(alex, schmalex) # F
 
 alex$growUp()
-sameAge_1 <- alex$age == refClassAlex$age # T or F
-sameAge_2 <- alex$age == schmalex$age # T or F
+sameAge_1 <- alex$age == refClassAlex$age # T
+sameAge_2 <- alex$age == schmalex$age # F
 
 vec_1 <- c(alex)
 vec_2 <- list(alex)
 alex$growUp()
 refClassAlex$growUp()
 
-sameAge_3 <- (vec_1[[1]]$age == vec_2[[1]]$age) # T or F
-sameAge_4 <- alex$age == 24 # T or F
-refClassSameness_3 <- identical(vec_1[[1]], vec_2[[1]]) # T or F
-refClassSameness_4 <- identical(vec_1[[1]], alex) # T or F
-wtf_1 <- identitcal(vec_1, vec_2) # T or F
-wtf_2 <- identitcal(c(), list()) # T or F
+sameAge_3 <- (vec_1[[1]]$age == vec_2[[1]]$age) # T
+sameAge_4 <- alex$age == 24 # F
+refClassSameness_3 <- identical(vec_1[[1]], vec_2[[1]]) # T
+refClassSameness_4 <- identical(vec_1[[1]], alex) # T 
+wtf_1 <- identical(vec_1, vec_2) # T 
+wtf_2 <- identical(c(), list()) # F
 
 
-S4ClassSameness_1 <- identical(S4ClassTaylor, taylor) # T or F
+S4ClassSameness_1 <- identical(S4ClassTaylor, taylor) # T 
 
 vec_3 <- c(taylor)
 taylor <- growUp(taylor)
+tylor <- growUp(taylor)
 
 S4ClassSameness_2 <- identical( vec_3[[1]], taylor) # T or F
 sameAge_5 <- vec_3[[1]]@age == taylor@age # T or F
