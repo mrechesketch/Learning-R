@@ -88,6 +88,6 @@ Checker_ <- setRefClass("Checker",
 
 Checker <- function(os, cs){
     newChecker <- Checker_$new(openers = os, closers = cs, 
-    closureDict = hashmap('a', 'b'), ourStack = Stack())
+    closureDict = hashmap(cs, os), ourStack = Stack())
     return(newChecker)
 }

@@ -77,10 +77,47 @@ treeNode_ <- setRefClass("treeNode_",
                 },
 
                 delete = function(value){
-                    return(NULL)
+                    # find the target
+                if( isLess(value) ){
+                    if(right$isSame(value)){
+                        nodeToBeDeleted <- right
+                    }
+                    else{
+                        right$delete(value)
+                    }
+
                 }
-
-
+                if( isGreater(value) ){
+                    if(left$isSame(value)){
+                        nodeToBeDeleted <- left
+                    }
+                    else{
+                        left$delete(value)
+                    }
+                }
+            # assume it is found and do work
+                isLeaf <- is.null(nodeToBeDeleted$left) && is.null(nodeToBeDeleted$right)
+                isRightSingleDad <- is.null(nodeToBeDeleted$left) && !isLeaf
+                isLeftSingleMom <- is.null(nodeToBeDeleted$right) && !isLeaf
+            # if leaf
+                if( isLeaf ){
+                    nodeToBeDeleted <<- NULL
+                }
+            # if right single parent
+                if( isRightSingleDad ){
+                    nodeToBeDeleted <<- nodeToBeDeleted$right
+                }
+            # if left single parent
+                if( isLeftSingleMom){
+                    nodeToBeDeleted <<- nodeToBeDeleted$left
+                }
+                else{
+            # otherwise assume double parent
+                usurper <- max(nodeToBeDeleted$left)
+                newLeft <- nodeToBeDeleted$left$delete(usurper$data)
+                nodeToBeDeleted <<- treeNode(usurper$data, newLeft, nodeToBeDeleted$right)
+                }
+            }
             )
 
             
@@ -89,11 +126,9 @@ treeNode_ <- setRefClass("treeNode_",
 
 # tree node constructor TODO
 treeNode <- function(data, left, right){
-    
-    # we need to handle size correctly
-    leftSize <- if( is.null(left) ) 0 else 0 # TODO "else 0" is not correct.. what goes here??
-    rightSize <- 0 # TODO same shit. you need to fix this!
-    parentSize <- 1 # TODO hint: a parents size is 1 + the size of it's children 
+    leftSize <- if( is.null(left) ) 0 else left$size
+    rightSize <- if( is.null(right) 0 else right$size
+    parentSize <- 1 + leftSize + rightSize
 
     newTreeNode <-treeNode_$new(
         data = data, left = left, 
@@ -216,6 +251,7 @@ BST_ <- setRefClass("BST_",
 
         # TODO - MAKE REMOVE A MEMBER FUNCTION OF NODE INSTEAD -- EXTRA CREDIT THIS WILL BE DIFFICULT ;)
             deleteNode = function(node, value){
+
             # find the target
                 if( node$isLess(value) ){
                     deleteNode(node$right, value )
@@ -254,3 +290,7 @@ BST_ <- setRefClass("BST_",
 BST <- function(){
     return( BST_$new( root = NULL, size = 0) )
 } 
+
+deleteMemberFunction = function(node, value){
+
+}

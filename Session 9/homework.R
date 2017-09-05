@@ -193,7 +193,7 @@ vec_3 <- c(taylor)
 taylor <- growUp(taylor)
 tylor <- growUp(taylor)
 
-S4ClassSameness_2 <- identical( vec_3[[1]], taylor) # T or F
+S4ClassSameness_2 <- identical( vec_3[[1]], taylor) #  F
 sameAge_5 <- vec_3[[1]]@age == taylor@age # T or F
 
 

@@ -107,9 +107,31 @@ removeTest <- function(){
 }
 
 sizeTest <- function(){
-    # TODO 
+    newBST <- BST()
+    stopifnot( identical( newBST$repr(), NULL ) )
+    newBST$insert(5)
+    stopifnot( identical( newBST$repr(), list( 5, NULL, NULL ) ) )
+    newBST$insert(3)
+    left <- list(3, NULL, NULL)
+    stopifnot( identical( newBST$repr(), list( 5, left, NULL ) ) )
+    newBST$insert(8)
+    right <- list(8, NULL, NULL)
+    stopifnot( identical( newBST$repr(), list( 5, left, right ) ) )
+    print( "size test passed" )
 }
 
 heightTest <- function(){
-    # TODO
+    newBST <- BST()
+    stopifnot( identical( newBST$repr(), NULL ) )
+    newBST$insert(5)
+    stopifnot( identical( newBST$repr(), list( 5, NULL, NULL ) ) )
+    newBST$insert(3)
+    left <- list(3, NULL, NULL)
+    stopifnot( identical( newBST$repr(), list( 5, left, NULL ) ) )
+    newBST$insert(8)
+    right <- list(8, NULL, NULL)
+    stopifnot( identical( newBST$repr(), list( 5, left, right ) ) )
+    # newBST$remove(5)
+    # stopifnot( identical( newBST$repr(), list(3, NULL, right) ) ) # removal always selects max() of left
+    print( "height test passed" )
 }
