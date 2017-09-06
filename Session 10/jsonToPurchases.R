@@ -83,9 +83,9 @@ startDate <- as.Date("2017-01-01")
 # see https://www.stat.berkeley.edu/~s133/dates.html
 
 # http://www.r-tutor.com/r-introduction/data-frame
-ids <- sapply(purchases, function(x) x$purchaser) # TODO
-amounts <- sapply(purchases, function(x) x$amount) # TODO
-times <- sapply(purchases, function(x) (as.Date(x$timestamp) - startDate) ) # TODO
+ids <- sapply(purchases, function(x) x$purchaser) # Done for you!
+amounts <- c() # TODO
+times <- c() # TODO
 
 df <- data.frame(ids, amounts, times)
 
@@ -101,7 +101,7 @@ scatterplot_1 <- function(){
 scatterplot_2 <- function(){
     p <- ggplot(df, aes(times, amounts, colour = ids) ) + geom_point() # fux with colors
     # we would never make a plot without proper axis labels AND units!!!!!
-    p + labs(colour = "Purchaser ID", 
+    p <- p + labs(colour = "Purchaser ID", 
     x = "Days from January 1, 2017", 
     y = "Amount (U.S. Dollars)" )
     return(p)
