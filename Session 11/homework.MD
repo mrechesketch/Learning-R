@@ -8,4 +8,4 @@ This weeks homework is fairly light on coding. We are getting into ggplot2. Here
 
 4. Think of at least one other way we can visualize the purchase data and decide which plot would be best for that. See http://ggplot2.tidyverse.org/reference/
 
-5. Read this article https://en.wikipedia.org/wiki/Tree_traversal. Be able to explain BFS vs DFS. Look at the _Implementations_ and understand iterative vs recursive traversal strategy. 
+5. Read this article https://en.wikipedia.org/wiki/Tree_traversal. Be able to explain BFS vs DFS. Look at the *Implementations* section and understand iterative vs recursive traversal strategy. 
