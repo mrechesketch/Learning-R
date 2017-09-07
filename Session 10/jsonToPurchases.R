@@ -84,8 +84,8 @@ startDate <- as.Date("2017-01-01")
 
 # http://www.r-tutor.com/r-introduction/data-frame
 ids <- sapply(purchases, function(x) x$purchaser) # Done for you!
-amounts <- c() # TODO
-times <- c() # TODO
+amounts <- c(purchases, function(x) x$amount) # TODO
+times <- c(purchases, function(x), "Days from January 1, 2017") # TODO
 
 df <- data.frame(ids, amounts, times)
 
@@ -95,30 +95,53 @@ scatterplot_1 <- function(){
     p <- ggplot(df, aes(times, amounts) )
     p + geom_point()
     return(p) # not that important but if we want to multiplot.. 
+    #there's no label funciton here
 }
 
 # axis label editting http://ggplot2.tidyverse.org/reference/labs.html
 scatterplot_2 <- function(){
     p <- ggplot(df, aes(times, amounts, colour = ids) ) + geom_point() # fux with colors
     # we would never make a plot without proper axis labels AND units!!!!!
+    
     p <- p + labs(colour = "Purchaser ID", 
     x = "Days from January 1, 2017", 
     y = "Amount (U.S. Dollars)" )
-    return(p)
+    return(p) 
 }
 
 scatterplot_3 <- function(){
     p <- ggplot(df, aes(times, amounts, shape = ids) ) + geom_point() # fux with shapes
+
     p + scale_shape(solid = FALSE)
-    p + labs(shape = "Purchaser ID", 
+    p + labs(shape = "Purchaser ID", #mistake is here, should be a <-
     x = "Days from January 1, 2017", 
-    y = "Amount (U.S. Dollars)" )
+    y = "Amount (U.S. Dollars)" ) 
     return(p)
 }
 
 scatterplot_4 <- function(){
+    p <- ggplot(df, aes(times, amounts, shape = ids) ) + geom_point()
+    p + scale_shape(solid = FALSE)
+    p <- p + labs(colour = "Amount (U.S. Dollars)", 
+        geom_point(aes(colour = factor(ids)), size = 4) +
+        geom_point(colour = "grey90", size  =<5, >=10)+
+        geom_point(colour = "black", size >10 ) +
+        geom_point(colour = "pink", size <5) 
+    x = "Days from January 1, 2017", 
+    y = "Amount (U.S. Dollars)" )
+    return(p) 
     # combine the first two scatter plots into a really cool one!
     # see the scatter plot creation link above
 }
 
-
+scatterplot_4 <- function(){
+    p <- ggplot(df, aes(times, amounts, colours = ids) ) + geom_point()
+    p + scale_shape(
+        >=50 return (TRUE)
+        <50 return (FALSE))
+    p <- p + labs(+ geom_point(alpha = 1/10) 
+    p + labs(caption = "(based on data from Alex)")
+    x = "Days from January 1, 2017", 
+    y = "Amount (U.S. Dollars)" )
+    return(p) 
+}    
