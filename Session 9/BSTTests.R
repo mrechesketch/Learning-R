@@ -40,8 +40,8 @@ insertTest <- function(){
     newBST$insert(8)
     right <- list(8, NULL, NULL)
     stopifnot( identical( newBST$repr(), list( 5, left, right ) ) )
-    # newBST$remove(5)
-    # stopifnot( identical( newBST$repr(), list(3, NULL, right) ) ) # removal always selects max() of left
+    newBST$remove(5)
+    stopifnot( identical( newBST$repr(), list(3, NULL, right) ) ) # removal always selects max() of left
     print( "insert test passed" )
 }
 
@@ -52,8 +52,8 @@ existsTest <- function(){
     newBST$insert(5)
     stopifnot( !newBST$exists(6) ) # do it again
     stopifnot( newBST$exists(5) ) # 5 should be there
-    # newBST$remove(5)
-    # stopifnot( !newBST$exists(5) ) # 5 should not be there
+    newBST$remove(5)
+    stopifnot( !newBST$exists(5) ) # 5 should not be there
     print( "exists test passed" )
 }
 
@@ -64,14 +64,14 @@ removeTest <- function(){
     # leaf case
     newBST$insert(5) # root
     newBST$remove(5)
-    stopifnot( newBST$repr(), NULL )
+    stopifnot( identical(newBST$repr(), NULL) )
     print(" remove leaf passed ")
 
     # single left case
     newBST$insert(5) # root
     newBST$insert(3) # left
     newBST$remove(5)
-    stopifnot( newBST$repr(), list(3, NULL, NULL) )
+    stopifnot( identical(newBST$repr(), list(3, NULL, NULL) ) )
     print(" remove single left parent passed ")
 
 
@@ -79,7 +79,7 @@ removeTest <- function(){
     newBST$insert(5) # root
     newBST$insert(8) # right
     newBST$remove(5)
-    stopifnot( newBST$repr(), list(8, NULL, NULL) )
+    stopifnot( identical(newBST$repr(), list(8, NULL, NULL) ) )
     print(" remove single right parent passed ")
 
     # double parent simple
@@ -87,7 +87,7 @@ removeTest <- function(){
     newBST$insert(3) # left
     newBST$insert(8) # right
     newBST$remove(5)
-    stopifnot( newBST$repr(), list(3, NULL, list(8, NULL, NULL) ) )
+    stopifnot( identical(newBST$repr(), list(3, NULL, list(8, NULL, NULL) ) ) )
     print(" remove double parent passed (simple) ") 
 
 
@@ -101,7 +101,7 @@ removeTest <- function(){
     newBST$remove(5) # 4 will usurp
     leftr <- list(3, list(2, NULL, NULL), NULL)
     rightr <- list(8, list(7, NULL, NULL), NULL)
-    stopifnot( newBST$repr(), list(4, leftr, rightr) )
+    stopifnot( identical(newBST$repr(), list(4, leftr, rightr) ) )
     print(" remove double parent passed (complex) ")
 
 }
