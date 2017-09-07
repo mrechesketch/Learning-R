@@ -69,6 +69,8 @@ treeNode_ <- setRefClass("treeNode_",
 
             # TODO READ AND UNDERSTAND WHY THIS WORKS AND NOT INSERT AT NODE
                 add = function(value){
+
+                    size <<- size + 1
                     
                     # node is greater, add to the left
                     if( isGreater(value) ){
@@ -223,6 +225,8 @@ BST_ <- setRefClass("BST_",
         # VOID function 
         # inserts a piece of data into the tree
             insert = function(value){
+                # add to size of tree
+                size <<- size + 1
                 #insertAtNode(root, data)
                 if( is.null(root) ){
                     root <<- treeNode(value, NULL, NULL)
