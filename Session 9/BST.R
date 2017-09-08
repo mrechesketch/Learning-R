@@ -1,6 +1,3 @@
-max = function(node){
-    return( if( is.null(node$right) ) node else max(node$right) )
-}
 
 
 # we're going to make a BST (Binary Search Tree) yay!
@@ -64,7 +61,7 @@ treeNode_ <- setRefClass("treeNode_",
                     if( isLeftSingleMom() ){ #if the node has children only to the left
                         return(1 + left$height())
                     }
-                    return(1 + max(left$height(), right$height())) #if the node has children on both sides
+                    return(1 + max( c(left$height(), right$height()) ) ) #if the node has children on both sides
                 },
 
             # TODO READ AND UNDERSTAND WHY THIS WORKS AND NOT INSERT AT NODE
@@ -92,64 +89,64 @@ treeNode_ <- setRefClass("treeNode_",
                             right$add(value)
                         }
                     }
-                },
-
-                delete = function(value){
-                # in the case of going right...
-                if( isLess(value) ){
-                    if(right$isSame(value)){
-                    # if leaf
-                        if( right$isLeaf() ){
-                            right <<- NULL
-                        }
-                    # if right single parent
-                        else if( right$isRightSingleDad() ){
-                            right <<- right$right
-                        }
-                    # if left single parent
-                        else if( right$isLeftSingleMom() ){
-                            right <<- right$left
-                        }
-                        else{
-                    # otherwise assume double parent
-                        usurper <- max(right$left)
-                        newLeft <- right$left$delete(usurper$data)
-                        right <<- treeNode(usurper$data, newLeft, right$right)
-                        }
-                    }
-                    else{
-                        right$delete(value)
-                    }
-
-                }
-                # in the case of going left
-                if( isGreater(value) ){
-                    if(left$isSame(value)){
-                    # if leaf
-                        if( left$isLeaf() ){
-                            left <<- NULL
-                        }
-                    # if right single parent
-                        else if( left$isRightSingleDad() ){
-                            left <<- left$right
-                        }
-                    # if left single parent
-                        else if( left$isLeftSingleMom() ){
-                            left <<- left$left
-                        }
-                        else{
-                    # otherwise assume double parent
-                        usurper <- max(left$left)
-                        newLeft <- left$left$delete(usurper$data)
-                        left <<- treeNode(usurper$data, newLeft, left$right)
-                        }
-                    }
-                    else{
-                        left$delete(value)
-                    }
                 }
 
-            }
+            #     delete = function(value){
+            #     # in the case of going right...
+            #     if( isLess(value) ){
+            #         if(right$isSame(value)){
+            #         # if leaf
+            #             if( right$isLeaf() ){
+            #                 right <<- NULL
+            #             }
+            #         # if right single parent
+            #             else if( right$isRightSingleDad() ){
+            #                 right <<- right$right
+            #             }
+            #         # if left single parent
+            #             else if( right$isLeftSingleMom() ){
+            #                 right <<- right$left
+            #             }
+            #             else{
+            #         # otherwise assume double parent
+            #             usurper <- max(right$left)
+            #             newLeft <- right$left$delete(usurper$data)
+            #             right <<- treeNode(usurper$data, newLeft, right$right)
+            #             }
+            #         }
+            #         else{
+            #             right$delete(value)
+            #         }
+
+            #     }
+            #     # in the case of going left
+            #     if( isGreater(value) ){
+            #         if(left$isSame(value)){
+            #         # if leaf
+            #             if( left$isLeaf() ){
+            #                 left <<- NULL
+            #             }
+            #         # if right single parent
+            #             else if( left$isRightSingleDad() ){
+            #                 left <<- left$right
+            #             }
+            #         # if left single parent
+            #             else if( left$isLeftSingleMom() ){
+            #                 left <<- left$left
+            #             }
+            #             else{
+            #         # otherwise assume double parent
+            #             usurper <- max(left$left)
+            #             newLeft <- left$left$delete(usurper$data)
+            #             left <<- treeNode(usurper$data, newLeft, left$right)
+            #             }
+            #         }
+            #         else{
+            #             left$delete(value)
+            #         }
+            #     }
+
+            # }
             )
 
             
@@ -205,12 +202,6 @@ BST_ <- setRefClass("BST_",
                 }
             },
 
-        # # returns right-most node, helpful for delete!
-        # # returns TREENODE
-        #     max = function(node){
-        #         return( if( is.null(node$right) ) node else max(node$right) )
-        #     },
-
         # sees if a piece of data exists
         # returns BOOLEAN
             exists = function(data){
@@ -236,39 +227,39 @@ BST_ <- setRefClass("BST_",
                 }
             },
 
-        # VOID function 
-        # removes a piece of data from tree
-            remove = function(value){
-                print("remove started")
-                if( root$isSame(value) ){
-                    print("root is same")
-                # if leaf
-                    if( root$isLeaf() ){
-                        print("root was leaf")
-                        root <<- NULL
-                    }
-                # if right single parent
-                    else if( root$isRightSingleDad() ){
-                        print("root was sright")
-                        root <<- root$right
-                    }
-                # if left single parent
-                    else if( root$isLeftSingleMom() ){
-                        print("root was sleft")
-                        root <<- root$left
-                    }
-                    else{
-                        print("root was dp")
-                    # otherwise assume double parent
-                        usurper <- max(root$left)
-                        newLeft <- root$left$delete(usurper$data)
-                        root <<- treeNode(usurper$data, newLeft, root$right)
-                    }
-                }
-                else{
-                    root$delete(value)
-                }
-            },
+        # # VOID function 
+        # # removes a piece of data from tree
+        #     remove = function(value){
+        #         print("remove started")
+        #         if( root$isSame(value) ){
+        #             print("root is same")
+        #         # if leaf
+        #             if( root$isLeaf() ){
+        #                 print("root was leaf")
+        #                 root <<- NULL
+        #             }
+        #         # if right single parent
+        #             else if( root$isRightSingleDad() ){
+        #                 print("root was sright")
+        #                 root <<- root$right
+        #             }
+        #         # if left single parent
+        #             else if( root$isLeftSingleMom() ){
+        #                 print("root was sleft")
+        #                 root <<- root$left
+        #             }
+        #             else{
+        #                 print("root was dp")
+        #             # otherwise assume double parent
+        #                 usurper <- max(root$left)
+        #                 newLeft <- root$left$delete(usurper$data)
+        #                 root <<- treeNode(usurper$data, newLeft, root$right)
+        #             }
+        #         }
+        #         else{
+        #             root$delete(value)
+        #         }
+        #     },
 
         # =================================== #
             ###### PRIVATE METHODS #######

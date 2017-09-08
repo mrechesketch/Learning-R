@@ -11,12 +11,18 @@ plus3 <- function(n){
 }
 
 operateEven <- function(vec, fun){
+    len <- length(vec)
+    for( i in 1:len){
+        if(i %%2 == 0){ 
+        vec[i] <- fun(vec[i])
+        }
+    }
     return(vec)
 }
 
 exercise_1 <- function(){
-    numVec <- c(91, 33, 58, 91, 33)
-    stringVec <- c("K", "CARDBOARD", "BANANA")
+    numVec <- c(3, 91, 92, 33, 11, 58, 3, 91, 2, 33, 46)
+    stringVec <- c("carrot", "K", "molly", "CARDBOARD", "axel", "BANANA")
     stopifnot( operateEven(testNumVec, plus3) == numVec )
     stopifnot( operateEven(testStringVec, toupper) == stringVec)
     print("exercise 1 complete")
@@ -30,11 +36,13 @@ greaterThan69 <- function(N){
     return( N>69 )
 }
 
-vec_1 <- Filter( greaterThan69, testNumVec)
-vec_2 <- Filter(greaterThan69, testNumVec) # do it again but with an anonymous function
+#Capital F for vectors, little f for data frames
+
+vec_1 <- Filter(greaterThan69, testNumVec)
+vec_2 <- Filter(function(x) x>69, testNumVec) # do it again but with an anonymous function
 
 
-vec_3 <- c() # filter testStringVec so that all elements must contain the character "c" 
+vec_3 <- Filter(function(x) grepl("c", x), testStringVec) # filter testStringVec so that all elements must contain the character "c" 
 # HINT, use grepl(needle, haystack)
 
 exercise_2 <- function(){
@@ -44,7 +52,3 @@ exercise_2 <- function(){
     stopifnot( vec_3 == has_c )
     print("exercise 2 complete") 
 }
-
-
-
-

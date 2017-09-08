@@ -84,16 +84,17 @@ startDate <- as.Date("2017-01-01")
 
 # http://www.r-tutor.com/r-introduction/data-frame
 ids <- sapply(purchases, function(x) x$purchaser) # Done for you!
-amounts <- c(purchases, function(x) x$amount) # TODO
-times <- c(purchases, function(x), "Days from January 1, 2017") # TODO
+amounts <- sapply(purchases, function(x) x$amount) # TODO
+times <- sapply(purchases, function(x) as.Date(x$timestamp) - startDate) # TODO
+timestr <- sapply(purchases, function(x) x$timestamp)
 
-df <- data.frame(ids, amounts, times)
+df <- data.frame(ids, amounts, times, timestr)
 
 
 # scatter plot creation http://ggplot2.tidyverse.org/reference/geom_point.html
 scatterplot_1 <- function(){
     p <- ggplot(df, aes(times, amounts) )
-    p + geom_point()
+    p <- p + geom_point()
     return(p) # not that important but if we want to multiplot.. 
     #there's no label funciton here
 }
@@ -113,7 +114,7 @@ scatterplot_3 <- function(){
     p <- ggplot(df, aes(times, amounts, shape = ids) ) + geom_point() # fux with shapes
 
     p + scale_shape(solid = FALSE)
-    p + labs(shape = "Purchaser ID", #mistake is here, should be a <-
+    p <- p + labs(shape = "Purchaser ID", #mistake is here, should be a <-
     x = "Days from January 1, 2017", 
     y = "Amount (U.S. Dollars)" ) 
     return(p)
@@ -122,26 +123,62 @@ scatterplot_3 <- function(){
 scatterplot_4 <- function(){
     p <- ggplot(df, aes(times, amounts, shape = ids) ) + geom_point()
     p + scale_shape(solid = FALSE)
-    p <- p + labs(colour = "Amount (U.S. Dollars)", 
+    p <- p + labs(colour = "Amount (U.S. Dollars)",
+        x = "Days from January 1, 2017", 
+        y = "Amount (U.S. Dollars)" ) +  
         geom_point(aes(colour = factor(ids)), size = 4) +
-        geom_point(colour = "grey90", size  =<5, >=10)+
-        geom_point(colour = "black", size >10 ) +
-        geom_point(colour = "pink", size <5) 
-    x = "Days from January 1, 2017", 
-    y = "Amount (U.S. Dollars)" )
+        geom_point(colour = "grey90", size = 5)+
+        geom_point(colour = "black", size = 10 ) +
+        geom_point(colour = "pink", size = 5)
     return(p) 
     # combine the first two scatter plots into a really cool one!
     # see the scatter plot creation link above
 }
 
-scatterplot_4 <- function(){
-    p <- ggplot(df, aes(times, amounts, colours = ids) ) + geom_point()
-    p + scale_shape(
-        >=50 return (TRUE)
-        <50 return (FALSE))
-    p <- p + labs(+ geom_point(alpha = 1/10) 
-    p + labs(caption = "(based on data from Alex)")
-    x = "Days from January 1, 2017", 
-    y = "Amount (U.S. Dollars)" )
-    return(p) 
-}    
+# scatterplot_5 <- function(){
+#     p <- ggplot(df, aes(times, amounts, colours = ids) ) + geom_point()
+#     p + scale_shape(
+#         =50 return (TRUE)
+#         <50 return (FALSE))
+#     p <- p + labs(+ geom_point(alpha = 1/10) 
+#     p <- p + labs(caption = "(based on data from Alex)")
+#     x = "Days from January 1, 2017", 
+#     y = "Amount (U.S. Dollars)" )
+#     return(p) 
+# }    
+
+barPlotski <- function(){
+    p <- ggplot(df, aes(ids)) + geom_bar()
+    p <- p + labs(
+        x = "ID Number", 
+        y = "Count" ) 
+    return(p)
+}
+
+barSplotski <- function(){
+    p <- ggplot(df, aes(ids)) + geom_bar()
+    p <- p + labs(
+        x = "ID Number", 
+        y = "Total Money Spent" ) 
+    p <- p + geom_bar(aes(weight = amounts))
+    return(p)
+}
+
+ones <- Filter(function(x) x$purchaser == '1', purchases)
+onesam <- sapply(ones, function(x)  x$amount)
+
+barKlotski <- function(){
+    barSplotski() + geom_bar(aes(fill = times))
+}
+
+
+
+barNew <- function(){
+    p <- ggplot(df, aes(ids)) + geom_bar()
+    p <- p + labs(
+        x = "ID Number", 
+        y = "Total Money Spent" ) 
+    p <- p + geom_bar(aes(weight = amounts))
+    p <- p + geom_bar(aes(fill = timestr))
+    return(p)
+}

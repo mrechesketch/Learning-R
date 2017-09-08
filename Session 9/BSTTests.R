@@ -20,7 +20,7 @@ nodeTests <- function(){
     rootr <- list(5, leftr, rightr)
     # check size, height and repr
     stopifnot( root$size == 3 ) # size
-    stopifnot( root$height == 1 ) # height
+    stopifnot( root$height() == 1 ) # height
     stopifnot( identical(root$repr(), rootr) ) # repr
     print("node tests passed")
 }
