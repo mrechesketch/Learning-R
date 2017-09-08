@@ -338,3 +338,4 @@ BST <- function(){
 deleteMemberFunction = function(node, value){
 
 }
+

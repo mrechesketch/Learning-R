@@ -50,3 +50,6 @@ valueAsXHeightAsY <- function(){
     y = "Height of BST" ) 
     return(p)
 }
+
+#valueAsXSizeAsY <- 
+
