@@ -67,6 +67,7 @@ removeTest <- function(){
     stopifnot( identical(newBST$repr(), NULL) )
     print(" remove leaf passed ")
 
+    newBST <- BST()
     # single left case
     newBST$insert(5) # root
     newBST$insert(3) # left
@@ -74,7 +75,7 @@ removeTest <- function(){
     stopifnot( identical(newBST$repr(), list(3, NULL, NULL) ) )
     print(" remove single left parent passed ")
 
-
+    newBST <- BST()
     # single right case
     newBST$insert(5) # root
     newBST$insert(8) # right
@@ -82,6 +83,7 @@ removeTest <- function(){
     stopifnot( identical(newBST$repr(), list(8, NULL, NULL) ) )
     print(" remove single right parent passed ")
 
+    newBST <- BST()
     # double parent simple
     newBST$insert(5) # root
     newBST$insert(3) # left
@@ -90,7 +92,7 @@ removeTest <- function(){
     stopifnot( identical(newBST$repr(), list(3, NULL, list(8, NULL, NULL) ) ) )
     print(" remove double parent passed (simple) ") 
 
-
+    newBST <- BST()
     # double parent harder
     newBST$insert(5) # root
     newBST$insert(3) # left
