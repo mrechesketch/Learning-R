@@ -68,7 +68,7 @@ problem_1 <- function(){
 
 dateStrToMonthCode <- function(dateStr){
     dateSection <- strsplit(dateStr,"-")
-    monthCode <- as.integer(dateStr[[5]][6]
+    monthCode <- as.integer(dateStr[[5]][6]]
     return(monthCode)
 }
 
