@@ -11,51 +11,43 @@ monthCodeToName <- funtion(code){
     if(code == "01"){
         return("January")
     }
-    return("Not January")
-    if(code == "02"){
+    else if(code == "02"){
         return("February")
     }
-    return("Not February")
-    if(code == "03"){
+    else if(code == "03"){
         return("March")
     }
-    return("Not March")
-    if(code == "04"){
+    else if(code == "04"){
         return("April")
     }
-    return("Not April")
-    if(code == "05"){
+    else if(code == "05"){
         return("May")
     }
-    return("Not May")
-    if(code == "06"){
+    else if(code == "06"){
         return("June")
     }
-    return("Not June")
-    if(code == "07"){
+    else if(code == "07"){
         return("July")
     }
-    return("Not July")
-    if(code == "08"){
+    else if(code == "08"){
         return("August")
     }
-    return("Not Agust")
-    if(code == "09"){
+    else if(code == "09"){
         return("September")
     }
-    return("Not September")
-    if(code == "10"){
+    else if(code == "10"){
         return("October")
     }
-    return("Not October")
-    if(code == "11"){
+    else if(code == "11"){
         return("November")
     }
-    return("Not November")
-    if(code == "12"){
+    else if(code == "12"){
         return("December")
     }
-    return("Not December")
+    else if(code == "13"){
+        return("I l U m I n A t I Month")
+    }
+    return("Not A Month")
 }
 
 problem_1 <- function(){
