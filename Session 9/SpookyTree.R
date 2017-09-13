@@ -1,7 +1,8 @@
 source("BST.R")
+library("ggplot2")
 
 # spokeNode extends treeNode
-spokeyNode_ <- setRefClass("spokeyNode_",
+spookyNode_ <- setRefClass("spookyNode_",
                 
                 contains = "treeNode_",
 
@@ -12,8 +13,27 @@ spokeyNode_ <- setRefClass("spokeyNode_",
 
                 methods = list(
 
-                    spookChildren = function(){
-                        print("set!")
+                    spookChildren = function(){ 
+                        if (!is.null(right)){
+                            
+                            legUp <- height()-right$height()
+                            legSide <- data - right$data
+                            
+                            right$magnitude <<- (legUp**2 + legSide**2)**.5 
+                            right$phase <<- atan2(legUp,legSide)
+
+                            right$spookChildren()
+
+                        }
+                        if (!is.null(left)){
+                            legUp <- height()-left$height()
+                            legSide <- data - left$data
+
+                            left$magnitude <<- (legUp**2 + legSide**2)**.5 
+                            left$phase <<- atan2(legUp,legSide)
+
+                            left$spookChildren()
+                        }
                     }
                 )
                       
@@ -26,10 +46,49 @@ treeNode <- function(data, left, right){
     rightSize <- if( is.null(right) ) 0 else right$size
     parentSize <- 1 + leftSize + rightSize
 
-    newTreeNode <-spokeyNode_$new(
+    newTreeNode <-spookyNode_$new(
         data = data, left = left, 
         right = right, size = parentSize,
         phase = 0, magnitude = 0) 
     
     return(newTreeNode)
 }
+
+spookyTree_ <- setRefClass("spookyTree_",
+            
+            
+                contains = "BST_", 
+
+                methods = list(
+                    
+                    spook = function(){
+                        if ( !is.null(root) ) root$spookChildren()
+                    },
+
+                    insertRandom = function(N){
+                        randums <- runif(N, 0, 1)
+                        for(i in 1:N){
+                            insert(randums[i])
+                        }
+                    },
+
+                    createDataFrame = function(){
+                        return()
+                    }
+
+
+
+                
+                
+                
+                )
+            
+)
+
+spookyTree <- function(){
+    return( spookyTree_$new( root = NULL, size = 0) )
+} 
+
+s <- spookyTree()
+s$insertRandom(100)
+s$spook()

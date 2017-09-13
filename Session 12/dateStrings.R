@@ -7,7 +7,7 @@ testStr_3 <- "2017-06-16 18:46:40"
 # an obvious place to start would just be a function that takes in
 # a two character month code and returns the months name
 
-monthCodeToName <- funtion(code){
+monthCodeToName <- function(code){
     if(code == "01"){
         return("January")
     }
@@ -68,7 +68,7 @@ problem_1 <- function(){
 
 dateStrToMonthCode <- function(dateStr){
     dateSection <- strsplit(dateStr,"-")
-    monthCode <- as.integer(dateStr[[5]][6]]
+    monthCode <- dateSection[[1]][2]
     return(monthCode)
 }
 

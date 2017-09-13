@@ -305,7 +305,3 @@ BST <- function(){
     return( BST_$new( root = NULL, size = 0) )
 } 
 
-deleteMemberFunction = function(node, value){
-
-}
-

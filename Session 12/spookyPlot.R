@@ -1,4 +1,6 @@
 # we're working with spoke plots today! i hope your geometery & trig is up to date ;)
+library("ggplot2")
+
 
 rightTrianlge_1 <- function(A, B){
     # define side lengths
@@ -21,14 +23,16 @@ rightTrianlge_1 <- function(A, B){
 
 equilateralTriangle <- function(){
     # define the points
-    p1 <- (0, 0)
-    p2 <- (1, 0)
-    p3 <- (0.5, (3**0.5)/2)
+    p1 <- c(0, 0)
+    p2 <- c(1, 0)
+    p3 <- c(0.5, (3**0.5)/2)
     # now define the angle and magnitude
     # start at p1 and move clockwise
-    legA <- c()
-    legB <- c()
-    legC <- c()
-    return()
+    legA <- c(pi/3, 1)
+    legB <- c(-pi/3,1)
+    legC <- c(pi,1)
+    df <- data.frame( rbind( c(p1, legA), c(p3, legB), c(p2, legC) ) )
+    g <- ggplot(df, aes(X1, X2) ) + geom_point() + geom_spoke( aes( angle = X3, radius = X4) )
+    return(g)
 }
 

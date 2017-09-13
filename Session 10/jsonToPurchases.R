@@ -82,11 +82,61 @@ startDate <- as.Date("2017-01-01")
 # see http://www.statmethods.net/input/dates.html
 # see https://www.stat.berkeley.edu/~s133/dates.html
 
+dateStrToMonthCode <- function(dateStr){
+    dateSection <- strsplit(dateStr,"-")
+    monthCode <- dateSection[[1]][2]
+    return(monthCode)
+}
+
+monthCodeToName <- function(code){
+    if(code == "01"){
+        return("January")
+    }
+    else if(code == "02"){
+        return("February")
+    }
+    else if(code == "03"){
+        return("March")
+    }
+    else if(code == "04"){
+        return("April")
+    }
+    else if(code == "05"){
+        return("May")
+    }
+    else if(code == "06"){
+        return("June")
+    }
+    else if(code == "07"){
+        return("July")
+    }
+    else if(code == "08"){
+        return("August")
+    }
+    else if(code == "09"){
+        return("September")
+    }
+    else if(code == "10"){
+        return("October")
+    }
+    else if(code == "11"){
+        return("November")
+    }
+    else if(code == "12"){
+        return("December")
+    }
+    else if(code == "13"){
+        return("I l U m I n A t I Month")
+    }
+    return("Not A Month")
+}
+
 # http://www.r-tutor.com/r-introduction/data-frame
 ids <- sapply(purchases, function(x) x$purchaser) # Done for you!
 amounts <- sapply(purchases, function(x) x$amount) # TODO
 times <- sapply(purchases, function(x) as.Date(x$timestamp) - startDate) # TODO
-timestr <- sapply(purchases, function(x) x$timestamp)
+timestr <- sapply(purchases, function(x) monthCodeToName(dateStrToMonthCode(x$timestamp) ))
+
 
 df <- data.frame(ids, amounts, times, timestr)
 
@@ -182,3 +232,4 @@ barNew <- function(){
     p <- p + geom_bar(aes(fill = timestr))
     return(p)
 }
+
