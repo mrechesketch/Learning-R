@@ -2,10 +2,14 @@
 source("SpookyTree.R")
 library("ggplot2")
 
+# Create the spoke tree and add howMany and then spook the children 
 myTree <- spookyTree()
-myTree$insertRandom(250)
+howMany <- 500
+myTree$insertRandom(howMany)
 myTree$spook()
 
+
+# recursive traversal of the tree to get Values, Sizes, Heights, Phases & Magnitudes
 getValues <- function(node){
     if( is.null(node) ){
         return( c() )
@@ -51,20 +55,23 @@ getMagnitudes <- function(node){
     return( c(left, node$magnitude, right) ) 
 }
 
+# now declare the vectors from the functions
 height <- getHeights(myTree$root)
 size <-getSizes(myTree$root)
 value <- getValues(myTree$root)
 phase <- getPhases(myTree$root)
 magnitude <- getMagnitudes(myTree$root)
 
+# create data frame
 dataFrame <- data.frame(height, size, value, phase, magnitude) 
 
+# plotting function 
 valueAsXHeightAsY <- function(){
-    p <- ggplot(dataFrame, aes(value, height, size = size) ) + geom_point() 
+    p <- ggplot(dataFrame, aes(value, height, size = size, colour = height) ) + geom_point() 
     p <- p + labs(x = "Value of BST", y = "Height of BST")
     p <- p + geom_spoke( aes( angle = phase, radius = magnitude) ) 
     return(p)
 }
 
-#valueAsXSizeAsY <- 
+
 

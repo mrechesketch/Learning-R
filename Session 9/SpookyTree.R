@@ -1,4 +1,6 @@
 source("BST.R")
+source("../Session 7/Stack.R") 
+# new trick learned @ https://stackoverflow.com/questions/30997667/source-file-in-project-from-different-folder-in-r
 library("ggplot2")
 
 # spokeNode extends treeNode
@@ -14,7 +16,8 @@ spookyNode_ <- setRefClass("spookyNode_",
                 methods = list(
 
                     spookChildren = function(){ 
-                        if (!is.null(right)){
+
+                        if ( !is.null(right) ) {
                             
                             legUp <- height()-right$height()
                             legSide <- data - right$data
@@ -25,7 +28,7 @@ spookyNode_ <- setRefClass("spookyNode_",
                             right$spookChildren()
 
                         }
-                        if (!is.null(left)){
+                        if ( !is.null(left) ) {
                             legUp <- height()-left$height()
                             legSide <- data - left$data
 
@@ -72,15 +75,22 @@ spookyTree_ <- setRefClass("spookyTree_",
                         }
                     },
 
-                    createDataFrame = function(){
+            # returns an inorder data frame of value, size, height, phase, magnitude
+                    inOrderDataFrame = function(){
+
+                        values <- numeric(size)
+                        sizes <- numeric(size)
+                        heights <- numeric(size)
+                        phases <- numeric(size)
+                        magnitudes <- numeric(size)
+
+                    },
+
+
+                    plotNRandom = function(){
                         return()
                     }
 
-
-
-                
-                
-                
                 )
             
 )
@@ -89,6 +99,3 @@ spookyTree <- function(){
     return( spookyTree_$new( root = NULL, size = 0) )
 } 
 
-s <- spookyTree()
-s$insertRandom(100)
-s$spook()

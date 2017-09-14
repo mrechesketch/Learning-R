@@ -30,51 +30,17 @@
 # AND in the context of the closure checker: 
 # if what we pop is unexpected or out of qorder.. big trouble!
 
-
-# I want you to implement a *stack*. The tests for your stack are already written!
-stackNode <- setRefClass("MyNode",
-fields = list(data = "character", nxt = "ANY"))
-
 openers <- c("(", "{", "[", "<p>", "<h1>", "<title>")
 closers <- c(")", "}", "]", "</p>", "</h1>", "</title>")
 
-Stack_ <- setRefClass("Stack_",
-        fields = list(len = "numeric", head = "ANY"),
-        methods = list(
-            push = function(string){
-                node <- stackNode$new(data = string, nxt = NULL)
-                if(is.null(head)){
-                head <<- node
-                }
-                else{
-                node$nxt <- head
-                head <<- node
-                }   
-                len <<- len + 1
-            },
+# I want you to implement a *stack*. The tests for your stack are already written!
 
-            pop = function(){
-                node <- head
-                head <<- head$nxt
-                len <<- len - 1
-                node$nxt <- NULL
-                return(node)
-            },
-
-            isEmpty = function(){
-                if(len == 0)
-                return(TRUE)
-            }
-        ))
-
-Stack <- function(){
-    return(Stack_$new(len = 0, head = NULL))
-}
 
 # here's the plan of attack: we're going to loop over the string with a moving window
 # this moving window can change size according to the lengths of the openers and closers!
 # lets have a crack at some practice exercies before we try to implement it
 library("hashmap")
+source("Stack.R")
 
 Checker_ <- setRefClass("Checker",
         fields = list(openers = "vector", closers = "vector", 
