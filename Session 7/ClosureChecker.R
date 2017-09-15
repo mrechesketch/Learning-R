@@ -49,11 +49,49 @@ Checker_ <- setRefClass("Checker",
 
             checkString = function(string){
                 return(TRUE)
+            },
+
+            # create list of string vectors by length
+            ncharTable = function(){
+
+                # gather all patterns and sort them
+                allPats <- union(openers, closers)
+                patLengths <- nchar(allPats) # lengths
+                allPats <- allPats[order(patLengths)] # sort strings by length
+
+                # declare the table based on unique string lengths
+                uniques <- unique(patLengths)
+                howManyUnique <- length(uniques)
+                patTable <- vector("list", howManyUnique)
+
+                # fill in the table 
+                for( i in 1:howManyUnique){
+                    patTable[[i]] <- Filter(function(x) nchar(x) == uniques[i], allPats)
+                
+                }
+
+                return(patTable)
             }
+
+            # use any(haystack == needle) not is.element(needle, haystack)
+
+            
+
+
         ))
 
 Checker <- function(os, cs){
     newChecker <- Checker_$new(openers = os, closers = cs, 
-    closureDict = hashmap(cs, os), ourStack = Stack())
+    closureDict = hashmap(cs, os), ourStack = Stack() )
     return(newChecker)
 }
+
+
+smallo <- c("(", "<p>")
+smallc <- c(")", "<p/>")
+table <- list( c("(", ")"), c("<p>"), c("<p/>") )
+sampleString <- "<p> welcome to (my house) <p/> stranger()"
+
+uniqueLengths <- nchar(union(smallo, smallc))
+howManyUnique <- length(uniqueLengths)
+starts <- rep(1:nchar(sampleString), rep(howManyUnique, howManyUnique) )
