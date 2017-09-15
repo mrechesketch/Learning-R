@@ -92,6 +92,17 @@ smallc <- c(")", "<p/>")
 table <- list( c("(", ")"), c("<p>"), c("<p/>") )
 sampleString <- "<p> welcome to (my house) <p/> stranger()"
 
-uniqueLengths <- nchar(union(smallo, smallc))
+uniqueLengths <- unique(nchar(union(smallo, smallc)))
 howManyUnique <- length(uniqueLengths)
-starts <- rep(1:nchar(sampleString), rep(howManyUnique, howManyUnique) )
+
+
+starts <- c()
+ends <- c()
+for(start in 1:nchar(sampleString)){
+    for(lenIndex in 1:howManyUnique){
+        patternLength <- uniqueLengths[lenIndex]
+        end <- start + patternLength - 1 # minus 1 because inclusion
+        starts <- c(starts, start)
+        ends <- c(ends, end)
+    }
+}
