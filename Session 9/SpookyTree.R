@@ -83,12 +83,45 @@ spookyTree_ <- setRefClass("spookyTree_",
                         heights <- numeric(size)
                         phases <- numeric(size)
                         magnitudes <- numeric(size)
+                        
+                        node <- root 
+                        stack <- Stack()
+                        counter <- 1 #counter sets number of rows in matrix 
+                        while (!stack$isEmpty() || !is.null(node)){
+                            if ( !is.null(node) ){
+                                stack$push(node)
+                                node <- node$left
+                            } else{
+                                node <- stack$pop()
+                                # time to visit
+                                values[counter] <- node$data
+                                sizes[counter] <- node$size
+                                heights[counter] <- node$height()
+                                phases[counter] <- node$phase
+                                magnitudes[counter] <- node$magnitude
+                                counter <- counter + 1 # increment
+                                # final step
+                                node <- node$right 
+                            }
+                        }
+
+                        return( data.frame(heights, sizes, values, phases, magnitudes) )
 
                     },
 
 
-                    plotNRandom = function(){
-                        return()
+                    plotNRandom = function(N){
+                        # step 1: insert n random
+                        insertRandom(N)
+                        # step 2: spook
+                        spook()
+                        # step 3: get data frame
+                        dataFrame <- inOrderDataFrame()
+                        # step 4: plot!
+                        p <- ggplot(dataFrame, aes(values, heights, size = sizes, colour = heights) ) + geom_point() 
+                        p <- p + labs(x = "Value of BST", y = "Height of BST")
+                        p <- p + geom_spoke( aes( angle = phases, radius = magnitudes) ) 
+                        return(p)
                     }
 
                 )

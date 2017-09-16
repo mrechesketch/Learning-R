@@ -8,7 +8,7 @@ howMany <- 500
 myTree$insertRandom(howMany)
 myTree$spook()
 
-
+node <- 33
 # recursive traversal of the tree to get Values, Sizes, Heights, Phases & Magnitudes
 getValues <- function(node){
     if( is.null(node) ){
