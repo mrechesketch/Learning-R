@@ -19,12 +19,22 @@ diagonals <- diag(testMat)
 # the trace is the sum of the diagonal elements..
 
 # > PUT IT HERE < 
-
+trace <- function(x) sum(diag(x))
 
 
 # now re-write diagonal
 # use a loop or 
 
+diagLoop <- function(anyMatrix){
+    numerics <- numeric(dim(anyMatrix)[1])
+    for (i in seq_along(numerics)){
+        numerics[i] <- anyMatrix[ i, i]
+    }
+    return(numerics)
+}
+
+
+diagApply <- function(hisMatrix) vapply((c(1:dim(hisMatrix)[1])), function(x) hisMatrix[ x, x], numeric(1))
 
 
 #  and now the Huckel Method

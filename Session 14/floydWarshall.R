@@ -7,6 +7,8 @@ edges <- list(
     list( src = '4', dst = '2', w = -1 )
 )
 
+
+
 pathExistsTest_0 <- function(){
     # empty list always false
     stopifnot( !pathExists('1', '2', list() ) )
@@ -18,7 +20,7 @@ pathExistsTest_0 <- function(){
 
 pathExistsTest_1 <- function(){
     # tests for sameness
-    stopifnot( pathExists('1', '1', edges )
+    stopifnot( pathExists('1', '1', edges) )
     print("Same test passed")
 }
 
@@ -52,13 +54,43 @@ pathExistsTests <- function(){
 
 pathExists <- function(source, destination, edges){
     # edge list is empty, no more
-        # TODO check one thing, return  
+    if (length(edges) == 0){
+        return(FALSE)
+    }  
     # pop the first off
     current <- edges[[1]]
     edges <- edges[-1]
     # if the current matches or source is destination, path exists
-        # TODO check two things, return
+    match <- (current$src == source) && (current$dst == destination)
+    same <- source == destination
+    if (match || same ) return(TRUE)
     # otherwise keep looking
-        # TODO three recursive calls (assign TWO variables)
-        # return their ||
+    pathNoEdge <- pathExists(source, destination, edges)
+    pathWithEdge <- pathExists(source, current$src, edges) && pathExists(current$dst, destination, edges)
+    return( pathWithEdge || pathNoEdge)
 }
+
+shortestPath <- function(source, destination, edges){
+    if (length(edges) == 0){
+        return(99)
+    }
+
+    same <- source == destination
+    if (same ) return(0)
+
+    current <- edges[[1]]
+    edges <- edges[-1]
+
+    match <- (current$src == source) && (current$dst == destination)
+    pathNoEdge <- pathExists(source, destination, edges)
+    pathWithEdge <- current$w + pathExists(source, current$src, edges) + pathExists(current$dst, destination, edges)
+
+    minPath <- min(pathWithEdge, pathNoEdge)
+
+    if (match){
+        return(min(current$w, minPath))
+    }
+    
+    return(minPath)
+}
+
