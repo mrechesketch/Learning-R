@@ -30,8 +30,8 @@ pathExistsTest_2 <- function(){
 }
 
 pathExistsTest_3 <- function(){
-    stopifnot('1', '2', edges)
-    stopifnot('4', '3', edges)
+    stopifnot( pathExists('1', '2', edges) )
+    stopifnot( pathExists('4', '3', edges) )
     print("Can traverse the graph!")
 }
 
