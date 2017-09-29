@@ -71,26 +71,22 @@ pathExists <- function(source, destination, edges){
 }
 
 shortestPath <- function(source, destination, edges){
-    if (length(edges) == 0){
-        return(99)
-    }
+    
+    if ( length(edges) == 0 ) return(Inf)
 
-    same <- source == destination
-    if (same ) return(0)
+    if ( source == destination ) return(0)
 
+    # pop the first element off
     current <- edges[[1]]
     edges <- edges[-1]
 
-    match <- (current$src == source) && (current$dst == destination)
-    pathNoEdge <- pathExists(source, destination, edges)
-    pathWithEdge <- current$w + pathExists(source, current$src, edges) + pathExists(current$dst, destination, edges)
+    # assume the current edge is not going to be used
+    pathNoEdge <- shortestPath(source, destination, edges)
 
-    minPath <- min(pathWithEdge, pathNoEdge)
+    # assume the current edge will get used    
+    useEdge <- min(current$w, shortestPath(current$src, current$dst, edges) ) # there might be a better path farther down the line
+    pathWithEdge <- shortestPath(source, current$src, edges) + useEdge + shortestPath(current$dst, destination, edges) 
 
-    if (match){
-        return(min(current$w, minPath))
-    }
-    
-    return(minPath)
+    return( min(pathWithEdge, pathNoEdge) )
 }
 
