@@ -15,7 +15,21 @@
 
 #   hence: c(2, 1, 1, 0) would go to c(1, 0.5, 0.5, 0) then 1 + 0.5 + 0.5 + 0 = 2
 
-newNorm <- function(vec) # TODO WRITE THIS FUNCTION
+needsWork <- matrix(unlist(needsWork), ncol = length(needsWork), byrow = TRUE)
+
+# this time orbitals (AKA wavefunctions) are held as rows
+testWaveFunction <- needsWork[1,] # subset the first row
+
+sumOfSquares <- sum(vapply(testWaveFunction, function(x) x**2, numeric(1)))
+
+stopifnot( sumOfSquares != 1 ) # what is sumOfSquares's value?
+
+# notice if we divide the vector by the sqrt of the sumsq it satisfies the normalization condition
+
+one <- sum( (testWaveFunction / (sumOfSquares**0.5) )**2 )
+stopifnot( isOne(one) )
+
+newNorm <- function(vec) sum(vapply(testWaveFunction, function(x) x**2, numeric(1)))
 
 problem_1 <- function(){
     vec1 <- c(2, 1, 1, 0)
