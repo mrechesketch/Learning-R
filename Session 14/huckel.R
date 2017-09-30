@@ -98,7 +98,8 @@ stopifnot( isOne(one) )
 # TODO write a function norm2 that acts on a vector and returns the square root ( sum of the squares )
 # HINT: see line 81.. it's similar but not totally the same
 
-norm2 <- function(vec) # TODO 
+norm2 <- function(vec) sum(vapply(matrix(unlist(vec), ncol = length(vec), byrow = TRUE))**2)
+# TODO 
 
 
 problem_1 <- function(){
@@ -113,7 +114,9 @@ problem_1 <- function(){
 # HINT: see line 50 where orbitals gets declared
 # Move over columns, NOT rows
 
-normalizeMat <- function(mat) # TODO HERE
+normalizeMat <- function(mat) sum(vapply(matrix(unlist(mat), nrow = length(mat), byrow = TRUE))**2)
+
+# TODO HERE
 
 
 problem_2 <- function(){
