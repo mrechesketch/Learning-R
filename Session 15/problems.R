@@ -15,21 +15,8 @@
 
 #   hence: c(2, 1, 1, 0) would go to c(1, 0.5, 0.5, 0) then 1 + 0.5 + 0.5 + 0 = 2
 
-needsWork <- matrix(unlist(needsWork), ncol = length(needsWork), byrow = TRUE)
 
-# this time orbitals (AKA wavefunctions) are held as rows
-testWaveFunction <- needsWork[1,] # subset the first row
-
-sumOfSquares <- sum(vapply(testWaveFunction, function(x) x**2, numeric(1)))
-
-stopifnot( sumOfSquares != 1 ) # what is sumOfSquares's value?
-
-# notice if we divide the vector by the sqrt of the sumsq it satisfies the normalization condition
-
-one <- sum( (testWaveFunction / (sumOfSquares**0.5) )**2 )
-stopifnot( isOne(one) )
-
-newNorm <- function(vec) sum(vapply(testWaveFunction, function(x) x**2, numeric(1)))
+newNorm <- function(vec) sum(vapply(vec, function(x) x<1, numeric(1)))
 
 problem_1 <- function(){
     vec1 <- c(2, 1, 1, 0)
@@ -39,7 +26,9 @@ problem_1 <- function(){
     print("problem 1 complete")
 }
 
-p_norm <- function(p, vec) # TODO, write the p-norm function see norm wiki reading for help
+p_norm <- function(p, vec) sum(vapply(vec, function(p), (x[i]^p)(1/p), numeric(1)))
+
+# TODO, write the p-norm function see norm wiki reading for help
 
 
 problem_2 <- function(){
@@ -68,7 +57,12 @@ stopifnot( cube(2) == 8 )
 # TODO make a function factory for pnorm!
 
 pnorm <- function(p){
+    function(b){
+        (b**p)(1/p)
+    }
 }
+
+
 
 problem_3 <- function(){
     norm1 <- pnorm(1)
