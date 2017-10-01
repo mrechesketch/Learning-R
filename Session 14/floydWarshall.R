@@ -12,7 +12,7 @@ edges <- list(
 pathExistsTest_0 <- function(){
     # empty list always false
     stopifnot( !pathExists('1', '2', list() ) )
-    stopifnot( !pathExists('1', '1', list() ) )
+    stopifnot( pathExists('1', '1', list() ) )
     # no matter the inputs
     print("Empty Test Passed")
 }
@@ -72,9 +72,10 @@ pathExists <- function(source, destination, edges){
 
 shortestPath <- function(source, destination, edges){
     
+    if ( source == destination ) return(0)
+
     if ( length(edges) == 0 ) return(Inf)
 
-    if ( source == destination ) return(0)
 
     # pop the first element off
     current <- edges[[1]]

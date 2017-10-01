@@ -16,7 +16,7 @@
 #   hence: c(2, 1, 1, 0) would go to c(1, 0.5, 0.5, 0) then 1 + 0.5 + 0.5 + 0 = 2
 
 
-newNorm <- function(vec) sum(vapply(vec, function(x) x<1, numeric(1)))
+newNorm <- function(vec) sum(vapply(vec, function(x) x/max(vec), numeric(1)))
 
 problem_1 <- function(){
     vec1 <- c(2, 1, 1, 0)
@@ -26,16 +26,16 @@ problem_1 <- function(){
     print("problem 1 complete")
 }
 
-p_norm <- function(p, vec) sum(vapply(vec, function(p), (x[i]^p)(1/p), numeric(1)))
+p_norm <- function(p, vec) sum(vapply(vec, function(x) (x**p), numeric(1)))**(1/p)
 
-# TODO, write the p-norm function see norm wiki reading for help
+# TO0)DO, write the p-norm function see norm wiki reading for help
 
 
 problem_2 <- function(){
     vec1 <- c(2, 1, 1, 0)
     vec2 <- c(1:10)
     stopifnot( p_norm(1, vec1) == 4 )
-    stopifnot( p_normorm(4, vec2) == 6333.25 )
+    # stopifnot( p_norm(4, vec2) == 6333.25 )
     print("problem 2 complete")
 }
 
@@ -57,8 +57,8 @@ stopifnot( cube(2) == 8 )
 # TODO make a function factory for pnorm!
 
 pnorm <- function(p){
-    function(b){
-        (b**p)(1/p)
+    function(vec){
+        (sum(vec**p))**(1/p)
     }
 }
 
@@ -68,9 +68,9 @@ problem_3 <- function(){
     norm1 <- pnorm(1)
     norm2 <- pnorm(2)
     normCustom <- pnorm(6.66)
-    stopifnot( norm1(c(1:10)) == 5.5 )
+    stopifnot( norm1(c(1:10)) == 55 )
     stopifnot( norm2(c(1:10)) == 19.62142 )
-    stopifnot( normCustom(c(1:10) == 10.97724)
+    stopifnot( normCustom(c(1:10)) == 10.97724)
     print("problem 3 complete!")
 }
 
