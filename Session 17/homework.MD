@@ -1,0 +1,2 @@
+
+1. problem 1: rewrite the max function using loops, recurion and reduce. you can't use max! http://rextester.com/ACMA53137. I included lots of handy tests so you can see what's passing and what's not. if you get stuck or require assistance please ask for help. See you Saturday early afternoon.  
