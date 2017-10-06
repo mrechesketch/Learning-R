@@ -19,13 +19,14 @@ monthDayYear <- function(date, index){
     mDY[index]
 }
 
-getMonth <- function(code){
-    months <- c("Jan", "Feb", "March",
+monthNames <- c("Jan", "Feb", "March",
     "April", "May", "June", "July",
     "August", "Sept", "Oct", "Nov", "Dec" )
+
+getMonth <- function(code){
     date <- getDateOrTime(code, 1)
     month <- as.numeric( monthDayYear(date, 1) )
-    months[month]
+    monthNames[month]
 } 
 
 getYear <- function(code){
@@ -37,8 +38,9 @@ getYear <- function(code){
 
 # Process the data
 dateString <- as.character( data$Date )
-data$Years <- getYear(dateString)
-data$Months <- getMonth(dateString)
+data$Years <- sapply(dateString, getYear)
+data$Months <- sapply(dateString, getMonth)
+#date$Months <- factor(date$Months, levels = monthNames)
 data$Date <- as.Date( data$Date, "%m/%d/%Y" ) # turn strings into dates
 # help http://www.statmethods.net/input/dates.html
 data$Average.Bill <- as.numeric( sub('\\$', '', data$Average.Bill) ) # turn monies into numerics
