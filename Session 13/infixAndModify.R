@@ -60,9 +60,7 @@ plusPlus(startValue, 3) # does anything happen to start value?
 stopifnot(startValue == 7) # hint.. nothing happens
 
 # this is a replacement
-`incr<-` <- function(value, increment) {
-  value + increment # return statement has been omitted
-}
+`incr<-` <- function(value, increment) value + increment # return statement has been omitted
 
 otherValue <- startValue
 incr(startValue) <- 3 # this is how a replacment function gets used.. kinda weird
@@ -70,7 +68,7 @@ stopifnot(startValue == 10)
 stopifnot(otherValue == 7) # hmm that's interesting
 
 # this is an infix mixed up with a <<- assignment
-`%+=%` <- function(value, incr) value <<- value + incr # no return statement, only assignment
+`%+=%` <- function(value, increment) incr(value) <- increment # no return statement, only assignment
 
 startValue %+=% 3
 stopifnot(startValue == 10) # nothing happened here either :( 
