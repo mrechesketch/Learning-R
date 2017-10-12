@@ -1,3 +1,5 @@
+#R version 3.3.2 
+  
 
 
 # part I: write your own max function
@@ -6,11 +8,18 @@
 # with recursion:
 
 maxRec <- function(NumVec){
-    # base case: if there is one element, it is the max
-    # if the first is greater than the second, swap it
-    # recurse on all but the first element 
-    return( NumVec[1] ) # place holder
+    if (length(NumVec) == 1){
+        return (NumVec[1])
+        }
+    
+    if (NumVec[1] > NumVec[2]){
+        NumVec[2] <- NumVec[1]
+        }
+    return( maxRec(NumVec[-1]))
 }
+    
+#numVec[1] <- maxRec(numVec[-1])
+
 
 # now do it with a for loop (example done)
 
@@ -28,15 +37,21 @@ maxFor <- function(NumVec){
 # that means A) you have made it through th entire vector and B) NumVec[i] will return an NA
 
 maxWhile <- function(NumVec){
-    # TODO
-    return( NumVec[1] ) # place holder
+    currentMax <- NumVec[1] # currentMax is the first element 
+    i <- 1
+    while(!is.na(NumVec[i])){ 
+        if ( currentMax < NumVec[i] ) currentMax <- NumVec[i] # if you see a better one, overwrite
+        i <- i+1
+    }          
+    return( currentMax ) # place holder
 }
 
 
 # and lastly with Reduce (can be done in one line with the ternary operator / anonymous function) NO MAX!
 # refresher on ternary operator https://stackoverflow.com/questions/8790143/does-the-ternary-operator-exist-in-r
 
-maxRed <- function(NumVec) return( NumVec[1] ) # place holder 
+maxRed <- function(NumVec) Reduce(function(x,y) if (x>y) x else y, NumVec) 
+
 
 passFail <- function(x, y) if (x == y) "PASS" else "FAIL"
 customVec <- c(3, 55, 4, 77, 32)

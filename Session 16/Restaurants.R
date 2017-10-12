@@ -1,5 +1,5 @@
 library("ggplot2")
-library("ggmap")
+#library("ggmap")
 library("dplyr")
 
 
@@ -22,6 +22,7 @@ geogPlot <- ggplot( rdf, aes ( Zip.Code, Score )) +geom_boxplot()
 gradeDate <- subset(rdf, Inspection.Date>as.Date("01.01.2017", "%m.%d.%Y"))
 #filtering data so we only get scores from 2017
 
+rdf$Zip.Code <- as.numeric( rdf$Zip.Code) 
 newGeoPlot <- ggplot( gradeDate, aes ( Zip.Code, Score )) +geom_boxplot()
 #scores and averages by zip, only from 2017
 
@@ -36,6 +37,6 @@ latLonStr <- strsplit(matchStrings, ", ") # split it on the coordinates
 rdf$lats <- sapply(latLonStr, function(x) as.numeric(sub("\\(", "", x[1])) ) # take out parentheses 
 rdf$lons <- sapply(latLonStr, function(x) as.numeric(sub("\\)", "", x[2])) ) # and convert to numeric
 
-austin <- qmplot(lons, lats, data = rdf, maptype = "toner-lite", color = I("red"))
+#austin <- qmplot(lons, lats, data = rdf, maptype = "toner-lite", color = I("red"))
 
 

@@ -14,13 +14,20 @@
 # input: "The lines are printed in reverse order" 
 # output: "In the are lines order printed reverse."
 
-decapitalize <- function(word) word # https://stat.ethz.ch/R-manual/R-devel/library/base/html/chartr.html
+decapitalize <- function(word) tolower(word) # https://stat.ethz.ch/R-manual/R-devel/library/base/html/chartr.html
 
-removePeriod <- function(word) word # sub & gsub are powerful http://rfunction.com/archives/2354
+removePeriod <- function(word) sub("\\.", "", word) # sub & gsub are powerful http://rfunction.com/archives/2354
 
-capitalize <- function(word) word # this one might require more than one line
+capitalize <- function(word){
+    wordString <- strsplit(word, "")[[1]]
+    wordString[1] <-toupper(wordString[1])
+    paste(wordString, collapse = "")
+    #string split
+    #select first element apply funciton to first element
+    #use paste to put it back together 
+} # this one might require more than one line
 
-addPeriod <- function(word) word 
+addPeriod <- function(word) paste0(word, ".") 
 
 arrange <- function(sentence){
 
