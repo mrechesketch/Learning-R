@@ -12,181 +12,79 @@
 
 Purchase_ <- setRefClass("Purchase_",
 
-    fields = list(purchaser = "character", 
-    amount = "numeric", amountsq = "numeric"))
+    fields = list(
+        
+        purchaser = "character", 
+        amount = "numeric", 
+        amountsq = "numeric",
+        timestamp = "character"),
+    
+    methods = list(
+
+        getAmount = function(){
+            return(amount)
+        },
+
+        getAmountSq = function(){
+            return(amountsq)
+        }
+    ))
 
 # Puchase constructor is a function that returns a ref object
-Purchase <- function(ID, amount){
+Purchase <- function(ID, amount, timestamp){
     newPurchase <- Purchase_$new(purchaser = ID, amount = amount, 
-    amountsq = amount**2)
+    amountsq = amount**2, timestamp = timestamp)
     return(newPurchase)
 }
 
-
-Pnode_ <- setRefClass("Pnode_",
-
-    fields = list(purchase = "Purchase_", nxt = "ANY", prev = "ANY"),
-    methods = list(
-        getAmount = function(){
-            return(purchase$amount)
-        },
-        getID = function(){
-            return(purchase$purchaser)
-        },
-        getSq = function(){
-            return(purchase$amountsq)
-        }
-    )
-    )
-
-Pnode <- function(purchase){
-    newPnode <- Pnode_$new(purchase = purchase, nxt = NULL, prev = NULL)
-    return(newPnode)
-}
-
-
-
 PurchaseList_ <- setRefClass("PurchaseList_",
     
-    fields = list(tracked = "numeric", 
-    tail = "ANY", Tth = "ANY", head = "ANY",
-    len = "numeric", sum = "numeric", sqsum = "numeric"),
+    fields = list(
+        
+        tracked = "numeric", 
+        purchases = "list",
+        size = "numeric", 
+        sum = "numeric", 
+        sqsum = "numeric"),
 
     methods = list(
 
         # with add we can assume we could have a len of 0
         add = function(purchase){
-            # first step: create pnode_
-            pnode_ <- Pnode(purchase)
-            # check if list is empty
-            if (len == 0){
-                tail <<- pnode_
-                Tth <<- pnode_
-                head <<- pnode_
+            # check if you need to rewrite
+            current <- purchases[[ (size %% tracked) + 1 ]]
+            if( !is.null(current) ){
+                sum <<- sum - current$getAmount()
+                sqsum <<- sqsum - current$getAmountSq()
             }
-            #otherwise link existing Pnodes 
-            else{
-                pnode_$prev <- head
-                head$nxt <<- pnode_
-                head <<-pnode_
-            }
-            #check if we need to Tup
-            if(len>=tracked){
-                Tup()
-            }
+            # put into purchases
+            purchases[[ (size %% tracked) + 1 ]] <<- purchase
             # update member variables
-            len <<- len + 1
-            sum <<- sum + purchase$amount
-            sqsum <<- sqsum + purchase$amountsq
+            size <<- size + 1
+            sum <<- sum + purchase$getAmount()
+            sqsum <<- sqsum + purchase$getAmountSq()
         },
 
-        remove = function(purchaserID){
-            # we're going to loop through this list backards [WHY?]
-            start <- head
-            while(start != NULL){
-                # check if you should delete
-                isDelete <- (purchaserID == start$getID)
-                if(isDelete){
-                    len <<- len - 1
-                    sum <<- sum - start$getAmount
-                    sqsum <<- sqsum - start$amountsq
-                    if (len>Tth){
-                        Tdown()
-                    }
-                    deletenode(start)
-                }
-
-
-
-
-
-
-                # advance start to head
-                start <- start$prev
-
-            }
-
-
-        },
+        # there is no remove functionality lol
 
         calcMean = function(){
-            return(sum/len)
+            return(sum/size)
         },
 
         calcStd = function(){
             avg <- calcMean()
-            return((sqsum/len-avg**2)**0.5)
-        },
-
-    # ========================================== #
-    # ========== HELPER METHODS ================ #
-    # ========================================== #
-        # moves T pointer towards head
-        # use in add
-        Tup = function(){
-            # subtract out old data
-            sum <<- sum - Tth$getAmount()
-            sqsum <<- sqsum - Tth$getSq()
-            # move it toward head
-            Tth <<- Tth$nxt
-
-        },
-
-        # moves T pointer towards tail
-        # use in remove
-        Tdown = function(){
-            Tth <<- Tth$prev
-            sum <<- sum + Tth$getAmount()
-            sqsum <<- sqsum + Tth$getSq()
-            # move it toward head
-            
-            # TODO
-        }
-        deletenode = function(node){
-            isHead <- (node$nxt == NULL)
-            isTail <- (node$prev == NULL)
-            isOnly <- (isHead && isTail)
-            isBody <- !(isHead || isTail)
-            #$$ both must be true
-            #|| either statement must be true
-            if(isOnly){
-                head <<- NULL
-                tail <<- NULL
-                Tth <<- NULL
-            }
-            if(isHead){
-                head <<- node$nxt
-                node$nxt$prev <- NULL
-                node$nxt <- NULL
-            }
-            if(isTail){
-                # case where T and tail are  same
-                if(Tth == tail){
-                    Tth <<- node$prev
-                }
-                tail <<- node$prev
-                node$prev$nxt <- NULL
-                node$prev <- NULL     
-            }
-            if(isBody){
-                node$prev$nxt <- node$nxt
-                node$nxt$prev <- node$prev
-                node$nxt <- NULL
-                node$prev <- NULL
-            }
-            rm(node) 
+            return((sqsum/size-avg**2)**0.5)
         }
 
-        
+    
     )
 )
 
 # PurchaseList constructor is a function that returns a ref object
-PurchaseList <- function(T, purchase){
-    pnode_ <- Pnode(purchase)
+PurchaseList <- function(T){
     newPL <- PurchaseList_$new(tracked = T,
-    tail = pnode_, Tth = pnode_, head = pnode_,
-    len = 1, sum = purchase$amount, sqsum = purchase$amountsq)
+    purchases = vector("list", T), size = 0, 
+    sum = 0, sqsum = 0)
     return(newPL)
 }
 

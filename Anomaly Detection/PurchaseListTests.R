@@ -3,33 +3,24 @@ source("PurchaseList.R")
 
 T <- 3
 
-pen <- Purchase('1', 33)
-book <- Purchase('1', 45)
-car <- Purchase('1', 29)
+pen <- Purchase('1', 33, NULL)
+book <- Purchase('1', 45, NULL)
+car <- Purchase('1', 29, NULL)
 
-disc <- Purchase('2', 12)
-ecstasy <- Purchase('2', 10)
-fish <- Purchase('2', 88)
+disc <- Purchase('2', 12, NULL)
+ecstasy <- Purchase('2', 10, NULL)
+fish <- Purchase('2', 88, NULL)
 
-groupon <- Purchase('3', 99)
-herring <- Purchase('3', 69)
-image <- Purchase('3', 4)
-jackal <- Purchase('3', 56)
-kimono <- Purchase('3', 0.88)
+groupon <- Purchase('3', 99, NULL)
+herring <- Purchase('3', 69, NULL)
+image <- Purchase('3', 4, NULL)
+jackal <- Purchase('3', 56, NULL)
+kimono <- Purchase('3', 0.88, NULL)
 
-
-
-addLenTest <- function(){
-    PL <- PurchaseList(T, pen)
-    stopifnot(PL$len == 1)
-    # add two more items
-    PL$add(book)
-    PL$add(car)
-    stopifnot(PL$len == 3)
-}
 
 addSumTest <- function(){
-    PL <- PurchaseList(T, pen)
+    PL <- PurchaseList(T)
+    PL$add(pen)
     stopifnot(PL$sum == 33)
     # add two more items
     PL$add(book)
@@ -41,7 +32,8 @@ addSumTest <- function(){
 }
 
 addSumSqTest <- function(){
-    PL <- PurchaseList(T, pen)
+    PL <- PurchaseList(T)
+    PL$add(pen)
     stopifnot(PL$sqsum == 1089)
     # add two more items
     PL$add(book)
@@ -52,28 +44,23 @@ addSumSqTest <- function(){
     stopifnot(PL$sqsum == 3010)
 }
 
-addPointerTests <- function(){
-    PL <- PurchaseList(T, pen)
-    # test constructor
-    stopifnot(identical(PL$head$purchase, pen))
-    stopifnot(identical(PL$tail$purchase, pen))
-    stopifnot(identical(PL$Tth$purchase, pen))
+addSizeTest <- function(){
+    PL <- PurchaseList(T)
+    PL$add(pen)
+    stopifnot(PL$size == 1)
     # add two more items
     PL$add(book)
     PL$add(car)
-    stopifnot(identical(PL$head$purchase, car))
-    stopifnot(identical(PL$tail$purchase, pen))
-    stopifnot(identical(PL$Tth$purchase, pen))
-    # add third item
+    stopifnot(PL$size == 3)
     PL$add(disc)
-    stopifnot(identical(PL$head$purchase, disc))
-    stopifnot(identical(PL$tail$purchase, pen))
-    stopifnot(identical(PL$Tth$purchase, book))
+    stopifnot(PL$size == 4)
 }
 
+
+
 runTests <- function(){
-    addLenTest()
+    addSizeTest()
     addSumTest()
     addSumSqTest()
-    addPointerTests()
+    print("PurchaseList Tests Passed!")
 }

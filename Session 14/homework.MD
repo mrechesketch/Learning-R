@@ -1,0 +1,5 @@
+1. Read Chapter 2: Data Structures. Most of this should be review https://github.com/hadley/adv-r/blob/master/Data-structures.Rmd See if you can figure out wtf the factor type is.. I am still confused
+2. Read Chapter 3: Subsetting https://github.com/hadley/adv-r/blob/master/Subsetting.Rmd REALLY STUDY THIS STUFF. It is important and will make your life way easier even only if you have a grasp of the basics. 
+3. Read the Google R Style Guide https://google.github.io/styleguide/Rguide.xml
+4. Read through this list of vocabulary and pick 3 words we haven't gone over and be able to explain teach me their significance: http://adv-r.had.co.nz/Vocabulary.html
+5. Continue to think about how to do the closure checker using a stack and the functions already written. We won't do it next session but we will definitely talk about different approaches and maybe write some tests. 

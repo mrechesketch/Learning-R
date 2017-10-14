@@ -1,0 +1,2 @@
+1. Read Chapter 6 of Advanced R. It can be found here https://github.com/hadley/adv-r/blob/master/Functions.Rmd#special-calls
+2. Complete problem 1 and problem 2. They are practicing with infix functions

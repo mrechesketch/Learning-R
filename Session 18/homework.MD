@@ -1,0 +1,3 @@
+1. Finish problem 1 (arrange)
+2. Read more on regular expressions: https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html (kinda dense but worth a good skim.. this page surely has 95% of the answers to questions we are not smart enough to ask) and https://www.regular-expressions.info/rlanguage.html (nice accesible tutorial) and lasly this cheat sheet: https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf (super helpful. don't pay attention to the [[:stuff:]] on the left (POSIX), look to the right for the perl = TRUE (PCRE) style version). This is also a really helpful tutorial: http://stat545.com/block022_regular-expression.html
+3. 

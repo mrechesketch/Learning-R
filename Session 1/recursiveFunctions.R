@@ -91,3 +91,33 @@ changeTest2 = identical(change(37, c(1, 12, 15, 42, 25)), TRUE)
 changeTest3 = identical(change(0, c()), TRUE)
 changeTest4 = identical(change(1, c()), FALSE)
 changeTest5 = identical(change(36, c(1, 2, 3, 25)), FALSE) 
+
+maxRec <- function(numVec){
+    if (length(numVec)==0){
+        return(c())
+    if (is.Null(numVec)){
+        return(c())
+    if (numVec[i] < numVec[i-n]){
+        return(c(numVec[i+n],  maxRec(numVec[-1])))
+    }
+    if (numVec[i] == numVec[i-n]){
+        return(c(numVec[i+n],  maxRec(numVec[-1])))
+    }
+    if (!is.Null(numVec[-1])){
+        return(c(numVec[i+n],  maxRec(numVec[-1])))
+    }
+    return(c(maxRec(numVec[-1])))
+    }
+}
+
+passFail <- function(x, y) if (x == y) "PASS" else "FAIL"
+customVec <- c(3, 55, 4, 77, 32)
+
+cat("\n")
+print("maxRec Tests")
+t1 <- maxRec(1)
+t2 <- maxRec(1:10)
+t3 <- maxRec( customVec )
+cat("the output of maxRec(1) is:", t1, passFail(t1, 1), "\n" )
+cat("the output of maxRec(1:10) is:", t2, passFail(t2, 10), "\n" )
+cat("the output of maxRec( c(3, 55, 4, 77, 32) ) is:", t3, passFail(t3, 77), "\n" )

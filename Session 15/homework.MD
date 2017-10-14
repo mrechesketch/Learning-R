@@ -1,0 +1,4 @@
+1. Read "Functional Programming" https://github.com/hadley/adv-r/blob/master/Functional-programming.Rmd and "Functionals" https://github.com/hadley/adv-r/blob/master/Functionals.Rmd
+2. Normalize a matrix of orbitals according to quantum mechanics (it is a lot easier than it sounds here) see Session 15/huckel. Reading the chapter on Functionals will probably make this easier. (2) problems here
+3. Read this wiki article on norms https://en.wikipedia.org/wiki/Norm_(mathematics) You can skim the article but pay special attention to euclidean norm, taxicab norm, p norm and the maximum norm. Note that norm != to normalization. Sometimes we chose to set the norm = 1. Setting something = 1 is normalization. The process of how we get that something is called the norm
+4. Session 15/problems.R has more (3) problems.  
