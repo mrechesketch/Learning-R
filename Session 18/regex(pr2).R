@@ -1,3 +1,7 @@
+#R version 3.3.2 
+  
+print("Hello, world!")
+
 # use this cheat sheet.. it's great! https://www.rstudio.com/wp-content/uploads/2016/09/RegExCheatsheet.pdf
 
 # we're going to build a function that checks if something is a valid username, email address & password
@@ -21,19 +25,19 @@ hasAlpha <- function(string) grepl("[A-z]", string)
 # HINT: if you get stuck.. all of the answers are on the cheat sheet!!
 
 # this one you could just use nchar really.. 
-hasLength <- function(password) F
+hasLength <- function(string) grepl("\\w{8,}", string)
 
-hasUpper <- function(password) F
+hasUpper <- function(string) grepl("[[:upper:]]", string)
 
-hasLower <- function(password) F
+hasLower <- function(string) grepl("[[:lower:]]", string)
 
-hasNum <- function(password) F
+hasNum <- function(string) grepl("\\d", string)
 
 # might have to resort to POSIX style here
-hasPunct <- function(password) F
+hasPunct <- function(string) grepl("[[:punct:]]", string)
 
 validPassword <- function(p){
-    hasLower(p) && hasNum(p)
+    hasLower(p) && hasNum(p) && hasLength(p) && hasUpper(p) && hasPunct(p)
 }
 
 
@@ -72,7 +76,8 @@ extract <- function(patt, string) regmatches(string, regexpr(patt, string, perl 
 
 validEmail <- function(email){
     # set pattern and extract string
-    emailPattern <- "\\w.+@{1}[A-z]+\\.(com|net)" # TODO, finish this pattern. it needs work!
+    emailPattern <- "\\w.+[@]{1}[a-z]+\\.(com|net|edu)"  #"\\w.+@{1}[A-z]+\\.(com|net)"
+    # TODO, finish this pattern. it needs work! 
     extracted <- extract(emailPattern, email)
     # set boolean values 
     noMatch <- identical(extracted, character(0) ) # indicates no pattern found
@@ -93,16 +98,26 @@ validEmail <- function(email){
 
 # TODO: 
 #   1. Design a username with at least 3 rules
-#       i. at least 2 rules must have ordering (i.e. .com after @)
-#       ii. some of the rules should also be independent (like rules for password)
+#       i. Must have a number after a letter
+#       ii. Must have "i" after "e"
+#       iii. must have at least one of "*,^,%,# "
+        
 #   2. Write tests for your username
 #       i. scroll to the "#=== TESTS for Username ===#" section and model the previous tests
 #   3. Write a validUsername function.
 #       i. write at least one NEW helper function
 #   also free to borrow the helper functions you wrote for validPassword
 
+hasSecure <- function(string) grepl("(*|^|%|#)", string)
 
-validUsername <- function(username) T
+hasEndNum <- function(string) grepl("[[:digit:]]$", string)
+
+hasIE <- function(string) grepl("(ie|IE|Ie|iE)", string)
+
+validUsername <- function(username){
+    hasSecure(username) && hasEndNum(username) && hasIE(username)
+}
+  
 
 
 # Test runner function
@@ -188,12 +203,11 @@ emailTests <- list(
 # ========= TESTS for Username ============= #
 
 usernameTests <- list(
-    message = "",
-    funct = function(w) w,
-    inputs = c(),
-    expected = c()
+    message = "validUsername",
+    funct = function(w) validUsername(w),
+    inputs = c("a7eiie7a", "ie*88", "^4209696", "8$eiie", "&iie3", "&ie88^88"),
+    expected = c(F, T, F, F, T, T)
 )
-
 
 
 # Executing the tests
