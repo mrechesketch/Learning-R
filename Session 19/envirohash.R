@@ -1,9 +1,13 @@
 
 # we're going to manipulate environments to create a hash set class(!!!)
+# our hash set can only handle string which is limited but still super cool
 
 # you will notice the bodies of the functions are quite short
 # they are merely wrappers for the built-in environment functions
 # they have existed this whole time right under our noses!
+
+
+# ================================== SET CLASS ================================== #
 
 Set_ <- setRefClass("Set_",
             fields = list(
@@ -26,17 +30,32 @@ Set_ <- setRefClass("Set_",
                     )
                 },
 
-                add = function(element) assign(element, NA, env),
+                add = function(elements) for(item in elements) assign(item, NA, env), # this can add one item or a vector
 
                 delete = function(element) remove(list = element, envir = env)
+
             ) )
 
-Set <- function() Set_$new( env = new.env() )
+# =============================== SET CONSTRUCTOR =============================== #
+
+# in this constructor we're going to use the dot-dot-dot (aka ellipses)
+Set <- function(...){
+    # the ellipses is used for a *variable* number of arguments
+    mySet <- Set_$new( env = new.env() )
+    # any function has nargs() which returns the number of formals (aka parameters)
+    if( nargs() > 0){ # if we do Set() that's the empty set so you could skip this stuff
+        arguments <- list(...) # turn the ... into a list
+        for( item in arguments ) mySet$add(item) # loop through the list and any sub lists bc $add() is flexible ;)
+    }
+    return( mySet )
+}
 
 
-# here is a 
+# ============================= SET USE EXAMPLES ============================= #
 
-# declare the set
+# here is a short example of possible uses of the set 
+
+# declare the empty set
 s <- Set()
 # add one element
 s$add("ok")
@@ -48,57 +67,221 @@ s$add("ok")
 # you can only delete things that exist
 s$delete("ok") # lest you get an error
 # s$delete("ok") would return an error
+# ********** #
 # s$elements() to get all the items in the set
+stopifnot( identical( s$elements(), character(0) ) ) # the empty set
+# lets redeclare s and explore some of the constructor options
+s <- Set( as.character( 1:4 ) )
+chars <- c( '1', '2', '3' ,'4' )
+stopifnot( s$elements() == chars ) # constructor can take a vector
+s <- Set( '1', '4', '6' )
+chars <- c( '1', '4', '6' )
+stopifnot( s$elements() == chars ) # constructor can take individual strings
+s <- Set( as.character( 1:4 ), '1', '4', '6' )
+chars <- c( '1', '2', '3' ,'4', '6' )
+stopifnot( s$elements() == chars ) # constructor can take individual strings and vectors!!!
 
-# and now the functions to write... SET OPERATIONS!
 
-# starting with an example
 
-# union with infix (see http://adv-r.had.co.nz/Functions.html @ Infix Functions if you need to freshen up)
-# U takes in two sets and returns a third set which is the union of the first two
-`%U%` <- function(A, B){ # do not be afraid of the funky `tick marks` this is an infix operator
+# ========================== SET OPERATIONS (TODO) ========================== #
+
+# these will all be infix functions
+# (see http://adv-r.had.co.nz/Functions.html @ Infix Functions if you need to freshen up)
+# don't stress about it being an infix. it doesn't affect the body which is what you are defining
+
+# HINTS: don't use built in set-operation functions like union or intersect
+# try to stick to using Set $methods like add, has and delete
+# don't overthink any of these functions.. they should only require a few lines of code (3-4, no more than 6)
+
+
+
+# starting with an example of union
+# A %U% B takes in two sets, A & B, and returns a third set C which is the union of the first two
+`%U%` <- function(A, B){ 
     C <- Set() # create an empty set
     for( item in A$elements() ) C$add(item) # add from A
     for( item in B$elements() ) C$add(item) # add from B
     return( C ) # return set C, the union of set A and set B
 }
 
-# sub takes in A and B and says TRUE A is a subset of B (FALSE otherwise)
+# A %sub% B returns TRUE A is a subset of B (FALSE otherwise)
 `%sub%` <- function(A, B){
-    for( item in A$elements() ){
-        if( !B$has(item) ) return( FALSE )
-    }
     return( TRUE ) 
-} # should take 3 - 4 lines of code.. could do 2 if you really wanted
+} 
+
 
 # super takes in A and B and says if A is a superset of B (how could you leverage sub??)
-`%super%` <- function(A, B) B %sub% A # takes 1 line if you leverage %sub%
+`%super%` <- function(A, B) FALSE 
 
 
 # A += B will add all the elements in B into A but does not return anything
-`%+=%` <- function(A, B) for( item in B$elements() ) A$add(item) 
-# body takes 1 - 2 lines.  
+`%+=%` <- function(A, B) 
+ 
 
 
 # intersect operator (returns a set of shared elements)
 `%I%` <- function(A, B){
     C <- Set()
-    for( item in A$elements() ) if( B$has(item) ) C$add(item)
-    for( item in B$elements() ) if( A$has(item) ) C$add(item)
     return( C )
 }
 
 # exclude operator (returns a set of un-shared elemets )
-# it's the opposite of intersect... A <- {1, 2, 3} & B <- {2, 3, 4}.. A %E% B <- {1, 4}
+# it's the opposite of intersect... A <- Set('a', 'b') & B <- Set('b', 'c').. A %E% B <- Set('a', 'c')
 `%E%` <- function(A, B){
     C <- Set()
-    for( item in A$elements() ) if( !B$has(item) ) C$add(item)
-    for( item in B$elements() ) if( !A$has(item) ) C$add(item)
     return( C )
+}
 
-ok <- Set()
-for( n in 1:10 ) ok$add( as.character(n) )
-o <- Set()
-for( n in 1:5 ) o$add( as.character(n) )
-hmm <- Set()
-for( n in 5:15 ) hmm$add( as.character(n) )
+# TODO DEFINE ONE MORE OPERATOR / OPERATION 
+# this operator must use delete somehow 
+# perhaps a subtract function? keep it simple please
+# also write appropriate tests for it
+
+# ___ your function goes here ___
+
+
+# ========================== DEFINING TESTS ========================== #
+
+    # Union Test
+unionTest <- list(
+    message = "Union (aka %U%)",
+    funct = function(A,B) (A %U% B)$elements(),
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( character(0), c('1'), c('1','2'), c('1', '2', '3') )
+)
+
+    # Sub Test
+subTest <- list(
+    message = "Subset (aka %sub%)",
+    funct = function(A,B) A %sub% B,
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = c( T, F, F, F )
+)
+
+    # Super Test
+superTest <- list(
+    message = "Superset (aka %super%)",
+    funct = function(A,B) A %super% B,
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = c( T, T, T, F )
+)
+    # Intersect Test
+intersectTest <- list(
+    message = "Intersect (aka %I%)",
+    funct = function(A,B) (A %I% B)$elements(),
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( character(0), character(0), c('1'), c('1') )
+)
+
+    # Exclude Test
+excludeTest <- list(
+    message = "Exclude (aka %E%)",
+    funct = function(A,B) (A %E% B)$elements(),
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( character(0), c('1'), c('2'), c('2', '3') )
+)
+
+# the state tests makes sure we're not changing A or B when we shouldn't
+# and we are changing it when we should be 
+
+    # union state test
+unionStateTest <- list(
+    message = "Union State",
+    funct = function(A,B){
+        C <- A %U% B
+        Alen <- length( A$elements() )
+        Blen <- length( B$elements() )
+        return( c( Alen, Blen) )
+    },
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( c(0, 0), c(1, 0), c(2, 1), c(2, 2) )
+)
+
+    # intersect state test
+intersectStateTest <- list(
+    message = "Intersect State",
+    funct = function(A,B){
+        C <- A %I% B
+        Alen <- length( A$elements() )
+        Blen <- length( B$elements() )
+        return( c( Alen, Blen) )
+    },
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( c(0, 0), c(1, 0), c(2, 1), c(2, 2) )
+)
+
+    # exclude state test
+excludeStateTest <- list(
+    message = "Exclude State",
+    funct = function(A,B){
+        C <- A %E% B
+        Alen <- length( A$elements() )
+        Blen <- length( B$elements() )
+        return( c( Alen, Blen) )
+    },
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( c(0, 0), c(1, 0), c(2, 1), c(2, 2) )
+)
+
+    # += state test (this should change A's state!)
+plusEqualStateTest <- list(
+    message = "plusEqual State",
+    funct = function(A,B){
+        A %+=% B
+        Alen <- length( A$elements() )
+        Blen <- length( B$elements() )
+        return( c( Alen, Blen) )
+    },
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( c(0, 0), c(1, 0), c(2, 1), c(3, 2) )
+)
+
+outputTests <- list( unionTest, subTest, superTest, intersectTest, excludeTest)
+stateTests <- list( unionStateTest, intersectStateTest, excludeStateTest, plusEqualStateTest)
+
+# ========================== TESTER FUNCTION ========================== #  
+
+# Test runner function
+runTests <- function(tests){
+    for ( test in tests ){
+
+        cat("\n")
+
+        isEqual <- function(A, B){
+            check <- all.equal(A, B)
+            if( is.logical(check) ) return(T) else return(F)
+        }
+
+        outputs <- Map(test$funct, test$As, test$Bs)
+        sames <- unlist( Map( isEqual , outputs, test$expected) )
+        fractionPassed <- paste0( as.character(sum(sames)), "/", as.character(length(test$As) ) )
+        
+        cat(test$message, "Tests", fractionPassed, "\n") # print the message
+        
+        for( i in seq_along(sames) ){
+            if ( !sames[i] ){
+                # explain what happened
+                cat(" Test", i, "failed", "\n")
+                cat("  A:", test$As[[i]]$elements(), "\n")
+                cat("  B:", test$Bs[[i]]$elements(), "\n")
+                cat("  Expected:", test$expected[[i]], "\n")
+                cat("  Recieved:", outputs[[i]], "\n" )
+            }
+        }
+    }
+}
+
+# ========================== EXECUTING TESTS ========================== # 
+
+runTests( outputTests )
+runTests( stateTests )
+
