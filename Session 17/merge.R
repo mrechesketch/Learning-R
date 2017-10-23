@@ -38,20 +38,24 @@ counts <- function(nums, maxes){
 # our merge function will take in two sorted lists of numbers
 # it will return a combined, sorted list
 
-spoopySort <- function(nums){
-    sortedNums <- sort(nums)
-    table <- numeric(max(sortedNums))
-    counter <- 0
-    nIndex <- 1
+createTable <- function(nums){
+    nums <- sort(nums)
+    table <- numeric(nums[length(nums)])
+    counter <- 0; nIndex <- 1
     for(i in seq_along(table)){
-        while(sortedNums[nIndex] <= i){
-            counter <- counter +1
-            nIndex <- nIndex+1
+        while( nums[nIndex] <= i && nIndex <= length(nums) ){
+            cat("nIndex is", nIndex, "\n")
+            cat("nums[nIndex] is", nums[nIndex], "\n")
+            counter <- counter + 1
+            nIndex <- nIndex + 1
         }
         table[i] <- counter
     }
     return(table)
 }
+
+nums <- c(3, 3, 3, 5, 4, 3, 3, 6, 5)
+t<- createTable(nums)
 
 # example 0: merge( c(), c() ) == numeric(0)
 # example 1: merge(1, c() ) == c(1)
