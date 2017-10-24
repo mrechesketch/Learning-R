@@ -115,7 +115,7 @@ stopifnot( s$elements() == chars ) # constructor can take individual strings and
 
 
 # A += B will add all the elements in B into A but does not return anything
-`%+=%` <- function(A, B) 
+`%+=%` <- function(A, B) return() 
  
 
 
