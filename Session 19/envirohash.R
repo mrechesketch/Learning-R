@@ -24,13 +24,13 @@ Set_ <- setRefClass("Set_",
                         # if you ask to get an element that doesn't exist
                         value <- get(element, env)
                         # then the above line returns an error
-                        is.na( value ) # this gets returned if it's not an error
+                        TRUE # this gets returned if it's not an error
                     },
                     error = function(cond) FALSE # if it is an error, this gets returned
                     )
                 },
 
-                add = function(elements) for(item in elements) assign(item, NA, env), # this can add one item or a vector
+                add = function(elements) for(item in elements) assign(item, NULL, env), # this can add one item or a vector
 
                 delete = function(element) remove(list = element, envir = env)
 
@@ -106,22 +106,28 @@ stopifnot( s$elements() == chars ) # constructor can take individual strings and
 
 # A %sub% B returns TRUE A is a subset of B (FALSE otherwise)
 `%sub%` <- function(A, B){
+    for (item in A$elements()){
+        if( !B$has(item)){
+        return ( FALSE)
+       }   
+    }
     return( TRUE ) 
+    
 } 
 
-
 # super takes in A and B and says if A is a superset of B (how could you leverage sub??)
-`%super%` <- function(A, B) FALSE 
-
+`%super%` <- function(A, B) B %sub% A 
 
 # A += B will add all the elements in B into A but does not return anything
-`%+=%` <- function(A, B) return() 
+`%+=%` <- function(A, B) for( item in B$elements() ) A$add(item) 
+    
  
 
 
 # intersect operator (returns a set of shared elements)
 `%I%` <- function(A, B){
     C <- Set()
+    for (item in A$elements()) if( B$has(item)) C$add(item)
     return( C )
 }
 
@@ -129,6 +135,8 @@ stopifnot( s$elements() == chars ) # constructor can take individual strings and
 # it's the opposite of intersect... A <- Set('a', 'b') & B <- Set('b', 'c').. A %E% B <- Set('a', 'c')
 `%E%` <- function(A, B){
     C <- Set()
+    for (item in A$elements()) if( !B$has(item)) C$add(item)
+    for (item in B$elements()) if( !A$has(item)) C$add(item)
     return( C )
 }
 
@@ -138,7 +146,13 @@ stopifnot( s$elements() == chars ) # constructor can take individual strings and
 # also write appropriate tests for it
 
 # ___ your function goes here ___
-
+`%D%` <- function(A, B){
+    for (item in A$elements()){
+        if( B$has(item)){
+            A$delete(item)
+        }
+    }
+}
 
 # ========================== DEFINING TESTS ========================== #
 
@@ -245,8 +259,22 @@ plusEqualStateTest <- list(
     expected = list( c(0, 0), c(1, 0), c(2, 1), c(3, 2) )
 )
 
+yourFunctionStateTest <- list(
+    message = "your function",
+    funct = function(A,B){
+        A %D% B
+        Alen <- length( A$elements() )
+        Blen <- length( B$elements() )
+        return( c( Alen, Blen) )
+    },
+    As = list( Set(), Set('1'), Set('1','2'), Set('1', '2') ),
+    Bs = list( Set(), Set(), Set('1'), Set('1', '3') ),
+    expected = list( c(0, 0), c(1, 0), c(1, 1), c(1, 2) )
+)
+
+
 outputTests <- list( unionTest, subTest, superTest, intersectTest, excludeTest)
-stateTests <- list( unionStateTest, intersectStateTest, excludeStateTest, plusEqualStateTest)
+stateTests <- list( unionStateTest, intersectStateTest, excludeStateTest, plusEqualStateTest, yourFunctionStateTest)
 
 # ========================== TESTER FUNCTION ========================== #  
 
@@ -282,6 +310,6 @@ runTests <- function(tests){
 
 # ========================== EXECUTING TESTS ========================== # 
 
-runTests( outputTests )
-runTests( stateTests )
+# runTests( outputTests )
+# runTests( stateTests )
 
