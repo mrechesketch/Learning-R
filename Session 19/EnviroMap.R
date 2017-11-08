@@ -4,16 +4,24 @@ Counter_ <- setRefClass("Counter_",
                 contains = "Set_",
 
                 methods = list(
-                    add = function(elements){
-                        for( element in elements){
-                            if( !has(element)){
-                            assign(element, 1, env) 
-                            }       
-                            else{
-                                value <- get(element, env) + 1
-                                assign( element, value, env)
-                             }           
-                        } 
+
+                    keys = function(){
+                        elements() # restatement of elements()
+                    },
+
+                    val = function(key){
+                        get(key, env) # wrapper for get()
+                    },
+
+                    values = function(){
+                        sapply( keys(), function(k) val(k) ) # similar to keys() but gets the values instead
+                    },
+
+                    add = function(keys){
+                        for( key in keys){
+                            value <- if (!has(key)) 1 else val(key) + 1
+                            assign(key, value, env)
+                        }        
                     }
 
                 )
