@@ -18,17 +18,7 @@ Set_ <- setRefClass("Set_",
 
                 elements = function() ls(env),
 
-                has = function(element){
-                    # you haven't seen a tryCatch before
-                    tryCatch({
-                        # if you ask to get an element that doesn't exist
-                        value <- get(element, env)
-                        # then the above line returns an error
-                        TRUE # this gets returned if it's not an error
-                    },
-                    error = function(cond) FALSE # if it is an error, this gets returned
-                    )
-                },
+                has = function(element) exists(element, envir = env),
 
                 add = function(elements) for(item in elements) assign(item, NULL, env), # this can add one item or a vector
 

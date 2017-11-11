@@ -36,25 +36,31 @@ loop_2 <- function(Y, F){
 
 loop_3 <- function(Z){
     invalid <- function(x) is.null(x) || is.na(x)
-    while( !invalid(Z[1]) ) print(Z[1]); Z <- Z[-1]
+    while( !invalid(Z[1]) ){
+        print(Z[1])
+        Z <- Z[-1]
+    }
 }
 
 loop_4 <- function(Z){
     invalid <- function(x) is.null(x) || is.na(x)
-    while( !invalid(Z[1]) ) print(Z[1]); Z <- Z[1]
+    while( !invalid(Z[1]) ){
+        print(Z[1])
+        Z <- Z[1]
+    }
 }
 
 # please answer with strings
 
 answers <- list(
 
-    misc_1_ans = c()
-    misc_2_ans = c()
-    misc_3_ans = c()
+    misc_1_ans = c(),
+    misc_2_ans = c(),
+    misc_3_ans = c(),
 
-    loop_1_ans = c()
-    loop_2_ans = c()
-    loop_3_ans = c()
+    loop_1_ans = c(),
+    loop_2_ans = c(),
+    loop_3_ans = c(),
     loop_4_ans = c()
 
 )
@@ -65,13 +71,13 @@ answers <- list(
 
 answers <- list(
 
-    misc_1_ans = c("A", "C")
-    misc_2_ans = c("A", "B", "F")
-    misc_3_ans = c("A", "D")
+    misc_1_ans = c("A", "C"),
+    misc_2_ans = c("A", "B", "F"),
+    misc_3_ans = c("A", "D"),
 
-    loop_1_ans = c("A", "C")
-    loop_2_ans = c("A", "B", "G")
-    loop_3_ans = c("A", "E")
+    loop_1_ans = c("A", "C"),
+    loop_2_ans = c("A", "B", "G"),
+    loop_3_ans = c("A", "E"),
     loop_4_ans = c("A", "G")
 
 )

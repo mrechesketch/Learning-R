@@ -44,8 +44,8 @@ createTable <- function(nums){
     counter <- 0; nIndex <- 1
     for(i in seq_along(table)){
         while( nums[nIndex] <= i && nIndex <= length(nums) ){
-            cat("nIndex is", nIndex, "\n")
-            cat("nums[nIndex] is", nums[nIndex], "\n")
+            # cat("nIndex is", nIndex, "\n")
+            # cat("nums[nIndex] is", nums[nIndex], "\n")
             counter <- counter + 1
             nIndex <- nIndex + 1
         }
@@ -92,3 +92,34 @@ merge <- function(A, B){
     return(output)
 }
 
+split <- function(A){   
+    len <- length(A)
+    if( len == 1){
+        return(list( numeric(0), A ) )
+    }
+    stop <- floor(len/2) 
+    return( list( A[1:stop], A[(stop+1):len]) )
+}
+
+testVec_1 <- c(1)
+testVec_2 <- c(1,3,2,4)
+testVec_3 <- c(1,3,2)
+
+testySplit <- function(){
+    t1 <- list( c(1), c() )
+    print(split(testVec_1) == t1)
+    t2 <- list( c(1, 3), c(2, 4))
+    print(split(testVec_2) == t2)
+    t3 <- list( c(1,), c(3, 2))
+    print(split(testVec_3) == t3)
+}
+
+
+mergeSort <- function(A){
+    BC <- split(A)
+    B <- BC[[1]]; C <- BC[[2]]
+    if( length(B) <= 1  && length(C) <= 1 ){
+        return( merge(B, C))
+    }
+    merge(mergeSort(B), mergeSort(C))
+    }
