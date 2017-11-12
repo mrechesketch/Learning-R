@@ -53,19 +53,22 @@ Counter <- function(...){
 # PARAMS: CHARACTER word  
 # RETURN: Counter object 
 # BRIEF: word is split into vector of letters and a 
-#       Counter is constructed on this character vector
-LetterBag <- function(word) Counter()
+# Counter is constructed on this character vector
+LetterBag <- function(word) letters <- nchar(Counter(word))
 
 
 # PARAMS: Counter A & Counter B  
 # RETURN: BOOLEAN 
 # BRIEF: returns TRUE if A is a subset of B, FALSE otherwise 
 `%subset%` <- function(A, B){
+    for (item in A$elements()){
+        if( !B$has(item)){
+        return ( FALSE)
+       }   
+    }
     return( TRUE ) 
-}
-
-
-
+    
+} 
 
 # Some test vecs and counters
 
@@ -83,10 +86,10 @@ testCounter_3 <- Counter(testVec_3)
 
 
 # LetterBag Tests Go Here
-
-lbTest_1 <- function() return( TRUE )
-
-lbTest_2 <- function() return( TRUE )
+word1 <- c("crumbus")
+lbTest_1 <- function(word1) return( numeric(7) )
+word2 <- c("stephope1a")
+lbTest_2 <- function(word2) return( numeric(10) )
 
 # Subset Test
 
