@@ -29,18 +29,12 @@ Counter_ <- setRefClass("Counter_",
                             val <- if ( !has(key) || !is.numeric( value(key) ) ) 0 else value(key)
                             assign(key, val + 1, env)
                         }        
-                    },
-
-                # PARAMS: CHARACTER word  
-                # RETURN: Counter object 
-                # BRIEF: word is split into vector of letters and a 
-                #       Counter is constructed on this character vector
-                    wordToLetterBag = function(word) Counter( strsplit(word, "") )
+                    }
 
                 )
 )
 
-# PARAMS: ... (STR) 
+# PARAMS: STR[] ... 
 # RETURN: a Counter object
 # BRIEF: create a counter object on a STR[] OR sequence of STR[] 
 Counter <- function(...){
@@ -53,12 +47,67 @@ Counter <- function(...){
 }
 
 
-# TESTS FOR COUNTER DATA STRUCTURE
+# ======================= TODO ======================= #
+
+
+# PARAMS: CHARACTER word  
+# RETURN: Counter object 
+# BRIEF: word is split into vector of letters and a 
+#       Counter is constructed on this character vector
+LetterBag <- function(word) Counter( strsplit(word, "")[[1]] )
+
+
+# PARAMS: Counter A & Counter B  
+# RETURN: BOOLEAN 
+# BRIEF: returns TRUE if A is a subset of B, FALSE otherwise 
+`%subset%` <- function(A, B){
+    for( item in A$elements() ){
+        if( !B$has(item) ) return( FALSE ) # B doesn't even have the item
+        if( B$value(item) < A$value(item) ) return( FALSE ) # B's value is less than A's value
+    }
+    return( TRUE ) 
+}
+
+
+
+
+# Some test vecs and counters
+
 testVec_1 <- c("a", "b", "c") # "c" is reserved for c() vector shit wtf 
 testVec_2 <- c( testVec_1, "a", "a", "b" )
 testVec_3 <- as.character( rep(1:4, 4:1) )
 bigWord <- "abcdefghijklmnopqrztuvwxyz"
+smallWord <- "sassafrass"
 
+testCounter_1 <- Counter(testVec_1)
+testCounter_2 <- Counter(testVec_2)
+testCounter_3 <- Counter(testVec_3)
+
+# ======================= TODO ======================= #
+
+
+# LetterBag Tests Go Here
+
+lbTest_1 <- function() return( TRUE )
+
+lbTest_2 <- function() return( TRUE )
+
+# Subset Test
+
+subsetTest <- function(){
+    # these are subsets
+    stopifnot( testCounter_1 %subset% testCounter_1 )
+    stopifnot( testCounter_1 %subset% testCounter_2 )
+    # these are not 
+    stopifnot( !( testCounter_1 %subset% testCounter_3 ) )
+    stopifnot( !( testCounter_2 %subset% testCounter_1 ) )
+    print("Subset passes!")
+}
+
+
+
+
+# TESTS FOR COUNTER DATA STRUCTURE
 
     # Constructor
 constructorTest <- function(){
