@@ -54,17 +54,13 @@ Counter <- function(...){
 # RETURN: Counter object 
 # BRIEF: word is split into vector of letters and a 
 #       Counter is constructed on this character vector
-LetterBag <- function(word) Counter( strsplit(word, "")[[1]] )
+LetterBag <- function(word) Counter()
 
 
 # PARAMS: Counter A & Counter B  
 # RETURN: BOOLEAN 
 # BRIEF: returns TRUE if A is a subset of B, FALSE otherwise 
 `%subset%` <- function(A, B){
-    for( item in A$elements() ){
-        if( !B$has(item) ) return( FALSE ) # B doesn't even have the item
-        if( B$value(item) < A$value(item) ) return( FALSE ) # B's value is less than A's value
-    }
     return( TRUE ) 
 }
 
