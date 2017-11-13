@@ -4,7 +4,7 @@ Closure can decrease the amount of code needed, because unlike reference class, 
 
 
 2. When we load the dictionary, how will we associate the word with it's conjugate LetterBag?
-total word score, leng of word, average value of letter
+we will use a hash map to associate our words with their counters, this is a top level closure 
 
 3.  Write some sudo-code for loading a dictionary *line by line* (peek at the printLines_2 function of Session 10/jsonToPurchases)
 printLines_2 <- function(filepath) {
