@@ -54,7 +54,7 @@ Counter <- function(...){
 # RETURN: Counter object 
 # BRIEF: word is split into vector of letters and a 
 # Counter is constructed on this character vector
-LetterBag <- function(word) letters <- nchar(Counter(word))
+LetterBag <- function(word) Counter(strsplit(word, "")[[1]])
 
 
 # PARAMS: Counter A & Counter B  
@@ -62,9 +62,9 @@ LetterBag <- function(word) letters <- nchar(Counter(word))
 # BRIEF: returns TRUE if A is a subset of B, FALSE otherwise 
 `%subset%` <- function(A, B){
     for (item in A$elements()){
-        if( !B$has(item)){
-        return ( FALSE)
-       }   
+        if( !B$has(item)) return ( FALSE)
+        if( !is.numeric(B$value(item) )) return(FALSE)
+        if( B$value(item) < A$value(item)) return (FALSE)
     }
     return( TRUE ) 
     
@@ -87,9 +87,30 @@ testCounter_3 <- Counter(testVec_3)
 
 # LetterBag Tests Go Here
 word1 <- c("crumbus")
-lbTest_1 <- function(word1) return( numeric(7) )
+lbTest_1 <- function(){
+    lb <- LetterBag(word1)
+    stopifnot( lb$value("c") == 1 )
+    stopifnot( lb$value("r") == 1 )
+    stopifnot( lb$value("u") == 2 )
+    stopifnot( lb$value("m") == 1 )
+    stopifnot( lb$value("b") == 1 )
+    stopifnot( lb$value("s") == 1 )
+    print("You Passed")
+}
 word2 <- c("stephope1a")
-lbTest_2 <- function(word2) return( numeric(10) )
+lbTest_2 <- function(){
+    lb <- LetterBag(word2)
+    stopifnot( lb$value("s") == 1 )
+    stopifnot( lb$value("t") == 1 )
+    stopifnot( lb$value("e") == 2 )
+    stopifnot( lb$value("p") == 2 )
+    stopifnot( lb$value("h") == 1 )
+    stopifnot( lb$value("o") == 1 )
+    stopifnot( lb$value("1") == 1 )
+    stopifnot( lb$value("a") == 1 )
+    print("You Passed")
+}
+
 
 # Subset Test
 
