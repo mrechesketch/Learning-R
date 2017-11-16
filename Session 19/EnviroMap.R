@@ -26,7 +26,7 @@ Counter_ <- setRefClass("Counter_",
                     add = function(keys){
                         for( key in keys){
                             # some things already exist in our environment.. awkward
-                            val <- if ( !has(key) || !is.numeric( value(key) ) ) 0 else value(key)
+                            val <- if ( !has(key) ) 0 else value(key)
                             assign(key, val + 1, env)
                         }        
                     }
@@ -63,7 +63,7 @@ LetterBag <- function(word) Counter(strsplit(word, "")[[1]])
 `%subset%` <- function(A, B){
     for (item in A$elements()){
         if( !B$has(item)) return ( FALSE)
-        if( !is.numeric(B$value(item) )) return(FALSE)
+        # if( !is.numeric(B$value(item) )) return(FALSE)
         if( B$value(item) < A$value(item)) return (FALSE)
     }
     return( TRUE ) 
