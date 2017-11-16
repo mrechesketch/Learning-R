@@ -1,8 +1,15 @@
 
 `%C%` <- function(n, k){
-    facTable <- numeric(n)
-    return(n)
+    stopifnot(n >= 0)
+    facTable <- numeric(n+1)
+    facTable[1] <- 0
+    for( i in 1:n+1){
+        facTable[i] <- (n[i]/(k[i]*(n[i]-k[i])))
+    }
+    return(facTable)
 }
+
+binomNum <- (factorial(n)/(factorial(k)*(factorial(n-k))))
 
 chooseTest_1 <- function(){
     expected <- 210
