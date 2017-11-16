@@ -10,7 +10,7 @@ Take for example: myVec <- c('a', 'b')
 Now consider: myVec <- c('a', 'b', 'c')
     - 1 way to express myVec with 3 elements: c('a', 'b', 'c')
     - 3 ways to express myVec with 2 elements: c('a', b'), c('a', 'c'), c('b', 'c')
-    - 3 ways to express myVec with 2 elements: c('a'), c('b'), c('c')
+    - 3 ways to express myVec with 1 elements: c('a'), c('b'), c('c')
     - 1 way to express myVec with 0 elements: 
 
 
