@@ -14,10 +14,10 @@ grow <- function( vec ){
     Nplus1 <- length(vec)+1 # calculate N+1
     helperVec <- 1:Nplus1 # get our helper vector
     results <- vector("list", Nplus1 ) # allocate space for results
+    # TODO SOMETHING HERE.. MAYBE A FOR LOOP?
     for( i in 1:Nplus1 ){
         results[[i]] <- c(helperVec[[i]], vec[[-i]])
         }
-    # TODO SOMETHING HERE.. MAYBE A FOR LOOP?
     return( results )
 }
 
