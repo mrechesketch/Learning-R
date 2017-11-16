@@ -18,7 +18,14 @@ Set_ <- setRefClass("Set_",
 
                 elements = function() ls(env),
 
-                has = function(element) exists(element, envir = env),
+                has = function(element){
+                    if( exists(element, envir = env) ){
+                        bound <- get(element, envir = env)
+                        # letters c,q,t are bound to functions
+                        return( !is.function( bound ) )
+                    }
+                    return( FALSE )
+                },
 
                 add = function(elements) for(item in elements) assign(item, NULL, env), # this can add one item or a vector
 
