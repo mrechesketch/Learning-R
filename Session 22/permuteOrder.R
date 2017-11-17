@@ -1,4 +1,4 @@
-
+source("../Session 7/Stack.R")
 # see growHint.R for super literal, line-by-line, demonstrations 
 # of what will be occuring in your grow function
 
@@ -9,17 +9,49 @@
 # PARAMS: NUMERIC[] vec 
 # OUTPUT: LIST of NUMERIC[]
 # BRIEF: grow takes in a numeric vector of length N and returns a list of N+1 numeric vectors
+
+c("h","j","k")
 grow <- function( vec ){
-    stopifnot(vec > 0)
     Nplus1 <- length(vec)+1 # calculate N+1
     helperVec <- 1:Nplus1 # get our helper vector
     results <- vector("list", Nplus1 ) # allocate space for results
     # TODO SOMETHING HERE.. MAYBE A FOR LOOP?
     for( i in 1:Nplus1 ){
-        results[[i]] <- c(helperVec[[i]], vec[[-i]])
+        answerN <- numeric(Nplus1)
+        answerN[ helperVec[i] ] <- Nplus1
+        answerN[ helperVec[-i] ] <- vec
+        results[[i]] <- answerN
         }
     return( results )
 }
+
+# PARAMS: CHARACTER[] letters 
+# OUTPUT: CHARACTER[] 
+# BRIEF: Function takes in a character vector of length N and returns a character vector of N! possible combination of the letters 
+
+scrabbleLetters <- function( letters ){
+    myStack <- Stack()
+    letterLength <- length(letters)
+    myStack$push(1)
+    answerSpace <- character(factorial(letterLength))
+    i <- 1
+    while( !myStack$isEmpty()){
+        resulty <- myStack$pop()
+        resultyLen <- length(resulty)
+        if( resultyLen == letterLength){
+            answerSpace[i] <- paste(letters[resulty], collapse = "")
+            i <- i+1
+        }
+        else{
+            grownList <- grow(resulty) 
+            for( grown in grownList)
+                myStack$push(grown)
+        }
+    }
+    return(answerSpace)
+    
+}
+
 
 # grow(1) --> list( c(2,1), c(1,2) )
 growTest_1 <- function(){
@@ -32,7 +64,7 @@ growTest_1 <- function(){
 
 # grow( c(1,2) ) --> list( c(3,1,2), c(1,3,2), 3:1 )
 growTest_2 <- function(){
-    expected <- list( c(3,1,2), c(1,3,2), 3:1 )
+    expected <- list( c(3,1,2), c(1,3,2), 1:3 )
     actual <- grow(1:2)
     pass <- if( is.logical(all.equal(actual, expected)) ) TRUE else FALSE
     stopifnot( pass )

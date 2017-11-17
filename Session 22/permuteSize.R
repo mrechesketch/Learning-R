@@ -2,14 +2,18 @@
 `%C%` <- function(n, k){
     stopifnot(n >= 0)
     facTable <- numeric(n+1)
-    facTable[1] <- 0
-    for( i in 1:n+1){
-        facTable[i] <- (n[i]/(k[i]*(n[i]-k[i])))
+    facTable[1] <- 1
+    for( i in 1:(n+1)){
+        facTable[i+1] <- i * facTable[i]
     }
-    return(facTable)
+    #print(facTable)
+    result <- facTable[n+1]/(facTable[k+1]*facTable[n+1-k])
+    return(result)
 }
 
-binomNum <- (factorial(n)/(factorial(k)*(factorial(n-k))))
+intersetingExample <- c("a", "b", "c", "d")
+
+
 
 chooseTest_1 <- function(){
     expected <- 210
