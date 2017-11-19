@@ -37,16 +37,33 @@ dropEmptyZips <- function(data){
     return( data )
 }
 
-#rows by name
+# ======================= SUMMARY DATA FRAME ================== #
 
-#FILTER FAIL
-eventFactor <- factor(data$Event)
+# similar to a pivot table, we're going to create a summary data table which
+# will have all the data we want to graph in a concise place
+
+# Headers : Event, Occurences, Total Proceeds, Most Common Zip,  
+
+
+# ======================= EVENT VS PROCEEDS ================== #
+
+# CHART TYPE : Bar
+# X AXIS : Column - "Event" , Type - CHARACTER 
+# Y AXIS : Column - Proceeds , Type - NUMERIC 
+# BRIEF : low proceed Events are filtered out (specifics??) and then plotted against their total proceeds 
+
+eventVProceeds <- function(){
+   
+}
+ eventFactor <- factor(data$Event)
 tb <- table(eventFactor)
 # funData <- subset(data, tb[Event] > 100)
 
 #gives you the list of events that meet our criteria
 EventKeeps <- Filter(function(x) tb[x] >1000, data$Event)
 
-ndata <- subset(data, Event %in% EventKeeps)
+ndata <- subset(data, Event %in% EventKeeps) 
+varVar <- ggplot( ndata, aes(Event)) + geom_bar()
 
-#varVar <- ggplot( ndata, aes(Event)) + geom_bar()
+
+# ======================= DATE VS PROCEEDS ================== #

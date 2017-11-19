@@ -10,12 +10,11 @@ source("../Session 7/Stack.R")
 # OUTPUT: LIST of NUMERIC[]
 # BRIEF: grow takes in a numeric vector of length N and returns a list of N+1 numeric vectors
 
-c("h","j","k")
+
 grow <- function( vec ){
     Nplus1 <- length(vec)+1 # calculate N+1
     helperVec <- 1:Nplus1 # get our helper vector
     results <- vector("list", Nplus1 ) # allocate space for results
-    # TODO SOMETHING HERE.. MAYBE A FOR LOOP?
     for( i in 1:Nplus1 ){
         answerN <- numeric(Nplus1)
         answerN[ helperVec[i] ] <- Nplus1
@@ -29,26 +28,27 @@ grow <- function( vec ){
 # OUTPUT: CHARACTER[] 
 # BRIEF: Function takes in a character vector of length N and returns a character vector of N! possible combination of the letters 
 
-scrabbleLetters <- function( letters ){
-    myStack <- Stack()
+scrambleLetters <- function( letters ){
     letterLength <- length(letters)
+    # declare the stack
+    myStack <- Stack()
     myStack$push(1)
-    answerSpace <- character(factorial(letterLength))
+    # allocate space for answers
+    answers <- character(factorial(letterLength))
     i <- 1
     while( !myStack$isEmpty()){
-        resulty <- myStack$pop()
-        resultyLen <- length(resulty)
-        if( resultyLen == letterLength){
-            answerSpace[i] <- paste(letters[resulty], collapse = "")
-            i <- i+1
+        top <- myStack$pop()
+        topLen <- length(top)
+        if( topLen == letterLength ){ # when lengths are ==
+            string <- paste(letters[top], collapse = "")
+            answers[i] <- string; i <- i+1  # it's time to write the string
         }
         else{
-            grownList <- grow(resulty) 
-            for( grown in grownList)
-                myStack$push(grown)
+            grownList <- grow(top) # keep growing
+            for( grown in grownList) myStack$push(grown)
         }
     }
-    return(answerSpace)
+    return(answers)
     
 }
 
