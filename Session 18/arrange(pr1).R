@@ -1,3 +1,7 @@
+#R version 3.3.2 
+  
+print("Hello, world!")
+
 # this problem is based off HomeAway's (Expedia?? I don't really know tbh) coding challenge 
 # there was 75 minutes to complete two problems. This was problem 1
 
@@ -26,6 +30,8 @@ capitalize <- function(word){
     #select first element apply funciton to first element
     #use paste to put it back together 
 } # this one might require more than one line
+   
+sortLength <- function(word) order(nchar(word))
 
 addPeriod <- function(word) paste0(word, ".") 
 
@@ -35,21 +41,21 @@ arrange <- function(sentence){
     tokens <- strsplit(sentence, " ")[[1]]
 
     # lowercase first letter of first word
-
+    tokens[1] <- decapitalize(tokens[1])
     # remove period 
-
+    tokens <- removePeriod(tokens)
     # arrange by length
-
+    tokens <- tokens[sortLength(tokens)]
     # capitalize first word
-
+    tokens[1] <- capitalize(tokens[1])
     # add period
-
+    tokens[length(tokens)] <- addPeriod(tokens[length(tokens)])
     # joing them all together
     sentence <- paste(tokens, collapse = " ")
 
     return(sentence)
 }
-
+    
 
 
 decapTests <- list(

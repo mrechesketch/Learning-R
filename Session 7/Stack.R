@@ -33,7 +33,9 @@ Stack_ <- setRefClass("Stack_",
                 }
             },
 
-            isEmpty = function() return(len == 0)
+            isEmpty = function() return(len == 0),
+
+            peak = function() return(head$data)
         ))
 
 Stack <- function(){

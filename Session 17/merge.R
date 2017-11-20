@@ -15,15 +15,47 @@
 #   howMany( c(1:4), 2 ) = 2
 #   howMany( c(1:4), 4 ) = 4
 
-howMany <- function(nums, max)
+howMany <- function(nums, max){
+        underMax <- 0
+        for(i in seq_along(nums)){
+             if( nums[i] <= max){
+                 underMax <- underMax+1
+             }
+        } 
+        return(underMax)
+}
 
 # and now another function count that does the same, except now max is maxes, a vector
 
-counts <- function(nums, maxes)
-
+counts <- function(nums, maxes){
+        underCount <- numeric(length(maxes))
+        for(i in seq_along(maxes)){
+            underCount[i] <- howMany(nums, maxes[i])
+        }
+        return(underCount)
+}
 
 # our merge function will take in two sorted lists of numbers
 # it will return a combined, sorted list
+
+createTable <- function(nums){
+    nums <- sort(nums)
+    table <- numeric(nums[length(nums)])
+    counter <- 0; nIndex <- 1
+    for(i in seq_along(table)){
+        while( nums[nIndex] <= i && nIndex <= length(nums) ){
+            # cat("nIndex is", nIndex, "\n")
+            # cat("nums[nIndex] is", nums[nIndex], "\n")
+            counter <- counter + 1
+            nIndex <- nIndex + 1
+        }
+        table[i] <- counter
+    }
+    return(table)
+}
+
+nums <- c(3, 3, 3, 5, 4, 3, 3, 6, 5)
+t<- createTable(nums)
 
 # example 0: merge( c(), c() ) == numeric(0)
 # example 1: merge(1, c() ) == c(1)
@@ -34,26 +66,60 @@ counts <- function(nums, maxes)
 merge <- function(A, B){
     output <- numeric( length(A) + length(B) )
     Acounter <- 1; Bcounter <- 1
+    incA <- function() Acounter <<- Acounter + 1
+    incB <- function() Bcounter <<- Bcounter + 1
+    invalid <- function(AB) is.null(AB) || is.na(AB) 
     for( i in seq_along(output) ){
         # See where you are at
         currentA <- A[Acounter]
         currentB <- B[Bcounter]
         # if NA on A or B, update output accordingly
-        if ( is.null(currentA) || is.na(currentA) ){
+        if ( invalid(currentA)){
             output[i] <- currentB
-            incr(Bcounter) <- 1
+            incB() 
         }
-        else if ( is.null(currentB) || is.na(currentB) ){
+        else if (invalid(currentB) ){
             output[i] <- currentA
-            incr(Acounter) <- 1
+            incA() 
         } 
         # begin determining order of valid numbers
         else{
             AlessThanB <- currentA < currentB
             output[i] <- if (AlessThanB) currentA else currentB
-            if ( AlessThanB ) incr(Acounter) <- 1 else incr(Bcounter) <- 1
+            if ( AlessThanB ) incA() else incB()
         }
     }
     return(output)
 }
 
+split <- function(A){   
+    len <- length(A)
+    if( len == 1){
+        return(list( numeric(0), A ) )
+    }
+    stop <- floor(len/2) 
+    return( list( A[1:stop], A[(stop+1):len]) )
+}
+
+testVec_1 <- c(1)
+testVec_2 <- c(1,3,2,4)
+testVec_3 <- c(1,3,2)
+
+testySplit <- function(){
+    t1 <- list( c(1), c() )
+    print(split(testVec_1) == t1)
+    t2 <- list( c(1, 3), c(2, 4))
+    print(split(testVec_2) == t2)
+    t3 <- list( c(1,), c(3, 2))
+    print(split(testVec_3) == t3)
+}
+
+
+mergeSort <- function(A){
+    BC <- split(A)
+    B <- BC[[1]]; C <- BC[[2]]
+    if( length(B) <= 1  && length(C) <= 1 ){
+        return( merge(B, C))
+    }
+    merge(mergeSort(B), mergeSort(C))
+    }
