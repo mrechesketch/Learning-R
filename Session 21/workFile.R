@@ -3,6 +3,7 @@ library("ggplot2")
 
 
 # write a new (smaller) relevant data set
+#how to clean a dataset
 # techniques courtesy of:
     # http://www.dummies.com/programming/r/how-to-remove-rows-with-missing-data-in-r/
     # http://www.instantr.com/2012/12/11/exporting-a-dataset-from-r/
@@ -51,6 +52,7 @@ Events <- names( eventTable )
 Volume <- as.vector( eventTable )
 
 # Moving onto total proceeds
+#totally cool, memorize
 Total_Proceeds <- sapply(Events, function(e) sum( subset(data, Event == e )$Ticket.Net.Proceeds ) )
 
 # And now zip code analysis
@@ -84,9 +86,27 @@ Day_of_Week <- weekdays( Peak_Day )
 # now bring it all together
 
 summary <- data.frame(Events, Volume, Total_Proceeds, Most_Common_Zip, Peak_Day, Day_of_Week )
+fileWriter <- function(){
+    summaryName <- "Summary_2017.csv"
+    write.csv(summary, summaryName, row.names=F)
+    cat("data has been written to: ", summaryName, "\n")
+}
 
+zipFactor <- factor(data$Buyer.Postal.Code)
+ZipTable <- sort( table(zipFactor), decreasing=TRUE)
 
+zips <- names(ZipTable)
 
+zipVolume <- as.vector(ZipTable)
+
+zipdf <- data.frame(zips, zipVolume)
+
+ggplot(zipdf[2:16,], aes(reorder(zips, -zipVolume), zipVolume) )+geom_point() +geom_text(aes(label=zipVolume))
+
+# theTable <- within(data, 
+#                    Buyer.Postal.Code <- factor(Buyer.Postal.Code, 
+#                                       levels=names(sort(table(Buyer.Postal.Code), 
+#                                                         decreasing=TRUE))))
 
 # ======================= EVENT VS PROCEEDS ================== #
 
@@ -99,10 +119,10 @@ summary <- data.frame(Events, Volume, Total_Proceeds, Most_Common_Zip, Peak_Day,
 # funData <- subset(data, tb[Event] > 100)
 
 #gives you the list of events that meet our criteria
-EventKeeps <- Filter(function(x) tb[x] >1000, data$Event)
+# EventKeeps <- Filter(function(x) tb[x] >1000, data$Event)
 
-ndata <- subset(data, Event %in% EventKeeps) 
-varVar <- ggplot( ndata, aes(Event)) + geom_bar()
+# ndata <- subset(data, Event %in% EventKeeps) 
+# varVar <- ggplot( ndata, aes(Event)) + geom_bar()
 
 
 # ======================= DATE VS PROCEEDS ================== #
