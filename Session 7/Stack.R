@@ -33,11 +33,13 @@ Stack_ <- setRefClass("Stack_",
                 }
             },
 
-            isEmpty = function() return(len == 0),
+            isEmpty = function() return(len == 0)
 
-            peak = function() return(head$data)
         ))
 
+
+# Stack constructor is a seperately defined function
+# where the Stack_ ref class $new function is used
 Stack <- function(){
     return(Stack_$new(len = 0, head = NULL))
 }

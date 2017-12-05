@@ -1,0 +1,2 @@
+1. Create a curve class like the one we talked about. Look at CurveTests.R and see how the curve class interface works. There are two tests. You will be writing two main things. A curve constructor and a $getY(x) function. If you need help remembering what a refclass looks like, see Session 7/Stack.R. Please name the reference class "Curve_" and then give the constructor the name "Curve" 
+2. matrixSkimmer.R has the other problem we talked about. I have defined a couple test matrices that you can run your function on. Again, you pseudo-coded this. 
