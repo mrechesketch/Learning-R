@@ -1,5 +1,24 @@
 source("Curve.R")
 
+CurveClass <- set.ref.class(
+    "Curve_",
+    fields = list(
+        A = "numeric",
+        B = "numeric",
+        C = "numeric"),
+    Methods(
+        GetY = Function(x){
+            return(A, B*x, Cx**2)
+        }
+
+    )
+) 
+
+Curve <- function(){
+    return(Curve_$new(len = 0, head = NULL))
+}
+
+
 # curve constructor test
 constructorTest <- function(){
     # coefficients

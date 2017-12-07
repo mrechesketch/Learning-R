@@ -15,7 +15,21 @@ matrix_3 <- matrix(c(data,0), nrow = 5, ncol = 5)
 # for the purpose of this exercise, it is ok to append to a list
 # returnList <- append(returnList, appendee) is how it looks
 
+
+
 skimMat <- function(mat, thresehold){
     returnList <- list()
+
     return( returnList )
+}
+
+getX <- function (mat, thresehold) {
+    returnList <- list()
+    for (row in nrow){
+        for (col in ncol){
+            if(mat[i, j] >= thresehold){
+                returnList$append(c(row, col))
+            }
+    }
+   return( returnList )
 }
