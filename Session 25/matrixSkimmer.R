@@ -22,8 +22,7 @@ skimMat <- function (mat, thresehold) {
     for (row in 1:nrow(mat)){
         for (col in 1:ncol(mat)){
             if(mat[row, col] >= thresehold){
-                returnList$row <- append(returnList$row, row)
-                returnList$col <- append(returnList$col, col)
+                returnList <- append(returnList, c(row, col) )
             }
         }
     }
