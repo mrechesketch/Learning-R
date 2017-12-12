@@ -17,19 +17,15 @@ matrix_3 <- matrix(c(data,0), nrow = 5, ncol = 5)
 
 
 
-skimMat <- function(mat, thresehold){
-    returnList <- list()
-
-    return( returnList )
-}
-
-getX <- function (mat, thresehold) {
-    returnList <- list()
-    for (row in nrow){
-        for (col in ncol){
-            if(mat[i, j] >= thresehold){
-                returnList$append(c(row, col))
+skimMat <- function (mat, thresehold) {
+    returnList <- list( "row" = numeric(0), "col" = numeric(0) )
+    for (row in 1:nrow(mat)){
+        for (col in 1:ncol(mat)){
+            if(mat[row, col] >= thresehold){
+                returnList$row <- append(returnList$row, row)
+                returnList$col <- append(returnList$col, col)
             }
+        }
     }
    return( returnList )
 }
