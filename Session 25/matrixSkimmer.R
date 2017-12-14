@@ -17,6 +17,7 @@ matrix_3 <- matrix(c(data,0), nrow = 5, ncol = 5)
 
 
 
+<<<<<<< HEAD
 skimMat <- function(mat, thresehold){
     returnList <- list()
 
@@ -25,6 +26,10 @@ skimMat <- function(mat, thresehold){
 
 getX <- function (mat, thresehold) {
     returnList <- list() 
+=======
+skimMat <- function (mat, thresehold) {
+    returnList <- list( "row" = numeric(0), "col" = numeric(0) )
+>>>>>>> 2842b3b32d35b84c47b41c1ea4ad56167b934321
     for (row in 1:nrow(mat)){
         for (col in 1:ncol(mat)){
             if(mat[row, col] >= thresehold){
@@ -32,5 +37,9 @@ getX <- function (mat, thresehold) {
             }
         }
     }
+<<<<<<< HEAD
     return( returnList ) 
+=======
+   return( returnList )
+>>>>>>> 2842b3b32d35b84c47b41c1ea4ad56167b934321
 }

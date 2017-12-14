@@ -119,7 +119,7 @@ spookyTree_ <- setRefClass("spookyTree_",
                         dataFrame <- inOrderDataFrame()
                         # step 4: plot!
                         p <- ggplot(dataFrame, aes(values, heights, size = sizes, colour = heights) ) + geom_point() 
-                        p <- p + labs(x = "Value of BST", y = "Height of BST")
+                        p <- p + labs(x = "Value of Node", y = "Height")
                         p <- p + geom_spoke( aes( angle = phases, radius = magnitudes) ) 
                         return(p)
                     }
