@@ -1,21 +1,20 @@
-source("Curve.R")
+#source("Curve.R")
 
-CurveClass <- set.ref.class(
-    "Curve_",
+Curve_ <- setRefClass("Curve_",
     fields = list(
         A = "numeric",
         B = "numeric",
         C = "numeric"),
-    Methods(
-        GetY = Function(x){
-            return(A, B*x, Cx**2)
+    methods = list(
+        GetY = function(x){
+            return(sum(A, B*x, Cx**2))
         }
 
     )
 ) 
 
-Curve <- function(){
-    return(Curve_$new(len = 0, head = NULL))
+Curve <- function(A = a, B = b, C = c){
+    return(Curve_$new(A = 0, B = 1, C = 2))
 }
 
 
@@ -23,10 +22,10 @@ Curve <- function(){
 constructorTest <- function(){
     # coefficients
     A <- 0
-    B <- 1
+    B <- 1  
     C <- 2
     # construction
-    myCurve <- Curve(A, B, C)
+    myCurve <- Curve_$new(A=0, B=1, C=2)
     # now test member variables
     stopifnot( myCurve$A == A )
     stopifnot( myCurve$B == B )

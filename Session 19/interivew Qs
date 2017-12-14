@@ -1,0 +1,26 @@
+getX <- function (IMG) {
+    Listy <- list()
+    for (i in H){
+        for (j in W){
+            if(IMG[i, j] =< 120){
+                Listy$appen(c(j, i))
+            }
+    }
+}
+
+Creat class to store the curve data, is binomial curve only
+
+CurveClass <- set.ref.class(
+    "CurveClass",
+    fields = list(
+        X0 = "numeric",
+        X1 = "numeric",
+        X2 = "numeric"),
+    Methods(
+        GetY = Function(x){
+            return(X0, X1*x, X2x^2)
+        }
+
+    )
+) 
+
