@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-#source("Curve.R")
-
-Curve_ <- setRefClass("Curve_",
-    fields = list(
-        A = "numeric",
-        B = "numeric",
-        C = "numeric"),
-    methods = list(
-        GetY = function(x){
-            return(sum(A, B*x, Cx**2))
-=======
 
 
 Curve_ <- setRefClass(
@@ -20,20 +8,14 @@ Curve_ <- setRefClass(
         second = "numeric"),
     methods = list(
         getY = function(x){
-            return( sum(zero, (first*x), (second*(x**2) ) ) )
->>>>>>> 2842b3b32d35b84c47b41c1ea4ad56167b934321
+            return( zero+(first*x)+(second*(x**2) ) )
         }
 
     )
 ) 
 
-<<<<<<< HEAD
-Curve <- function(A = a, B = b, C = c){
-    return(Curve_$new(A = 0, B = 1, C = 2))
-=======
 Curve <- function(x, y, z){
     return(Curve_$new(zero = x, first = y, second = z))
->>>>>>> 2842b3b32d35b84c47b41c1ea4ad56167b934321
 }
 
 
@@ -44,7 +26,7 @@ constructorTest <- function(){
     B <- 1  
     C <- 2
     # construction
-    myCurve <- Curve_$new(A=0, B=1, C=2)
+    myCurve <- Curve(A, B, C)
     # now test member variables
     stopifnot( myCurve$zero == A )
     stopifnot( myCurve$first == B )
@@ -67,3 +49,6 @@ getYTest <- function(){
     stopifnot( myCurve$getY(0:2) == c(1, 6, 17) )
     print( "getY works on a vector input" )
 }
+#creating a function that will reduce dimentionality while preservin length. Can be used like "sum," but it works like addition 
+mySum <- function(...) Reduce(function(x,y) x+y, ...) #looking for anything, in the "..."
+yourSum <- function(...) Map(function(x,y) x+y, ...) #looking for x and y

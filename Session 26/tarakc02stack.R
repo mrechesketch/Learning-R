@@ -1,6 +1,6 @@
 peak <- function(s) UseMethod("peak")
 push <- function(s, new_item) UseMethod("push")
-without_top <- function(s) UseMethod("without_top")
+without_top <- function(s) UseMethod("without_top") #whole thing under the top
 size <- function(s) UseMethod("size")
 
 
@@ -37,3 +37,5 @@ push.stack <- function(s, new_item) {
                size = sz)
     structure(f, class = "stack")
 }
+
+# peak(stack) --> peak.stack(stack) --> stack$peak

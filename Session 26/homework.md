@@ -1,16 +1,16 @@
 1. Consider the two functions: add1 <- function(A,B,C) sum(A,B,C) and add2 <- function(A,B,C) A+B+C. For the following examples, answer with the output of (1) add1(x,y,z) and (2) add2(x,y,z)? 
 
     i. x = 2, y = 4, z = 5
-        (1) > ANSWER:
-        (2) > ANSWER:
+        (1) > ANSWER: 11
+        (2) > ANSWER: 11
 
     ii. x = 1:2, y = c(4, 8), z = 1:0
-        (1) > ANSWER:
-        (2) > ANSWER:
+        (1) > ANSWER:16
+        (2) > ANSWER: 6, 10
 
     iii. x = 2, y = c(4, 8), z = 3:0
-        (1) > ANSWER:
-        (2) > ANSWER:  
+        (1) > ANSWER: 17
+        (2) > ANSWER: 
 
 2. Based on your answer, finish your implementation of the curve class. You will need to change the slot named "C" to something else. Here is a link where someone else had a similar problem: http://r.789695.n4.nabble.com/Why-cant-my-S4-class-have-a-slot-named-C-td4407464.html. 
 
