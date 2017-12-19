@@ -10,7 +10,7 @@
 
     iii. x = 2, y = c(4, 8), z = 3:0
         (1) > ANSWER: 17
-        (2) > ANSWER: 
+        (2) > ANSWER: 9, 12, 7, 10
 
 2. Based on your answer, finish your implementation of the curve class. You will need to change the slot named "C" to something else. Here is a link where someone else had a similar problem: http://r.789695.n4.nabble.com/Why-cant-my-S4-class-have-a-slot-named-C-td4407464.html. 
 
