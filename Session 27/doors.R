@@ -8,3 +8,17 @@
 # the third time you visit doors 3, 6, 9...
 # and so on
 # Do this 100 times
+# what is the final state of all the doors
+
+#all start TRUE
+#after first time all are FALSE
+stateOfDoors <- logical(100)
+
+for(i in 1:100){
+    doorVec <- Filter(function(x) x %% i == 0 , 1:100)
+    stateOfDoors[doorVec] <- !stateOfDoors[doorVec]
+}
+
+for(i in 1:100){
+    cat(i, stateOfDoors[i], "\n")
+}
