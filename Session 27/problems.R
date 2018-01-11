@@ -1,14 +1,28 @@
+#R version 3.3.2 
+  
 
 
 # pr1: reverse the vector
+pr1 <- function(someVector) someVector[length(someVector):1]
+
 pr1 <- function(someVector){
-    return( someVector )
+    lengthVar <- length(someVector)
+    for( i in 1:(lengthVar/2)){
+        tempVar <- someVector[i]
+        someVector[i] <- someVector[lengthVar-(i-1)]
+        someVector[lengthVar-(i-1)] <- tempVar  
+    }
 }
 
 
 # pr2: return all elements with count >1 (hint: use a factor-table combination)
 pr2 <- function(someVector){
-    return( someVector )
+        lengthVec <- length(someVector)
+        someTable <- table(someVector)[table(someVector)>1]
+        someVector <- names(someTable)
+        # someVecFrame <- as.data.frame(someVecTable)
+        # someVector <- subset( someVecFrame, Freq > 1)
+        return( someVector )
 }
 
 
