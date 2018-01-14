@@ -33,10 +33,18 @@ getData <- function( node ) environment(node)$data
 getLeft <- function( node ) environment(node)$left
 getRight <- function( node ) environment(node)$right
 
+printEnvandParent <- function(node){
+    envir <- environment(node)
+    print(envir)
+    parent <- parent.env(envir)
+    print(parent)
+}
+
 printTree <- function(node){
     
     if( !is.null(node) ){
         print( getData(node) )
+        printEnvandParent( node )
         printTree( getLeft(node) )
         printTree( getRight(node) )
     }

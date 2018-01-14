@@ -1,3 +1,5 @@
+#learningtree
+
 win <- function() print("I win!")
 
 lose <- function(){
@@ -38,16 +40,17 @@ guess <- function(question, yes, no){
     y <- yes
     n <- no
     
-    parent <- environment()
+    current <- environment()
+    print("environment: ")
+    print(current)
+    print("Parent of environment: ")
+    print( parent.env( current ) )
    
 
     function(){
         
         print(question)
-        print("Enclosing environment: ")
-        print(parent)
-        print("Parent of enclosing environment: ")
-        print( parent.env( parent ) )
+        
          
         answer <- readline(prompt="y/n: ")
         answer.isYes <- answer == "y"
