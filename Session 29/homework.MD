@@ -11,8 +11,9 @@ a silly mistake when dealing with the large data set and have R crash on us
 
 2. Drop all the useless columns. They are not totally useless, they just can't be used in our methods
 
-    Columns to keep: "price", "abtest", "yearOfRegistration", "gearbox", "powerPS", "kilometer", 
-                    "monthOfRegistration", "fuelType", "notRepairedDamage", "dateCreated", "lastSeen"
+    Columns to keep: "dateCrawled", "price", "abtest", "yearOfRegistration", 
+                    "gearbox", "powerPS", "kilometer", "monthOfRegistration", 
+                    "fuelType", "notRepairedDamage", "dateCreated", "lastSeen"
 
 3. Drop all rows with missing data OR 0 as a value. We will consider the 0 as missing data. If you get stuck on this one, move on and work on 4, 5 and 6!
 
@@ -30,8 +31,9 @@ A few more things:
         Case: II: it's a number(ish)
             First, turn the dates into meaningful numbers
             
+            today - dateCrawled : how long ago was the ad first seen
             lastSeen - dateCreated : how long the vehicle was posted
-            1.2017 - month.yearOfRegistration : how old the vehicle is
+            1.2018(today) - month.yearOfRegistration : how old the vehicle is
             
             Next, encode all numbers scaled on the [-1,1] basis
             where [min, max] == [-1, 1]
@@ -41,9 +43,14 @@ A few more things:
 
 4. Write functions to take care of Case I, encode strings as 1 or -1 and return NA as a default
 
-5. Condense the date related columns into two columns: carAge and timeOnMarket
+5. Condense the date related columns into three columns: when, carAge and timeOnMarket
 
 6. Write a function that takes in a vector and encodes it to a new basis of [-1, 1]
+
+Resources: 
+    i. explanation of abtest: https://www.kaggle.com/morrisb/cleaned-used-cars-database/code
+    ii. decision tree: https://www.statmethods.net/advstats/cart.html
+    iii. data set: https://www.kaggle.com/orgesleka/used-cars-database
             
 
   
