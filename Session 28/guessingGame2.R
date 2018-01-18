@@ -3,10 +3,10 @@
 
      
 
-playAgain <- function(){
-    again <- readline( prompt = "Would you like to play again? y/n: ")
-    again == "y"
-}
+# playAgain <- function(){
+#     again <- readline( prompt = "Would you like to play again? y/n: ")
+#     again == "y"
+# }
 
 
 

@@ -19,6 +19,8 @@ writeCarData <- function(){
     ncols <- ncol(data)
     cat(ocols - ncols, "columns have been dropped", "\n")
     # write to a new file
+    return(1)
+}
     
 
 
@@ -37,16 +39,18 @@ writeCarData <- function(){
 
 # drop the sparse rows
     # TODO
-    data <- within(data, X <- ifelse(is.na(X), 0, X))
-    data[rowSums(0 == data) != ncol(data),]
 
+
+    data[data == ""] <- NA
+    data[data == 0] <- NA
+    data == na.omit(data) 
 # functions to encode strings
     #case 1
 #makeBinary <- function(x){
     #x <-encodeString(x, 2)
 #}
 
-    data$abtest[data$test] <- 1L 
+    data[data == "test"] <- 1L 
     data$abtest[data$scontrol] <- -1L 
 
     data$gearbox[data$manuell] <- 1L 
@@ -65,22 +69,13 @@ writeCarData <- function(){
     ageOfCar <- today - monthOfRegistration
 
     #numbers along a scale
-#numScale <- function(x){
-    #maxs <- apply(x, 3, max)
-    #mins <- apply(x, 3, min)
-    #scale(x, center=(maxs+mins)/3, scale=(maxs-mins)/3)
-#}
-    maxs <- apply(firstSeen, 3, max)
-    mins <- apply(firstSeen, 3, min)
-    scale(firstSeen, center=(maxs+mins)/3, scale=(maxs-mins)/3)
+numScale <- function(data){
+    maxs <- apply(data, 2, max)
+    mins <- apply(data, 2, min)
+    scale(data, center=(maxs+mins)/2, scale=(maxs-mins)/2)
+}
 
-    maxs <- apply(lengthOfPost, 3, max)
-    mins <- apply(lengthOfPost, 3, min)
-    scale(lengthOfPost, center=(maxs+mins)/3, scale=(maxs-mins)/3)
-
-    maxs <- apply(ageOfCar, 3, max)
-    mins <- apply(ageOfCar, 3, min)
-    scale(a, center=(maxs+mins)/3, scale=(maxs-mins)/3)
+mapply( function(d, mx, mn) scale(d, center = (mx+mn)/2, scale = (mx-mn)/2), data, maxs, mins)
 
     # abtest
 encodeABTest <- function(aORb) switch(aORb, test = 1, control = -1, NA) # last value is default

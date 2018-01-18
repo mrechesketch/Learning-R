@@ -96,7 +96,7 @@ transformData <- function(df){
         # car age
     getCarAge <- function(month, year){
         dateStr <- paste0(year, "-", month, "-", "15")
-        begin <- as.Date( dateStr, "%Y-%m-%d" )
+        begin <- as.Date( dateStr, "%Y-%m-%d", tz = "CST")
         end <- Sys.Date()
         as.integer( end - begin )
     }
