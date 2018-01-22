@@ -117,7 +117,7 @@ transformData <- function(df){
                         monthOfRegistration, dateCreated, lastSeen))
 
 
-    return(df)
+    return( df )
 }
 
 

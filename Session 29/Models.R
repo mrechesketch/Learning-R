@@ -1,48 +1,45 @@
-source("dataTreatment.R")
-
-
-f1 <- "used_cars-small.csv"
-f2 <- "used_cars-test-dirty.csv"
-training.set <- "used_cars-train.csv"
-test.set <- "used_cars-test.csv"
-answers <- "used_cars-results.csv"
 
 Model <- setRefClass(
             Class = "Model",
 
             fields = list(
-                model = "matrix",
-                dists = "numeric",
-                means = "numeric",
-                observable = "character",
+                designMatrix = "matrix",
+                testMatrix = "matrix",
+                observable = "ANY",
                 # left null
-                fit = "ANY",
+                model = "ANY",
                 predictions = "numeric"
             ),
 
             methods = list(
 
-                initialize = function(filename = training.set, obs = "price"){
-                    # extract
-                    scrubbed <- cleanData(filename)
-                    transformed <- transformData(scrubbed)
-                    # create min-max matrix
-                    minMaxMatrix <- apply(transformed, 2, function(x) c( min(x), max(x) ))
-                    rownames(minMaxMatrix) <- c("min", "max")
+                initialize = function(train, test, predict){
+                    # separate the observable from the training
+                    observable <<- train[predict] 
+                    train <- train[!names(train) == predict]
+                    # separate the ?observable from the testing
+                    if( any( names(test) == predict ) ){
+                        test <- test[!names(test) == predict]
+                    }
+                    # create mins & maxes
+                    mins <- apply(train, 2, min)
+                    maxes <- apply(train, 2, max)
                     # assign member variables
-                    means <<- apply(minMaxMatrix, 2, function(x) (x["max"] + x["min"])/2 )
-                    dists <<- apply(minMaxMatrix, 2, function(x) (x["max"] - x["min"])/2 )
-                    model <<- mapply( function(dm, avg, ds) (dm-avg)/ds, transformed, means, dists)
-                    observable <<- obs
-                    # repeat{
-                    #     print( colnames(model) )
-                    #     observable <<- readline(prompt = "Choose one to model, (no quotes): ")
-                    #     if( any(colnames(model) == observable) ) break else print("invalid, try again")
-                    # }
+                    designMatrix <<- encode(train, avg = (mins+maxes)/2, span = (maxes-mins)/2)
+                    testMatrix <<- encode(test, avg = (mins+maxes)/2, span = (maxes-mins)/2)
                     print("Model is ready to build") # goodbye message                    
                 },
 
-                show = function() print( head(model) )
+                show = function() print( class(.self)[1] ), # print class name,
+
+            # scales and translates a matrix to a [-1, 1] basis and adds column of ones
+                encode = function(dataframe, avg, span){
+                    ones <- rep(1L, nrow(dataframe)) 
+                    scale( x = cbind(ones, dataframe), # add in column of 1's
+                    center = c(0,avg), scale = c(1,span) ) # set center and scale appropriately
+                }
+
+            
             )
 )
 
@@ -53,17 +50,13 @@ TreeModel <- setRefClass(
 
                     load = function(){
                         library(rpart)
-                        form <- paste(observable, "~.")
-                        fit <<- rpart( formula = form, data = data.frame(model) )
+                        form <- paste(names(observable), "~.")
+                        model <<- rpart( formula = form, data = data.frame(observable, designMatrix) )
                         print("Tree Model loaded")
                     },
 
-                    execute = function(testSet = test.set){
-                        ts <- read.csv(testSet) # read in
-                        ts <- transformData(ts) # transform to numerics
-                        ts <- mapply( function(dm, avg, ds) (dm-avg)/ds, ts, means, dists) # encode
-                        values <- predict(fit, data.frame(ts), type = "vector")
-                        predictions <<- (values * dists[observable]) + means[observable]
+                    execute = function(){
+                        predictions <<- predict(model, data.frame(testMatrix), type = "vector")
                         print("Tree Model executed") 
                     },
 
@@ -87,26 +80,17 @@ MatrixModel <- setRefClass(
     methods = list(
 
         load = function(){
-           y <- model[,observable]
-           colsToKeep <- !colnames(model) == observable
-           # , is because the first subest is rows, second is columns 
-           X <- model[,colsToKeep] 
+           y <- observable[[names(observable)]] # coerce to vector
+           X <- designMatrix
            X.T <- t(X) 
            #from https://en.wikipedia.org/wiki/Linear_least_squares_(mathematics)#R_(programming_language)
-           fit <<- solve(X.T %*% X) %*% X.T %*% y 
+           model <<- solve(X.T %*% X) %*% X.T %*% y 
            print("Matrix Model loaded")
         },
 
-        execute = function(testSet = test.set){
-            ts <- read.csv(testSet) # read in
-            ts <- transformData(ts) # transform to numerics
-            ts <- mapply( function(dm, avg, ds) (dm-avg)/ds, ts, means, dists) # encode
-            colsToKeep <- !colnames(ts) == observable
-            ts <- ts[,colsToKeep] 
-            values <- apply(ts, 1, function(r) r %*% fit )
-            predictions <<- (values * dists[observable]) + means[observable]
+        execute = function(){
+            predictions <<- apply(testMatrix, 1, function(r) r %*% model ) # dot product!
             print("Matrix Model executed") 
-
         },
 
          write = function(resultFileName = answers){
@@ -119,7 +103,28 @@ MatrixModel <- setRefClass(
     )
 )
 
-tm <- MatrixModel()
+# lets test the models on some data
+source("dataTreatment.R")
+
+# train data
+f1 <- "used_cars-small.csv"
+f2 <- "used_cars-test-dirty.csv"
+train.set <- "used_cars-train.csv"
+test.set <- "used_cars-test.csv"
+answers <- "used_cars-results.csv"
+
+
+# prepare data 
+training <- transformData(cleanData(train.set))
+testing <- transformData(read.csv(test.set))
+
+
+tm <- TreeModel(train = training, test = testing, predict = "price")
 tm$load()
 tm$execute()
 tm$write()
+
+mm <- MatrixModel(train = training, test = testing, predict = "price")
+mm$load()
+mm$execute()
+mm$write()
