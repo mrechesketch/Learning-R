@@ -15,11 +15,13 @@ v <- setRefClass(
 
     methods = list(
 
-        initialize = function( mode = "list" ){
+        initialize = function( mode = "list", ... ){
                 type <<- mode # default type is list for maximum flexibility
                 size <<- 0L
                 contents <<- NULL
                 capacity <<- 0L
+                # add in any items using push_back
+                for( item in list(...) ) for(i in item) push_back(i)
             },
         
         show = function() print(contents[1:size]),
@@ -52,32 +54,42 @@ v <- setRefClass(
                 else if(size <= capacity/2L){
                     capacity <<- as.integer(capacity/2L)
                     newContents <- vector(type, capacity)
-                    newContents <- contents[1:size]
+                    newContents <- contents[1L:size]
                     contents <<- newContents
                 }
                 return(element)
-        }
+        },
+
+        getItem = function(index) if(index > size) NA else contents[index], # make it feel like a normal array
+
+        setItem = function(index, value){
+            array <- contents[1L:size] 
+            array[index] <- value
+            contents <<- array
+            if(index > size){
+                if( index > capacity ) capacity <<- as.integer(index)
+                size <<- as.integer(index)
+                }
+        }  
 
             )
 )
 
-# setMethod(f = "[", 
-#         signature = "v", 
-#         function(x, i, j = NULL, ..., drop = TRUE)x$contents[i])
+# get item
+`[.v` <- function(x, index) x$getItem(index)
+# set item
+`[<-.v` <- function(x, index, value){
+    x$setItem(index, value)
+    x # http://adv-r.had.co.nz/Functions.html#special-calls replacement function..
+}
+# length
+setMethod(f = "length",
+        signature = "v",
+        function(x) x$size
+)
 
-# v extraction "["
-`[.v` <- function(x, index) return(0)
-
-# v assignment "[<-"
-    # TODO
-
-# v length
-    # TODO
-
-# v reverse
-    # TODO
+# test vecs
+v_1 <- v("integer")
+for( i in 1:10 ) v_1$push_back(i)
 
 
-pro <- v("integer")
-
-for( i in 1:10L ) pro$push_back(i)
