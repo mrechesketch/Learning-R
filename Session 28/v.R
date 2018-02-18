@@ -58,24 +58,16 @@ v <- setRefClass(
                 return(element)
         }
 
-            )
+            )  
 )
 
-# setMethod(f = "[", 
-#         signature = "v", 
-#         function(x, i, j = NULL, ..., drop = TRUE)x$contents[i])
+setMethod(f = "[", 
+        signature = "v", 
+        function(x, i, j = NULL, ..., drop = TRUE){
+            subset <- if( is.null(j) ) i else i:j
+            x$contents[subset]
+        })
 
-# v extraction "["
-`[.v` <- function(x, index) return(0)
-
-# v assignment "[<-"
-    # TODO
-
-# v length
-    # TODO
-
-# v reverse
-    # TODO
 
 
 pro <- v("integer")
