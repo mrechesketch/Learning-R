@@ -11,6 +11,30 @@ output <- args[3]
 
 # }
 
+INPUT <- "temp/input/itcont.txt"
+
+########################
+# CONST VARIABLES #
+
+CMTE_ID <- 1
+NAME <- 8
+ZIP_CODE <- 11 # only first 5
+TRANSACTION_DT <-14
+TRANSACTION_AMT <- 15 
+OTHER_ID <- 16 # needs to be empty
+
+pipeSplitr <- function(input){
+    con <- file(input, "r")
+        while( TRUE ){
+            line <- readLines(con, n=1)
+            if ( length(line) == 0 ) break
+            result <- strsplit(line, "|")
+            print(result)
+    }
+
+}
+
+
 main <- function(input, percent, output){
     # open the input
     con <- file(input, "r")
