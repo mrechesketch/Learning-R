@@ -58,28 +58,52 @@ NewPerson <- function(donation){
     ))
 }
 
-helper1 - function()
-
-
-
-
 upDatePerson <- function(donation, Person){
     Person[[NUMBER]] <- Person[[NUMBER]]+1L
     Person[[TOTAL_MONEY]] <- Person[[TOTAL_MONEY]]+donation
     # is there an equivalet donation in the array already?
     i <- 1L
-    while(donation <= Person[[DONS]][i]){
-        if( donation == Person[[DONS]][i]){
+    while(donation <= Person[[DONS]][i] && i <= Person[[NUMBER]]){
+        if( donation == Person[[DONS]][i] ){
             # easy case, add to histogram
             Person[[HIST]] <- Person[[HIST]]+1L
             return(Person)
         }
         i <- i+1L
     }
-    Person[[DONS]] <- append(Person[[DONS]], donation, after = i-1L)
-    Person[[HIST]] <- append(Person[[HIST]], 1L, after = i-1L) 
+    print( i - 1)
+    Person[[DONS]] <- append(Person[[DONS]], donation, after = i-1)
+    Person[[HIST]] <- append(Person[[HIST]], 1L, after = i-1) 
     return(Person)
 }
+
+
+
+# sample person
+# carl <- NewPerson(35)
+# carl <- upDatePerson(15, carl)
+# carl <- upDatePerson(50, carl)
+# carl <- upDatePerson(20, carl)
+# carl <- upDatePerson(40, carl)
+
+carl <- list(
+    5,
+    160,
+    c(15,20,35,40,50),
+    c(1,1,1,1,1)
+)
+
+
+# TODO <<- 
+
+# calculate function
+PERC <- 0.30 # 30th percentile
+
+calculate <- function(Person){
+    index <- ceiling( perc * Person[[NUMBER]] ) # take the ceiling, not the floor
+    return( Person[[index]] )
+}
+
 
 main <- function(input, percent, output){
     # open the input
