@@ -59,39 +59,41 @@ NewPerson <- function(donation){
 }
 
 upDatePerson <- function(donation, Person){
-    Person[[NUMBER]] <- Person[[NUMBER]]+1L
-    Person[[TOTAL_MONEY]] <- Person[[TOTAL_MONEY]]+donation
-    # is there an equivalet donation in the array already?
     i <- 1L
-    while(donation <= Person[[DONS]][i] && i <= Person[[NUMBER]]){
-        if( donation == Person[[DONS]][i] ){
-            # easy case, add to histogram
-            Person[[HIST]] <- Person[[HIST]]+1L
+    # insert the donation in order
+    while(i <= Person[[NUMBER]]){
+        pastDonation <- Person[[DONS]][i]
+        # easy case, add to histogram
+        if( donation == pastDonation ){
+            Person[[HIST]][i] <- Person[[HIST]][i]+1L
             return(Person)
         }
+        # new donation case
+        if( donation < pastDonation ) break
         i <- i+1L
     }
-    print( i - 1)
+    # new donation case continued
     Person[[DONS]] <- append(Person[[DONS]], donation, after = i-1)
-    Person[[HIST]] <- append(Person[[HIST]], 1L, after = i-1) 
+    Person[[HIST]] <- append(Person[[HIST]], 1L, after = i-1)
+    # update the other members
+    Person[[NUMBER]] <- Person[[NUMBER]]+1L
+    Person[[TOTAL_MONEY]] <- Person[[TOTAL_MONEY]]+donation 
     return(Person)
 }
 
 
 
 # sample person
-# carl <- NewPerson(35)
-# carl <- upDatePerson(15, carl)
-# carl <- upDatePerson(50, carl)
-# carl <- upDatePerson(20, carl)
-# carl <- upDatePerson(40, carl)
+carl <- NewPerson(35)
+carl <- upDatePerson(15, carl)
+carl <- upDatePerson(50, carl)
+carl <- upDatePerson(20, carl)
+carl <- upDatePerson(40, carl)
+carl <- upDatePerson(50, carl)
+carl <- upDatePerson(20, carl)
+carl <- upDatePerson(40, carl)
 
-carl <- list(
-    5,
-    160,
-    c(15,20,35,40,50),
-    c(1,1,1,1,1)
-)
+
 
 
 # TODO <<- 
