@@ -83,6 +83,7 @@ upDatePerson <- function(donation, Person){
 
 
 
+
 # sample person
 carl <- NewPerson(35)
 carl <- upDatePerson(15, carl)
@@ -103,6 +104,7 @@ PERC <- 0.30 # 30th percentile
 
 calculate <- function(Person){
     index <- ceiling( perc * Person[[NUMBER]] ) # take the ceiling, not the floor
+    Person[[index]] <- quantile(DONS, prob = seq(0, 1, length = 11), type = 5)
     return( Person[[index]] )
 }
 
