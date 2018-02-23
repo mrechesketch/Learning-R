@@ -90,21 +90,33 @@ carl <- upDatePerson(15, carl)
 carl <- upDatePerson(50, carl)
 carl <- upDatePerson(20, carl)
 carl <- upDatePerson(40, carl)
-carl <- upDatePerson(50, carl)
-carl <- upDatePerson(20, carl)
-carl <- upDatePerson(40, carl)
+# carl <- upDatePerson(50, carl)
+# carl <- upDatePerson(20, carl)
+# carl <- upDatePerson(40, carl)
 
 
 
 
 # TODO <<- 
+# a couple things
+        # we don't need to be setting Person[[index]] to anything
+        # DONS is an integer whole value is 3 (See line 46)
+        # the quantile function returns a vector of length prob (in this case 11)
+        #   we are looking for a single value
+    # re-read the wiki page: https://en.wikipedia.org/wiki/Percentile
+    # follow their example which has been reproduced above for Carl
+    # test out your code!! 
+    # cd donation-analytics/src
+    # r
+    # source("donation-analytics.r")
+    # calculate(carl)
 
 # calculate function
 PERC <- 0.30 # 30th percentile
 
 calculate <- function(Person){
-    index <- ceiling( perc * Person[[NUMBER]] ) # take the ceiling, not the floor
-    Person[[index]] <- quantile(DONS, prob = seq(0, 1, length = 11), type = 5)
+    index <- ceiling( PERC * Person[[NUMBER]] ) # take the ceiling, not the floor
+    #### Person[[index]] <- quantile(DONS, prob = seq(0, 1, length = 11), type = 5) 
     return( Person[[index]] )
 }
 
