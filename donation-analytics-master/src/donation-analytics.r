@@ -47,7 +47,7 @@ DONS <- 3
 HIST <- 4
 
 
-NewPerson <- function(donation){
+newPerson <- function(donation){
     # index guide
     # #, $, donations, histogram
     return(list(
@@ -136,4 +136,28 @@ main <- function(input, percent, output){
 
 if( !interactive() ){
     main(itcont, perc, output)
+}
+
+
+
+
+extentioner <- function( zipcode, name){
+    zipList <- strsplit(zipcode, split = "")[[1]]
+    zipPaste <- paste0(zipList, collapse = "/")
+    paste0(zipPaste, "/", name, ".RData")
+}
+
+searchAndCreate <- function(donation, zipcode, name){
+    extention <- extentioner(zipcode, name)
+    if( file.exists(extention)){
+        load(extention)
+        p <- upDatePerson(donation, get(name))
+    }
+    else{
+        dir <- sub(".RData", "", extention)
+        dir.create( file.path("../resources", dir) )
+        p <- newPerson(donation)
+    }
+    save(p, file = extention)
+
 }
