@@ -116,8 +116,10 @@ PERC <- 0.30 # 30th percentile
 
 calculate <- function(Person){
     index <- ceiling( PERC * Person[[NUMBER]] ) # take the ceiling, not the floor
-    #### Person[[index]] <- quantile(DONS, prob = seq(0, 1, length = 11), type = 5) 
-    return( Person[[index]] )
+    for( i in 1:Person[[NUMBER]] ){
+        # TODO: write your magic here!
+    } 
+    return( Person[[dons]][index] )
 }
 
 
