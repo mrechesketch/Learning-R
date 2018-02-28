@@ -23,6 +23,10 @@ TRANSACTION_DT <-14
 TRANSACTION_AMT <- 15 
 OTHER_ID <- 16 # needs to be empty
 
+RESOURCES <- "../resources"
+
+
+
 nameZipPaste <- function(line){
     uniqueID <- paste0(line[8], line[11])
     return(uniqueID)
@@ -58,7 +62,7 @@ newPerson <- function(donation){
     ))
 }
 
-upDatePerson <- function(donation, Person){
+updatePerson <- function(donation, Person){
     i <- 1L
     # insert the donation in order
     while(i <= Person[[NUMBER]]){
@@ -85,14 +89,14 @@ upDatePerson <- function(donation, Person){
 
 
 # sample person
-carl <- NewPerson(35)
-carl <- upDatePerson(15, carl)
-carl <- upDatePerson(50, carl)
-carl <- upDatePerson(20, carl)
-carl <- upDatePerson(40, carl)
-# carl <- upDatePerson(50, carl)
-# carl <- upDatePerson(20, carl)
-# carl <- upDatePerson(40, carl)
+carl <- newPerson(35)
+carl <- updatePerson(15, carl)
+carl <- updatePerson(50, carl)
+carl <- updatePerson(20, carl)
+carl <- updatePerson(40, carl)
+# carl <- updatePerson(50, carl)
+# carl <- updatePerson(20, carl)
+# carl <- updatePerson(40, carl)
 
 
 
@@ -141,23 +145,40 @@ if( !interactive() ){
 }
 
 
+# encoding zip code and name into file extensions
 
 
-extentioner <- function( zipcode, name){
-    zipList <- strsplit(zipcode, split = "")[[1]]
-    zipPaste <- paste0(zipList, collapse = "/")
-    paste0(zipPaste, "/", name, ".RData")
+splitter <- function(zipcode, name){
+    zipVec <- strsplit(zipcode, split = "")[[1]]
+    names <- strsplit(name, split = ", ")[[1]]
+    lastVec <- strsplit(names[1], split = "")[[1]]
+    filename <- paste0(names[2], ".RData")
+    # zipPaste <- paste0(zipList, collapse = "/")
+    # paste0(zipPaste, "/", name, ".RData")
+    list(path = c(zipVec, lastVec),  name = filename )
+}
+
+# takes in the output of the above
+# turns it into an extension
+extentioner <- function(splitList){
+    path <- paste0(splitList$path, collapse = "/")
+    file.path(RESOURCES, path, splitList$name)
 }
 
 searchAndCreate <- function(donation, zipcode, name){
-    extention <- extentioner(zipcode, name)
+    splittee <- splitter(zipcode, name)
+    extention <- extentioner(splittee)
     if( file.exists(extention)){
         load(extention)
-        p <- upDatePerson(donation, get(name))
+        p <- updatePerson(donation, get("p"))
     }
     else{
-        dir <- sub(".RData", "", extention)
-        dir.create( file.path("../resources", dir) )
+        path <- RESOURCES
+        for(char in splittee$path){
+            path <- file.path(path, char) # add chars one at a time
+            if( !file.exists(path) ) dir.create(path)
+            print(path)
+        }
         p <- newPerson(donation)
     }
     save(p, file = extention)
