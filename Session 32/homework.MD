@@ -55,3 +55,11 @@ Let's consider another case for Gus. Gus is rich.
 To write this function you will want a loop. A for loop that moves over the length of the hist (or dons) vector should be good. I left you some structure on the calculate function. Fill in the inside of the loop.  
 
 
+CalcPerc <- function(dons, hist, p){
+    index <- ceiling(p * length(dons))
+    while(index - hist[i] > 0){
+        index <- index - hist[i+1]
+        if(index - hist[i] == 0) break
+        return(dons[i])
+        }
+}
