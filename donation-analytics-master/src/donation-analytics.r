@@ -55,33 +55,34 @@ newPerson <- function(donation){
     # index guide
     # #, $, donations, histogram
     return(list(
-        1L,
-        donation,
-        c(donation),
-        c(1L)
+        "NUM" = 1L,
+        "TOT" = donation,
+        "DONS" = c(donation),
+        "HIST" = c(1L)
     ))
 }
 
 updatePerson <- function(donation, Person){
     i <- 1L
+    # update the other members
+    Person$NUM <- Person$NUM+1L
+    Person$TOT <- Person$TOT+donation
     # insert the donation in order
-    while(i <= Person[[NUMBER]]){
-        pastDonation <- Person[[DONS]][i]
+    while(donation >= Person$DONS[i] ){
+        pastDonation <- Person$DONS[i]
         # easy case, add to histogram
         if( donation == pastDonation ){
-            Person[[HIST]][i] <- Person[[HIST]][i]+1L
+            Person$HIST[i] <-  Person$HIST[i]+1L
             return(Person)
         }
         # new donation case
-        if( donation < pastDonation ) break
+        # if( donation > pastDonation ) break
         i <- i+1L
+        if(is.na(Person$DONS[i])) break
     }
     # new donation case continued
-    Person[[DONS]] <- append(Person[[DONS]], donation, after = i-1)
-    Person[[HIST]] <- append(Person[[HIST]], 1L, after = i-1)
-    # update the other members
-    Person[[NUMBER]] <- Person[[NUMBER]]+1L
-    Person[[TOTAL_MONEY]] <- Person[[TOTAL_MONEY]]+donation 
+    Person$DONS <- append(Person$DONS, donation, after = i-1)
+    Person$HIST <- append(Person$HIST, 1L, after = i-1)
     return(Person)
 }
 
@@ -177,10 +178,19 @@ searchAndCreate <- function(donation, zipcode, name){
         for(char in splittee$path){
             path <- file.path(path, char) # add chars one at a time
             if( !file.exists(path) ) dir.create(path)
-            print(path)
         }
         p <- newPerson(donation)
     }
     save(p, file = extention)
 
+}
+
+CalcPerc <- function(Person, p){
+    index <- ceiling(p * Person$NUM)
+    i <- 1
+    while(index - Person$HIST[i] > 0){
+        index <- index - Person$HIST[i]
+        i <- 1+i
+        }
+    return(Person$DONS[i])
 }

@@ -57,9 +57,11 @@ To write this function you will want a loop. A for loop that moves over the leng
 
 CalcPerc <- function(dons, hist, p){
     index <- ceiling(p * length(dons))
+    i <- 1
     while(index - hist[i] > 0){
-        index <- index - hist[i+1]
+        index <- index - hist[i]
         if(index - hist[i] == 0) break
-        return(dons[i])
+        i <- i + 1
         }
+    return(dons[i])
 }
