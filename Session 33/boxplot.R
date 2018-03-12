@@ -39,12 +39,12 @@ colnames(m) <- c("michele", "alex", "nick", "octavio", "erika")
 ## help
 ## https://stackoverflliow.com/questions/26838760/convert-matrix-to-three-column-data-frame
 
-mats <- lapply(m, function(g) matrix(g, nrow = 5, ncol = 6) )
+# mats <- lapply(m, function(g) matrix(g, nrow = 5, ncol = 6) )
 
 ## help
 ## https://stackoverflliow.com/questions/26838760/convert-matrix-to-three-column-data-frame
 
-meltee <- lapply(mats, function(g) setNames(melt(g), c('categories', 'players', 'scores')))
+melter <- function(g) setNames(melt(g), c('categories', 'players', 'scores'))
 
 
-meltPlot <- lapply(meltee, function(g) ggplot(g, aes(rows, vars)) + geom_boxplot())
+meltPlot <- function(g) ggplot(g, aes(categories, scores)) + geom_boxplot()
