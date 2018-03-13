@@ -15,7 +15,7 @@ mB <- 7; B <- 0:mB/mB
 
 # closest color function / truncating function
 findClosestColor <- function(numberOfBits){
-    maxBits <- (2**numberOfBits)-1
+    maxBits <- (2**(numberOfBits+1))-1
     colorPallete <- (0:maxBits)/maxBits
     function(inputPixelValue){
          # assume input pixel value is 0-1
@@ -35,13 +35,14 @@ truncateB <- function(m) apply(m, 2, findClosestB)
 
 
 
-truncateImage <- function(imageName){
+TruncateImage <- function(imageName){
     #read image
     Image <- readImage(file.path("src_photos", imageName))
     imageData(Image)[,,1] <- truncateRG(imageData(Image)[,,1])#truncated red
     imageData(Image)[,,2] <- truncateRG(imageData(Image)[,,2])  #truncating green
     imageData(Image)[,,3] <- truncateB(imageData(Image)[,,3]) #truncating blue
-    Image
+    writeImage(Image, file.path("TruncatedFiles", imageName) )#file path we save to
+
 }
 
 ditherRG <- function(mat){
@@ -89,20 +90,8 @@ ditherB <- function(mat){
     return(mat)
 }
 
-imageName <- "large.png"
-Image <- truncateImage(imageName)
-writeImage(Image, file.path("truncated_photos", imageName) )#file path we save to
-# Image <- readImage("src_photos/large.png")
-# imageData(Image)[,,1] <- ditherRG(imageData(Image)[,,1])
-# imageData(Image)[,,2] <- ditherRG(imageData(Image)[,,2])
-# imageData(Image)[,,3] <- ditherB(imageData(Image)[,,3])
+Image <- readImage("truncated_photos/large.png")
+imageData(Image)[,,1] <- ditherRG(imageData(Image)[,,1])
+imageData(Image)[,,2] <- ditherRG(imageData(Image)[,,2])
+imageData(Image)[,,3] <- ditherB(imageData(Image)[,,3])
 # writeImage(Image,'TruncatedFiles')
-
-ditherImage <- function(image){
-    imageData(image)[,,1] <- ditherRG(imageData(image)[,,1])
-    imageData(image)[,,2] <- ditherRG(imageData(image)[,,2])
-    imageData(image)[,,3] <- ditherB(imageData(image)[,,3])
-    image
-}
-
-di <- ditherImage(Image)
