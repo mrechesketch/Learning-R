@@ -23,6 +23,19 @@ TRANSACTION_DT <-14
 TRANSACTION_AMT <- 15 
 OTHER_ID <- 16 # needs to be empty
 
+partsNums <- c(CMTE_ID, NAME, ZIP_CODE, TRANSACTION_DT,
+                TRANSACTION_AMT, OTHER_ID)
+partsNames <- c("CMTE_ID", "NAME", "ZIP_CODE", "TRANSACTION_DT",
+                "TRANSACTION_AMT", "OTHER_ID")
+
+# line helper
+
+lineHelper <- function(inputLine){
+    #\\ on a special character nullifies it
+    parts <- strsplit(inputLine, "\\|")[[1]]
+    setNames(parts[partsNums], partsNames)
+}
+
 RESOURCES <- "../resources"
 
 
@@ -166,12 +179,30 @@ extentioner <- function(splitList){
     file.path(RESOURCES, path, splitList$name)
 }
 
-searchAndCreate <- function(donation, zipcode, name){
+CalcPerc <- function(Person){
+    p <- PERC
+    index <- ceiling(p * Person$NUM)
+    i <- 1
+    while(index - Person$HIST[i] > 0){
+        index <- index - Person$HIST[i]
+        i <- 1+i
+        }
+    return( c(
+        "rec" = Person$DONS[i],
+        "amt" = Person$TOT,
+        "num" = Person$NUM))
+}
+
+# creates new entry for a person (zip and name) and donation
+# returns TRUE if they are repeat, false otherwise
+searchAndCreate <- function(donatrm( ion, zipcode, name){
     splittee <- splitter(zipcode, name)
     extention <- extentioner(splittee)
     if( file.exists(extention)){
         load(extention)
         p <- updatePerson(donation, get("p"))
+        save(p, file = extention)
+        return(CalcPerc(p))
     }
     else{
         path <- RESOURCES
@@ -180,17 +211,26 @@ searchAndCreate <- function(donation, zipcode, name){
             if( !file.exists(path) ) dir.create(path)
         }
         p <- newPerson(donation)
+        save(p, file = extention)
+        return(c(-1, -1, -1))
     }
-    save(p, file = extention)
+    
 
 }
 
-CalcPerc <- function(Person, p){
-    index <- ceiling(p * Person$NUM)
-    i <- 1
-    while(index - Person$HIST[i] > 0){
-        index <- index - Person$HIST[i]
-        i <- 1+i
-        }
-    return(Person$DONS[i])
+
+
+# daddy function
+
+processLine <- function(inputLine){
+    line <- lineHelper(inputLine)
+    donation <- as.integer(line["TRANSACTION_AMT"])
+    History <- searchAndCreate(donation, line["ZIP_CODE"], line["NAME"])
+    if( (History == c(-1, -1, -1) ) && T ) return
+    Organization <- line['CMTE_ID']
+    PersZip <- line["ZIP_CODE"]
+    DonYear <- substr(line['TRANSACTION_DT'], 5, 8)
+    outPut <- paste0( c( Organization, PersZip, DonYear, History), collapse = "|") 
+    write(outPut, file = OUTPUTCON, append = TRUE)
 }
+
