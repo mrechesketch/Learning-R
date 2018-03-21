@@ -33,6 +33,10 @@ What are the contents of the kepress library? Try typing them into the interpret
 
 # PROBLEM 2: Closure Counter
 
-I have created a function whose 
+ignore this.. feel free to browse the other files in the directory. I was kinda just thinking out loud
+
+# PROBLEM 3: Bar Plots.. polar.R
+
+These seem pretty straight forward right ;)? I left you all the requisite ingredients you need to create similar plots. You don't need to make any calls to melt.. Simply try to imitate the plots I have created. You may need a transformation into polar coordinates.. The plots you create **must have coloring by category** (or player depending on your x axis) and they must display the _data in ascending order_. 
     
 
