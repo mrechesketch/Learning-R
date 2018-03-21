@@ -19,15 +19,5 @@ mm <- melter(m)
     # try to imitate my bar plots ;)
 
 
-pp <- ggplot(mm, aes( x = reorder(Players, Scores) ) ) + 
-    geom_bar( aes(weight = Scores, fill = Categories) ) +
-    ylab("Total Score") + xlab("Players")
 
-ppp <- pp + coord_polar()
-
-cp <- ggplot(mm, aes( x = reorder(Categories, Scores) ) ) + 
-    geom_bar( aes(weight = Scores, fill = Players) ) +
-    ylab("Total Score") + xlab("Categories")
-
-pcp <- cp + coord_polar()
 
