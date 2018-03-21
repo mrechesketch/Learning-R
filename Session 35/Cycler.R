@@ -42,7 +42,7 @@ directoryCycle <- Cycle(cycleLength = length(directoryNames))
 contentCycles <-  lapply(directoryContents, function(dir) cycleLength = Cycle(length(dir)) )
     # begin the cycle
 dc <- directoryCycle("up")
-cc <- coqntentCycles[[dc]]("up")
+cc <- coq ntentCycles[[dc]]("up")
 
 print("hello")
 while(TRUE){
