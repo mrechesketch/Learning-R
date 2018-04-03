@@ -14,25 +14,33 @@ m <- matrix(gameScores, ncol = 5, nrow = 6, dimnames = dnames) # pretty nice rig
 matAve <- function(m) (sum(m))/(length(m))
 getROI <- function(m, x, y, len, wid) m[y:(y+len), x:(x+wid)]
 
-partitionFunc <- function(m, x, y, len, wid)){
-    m <- getROI(m, x, y, len, wid))
+partitionFunc <- function(m, x, y, len, wid){
+    m <- getROI(m, x, y, len, wid)
     return(matAve(m))
 }
 
-constructPath <- function( srcx, srcy, dstx, dsty){
+constructPath <- function(srcx, srcy, dstx, dsty){
+    ## get the magnitude
     deltx <- srcx - dstx
     delty <- srcy - dsty
-
+    ## get the phase (director of vector)
     dirx <- if( deltx <= 0) "W" else "E"
     diry <- if( delty <= 0) "N" else "S"
-    
-    LatMove <- rep(dirx, abs(dirx))
-    LongMove <- rep(diry, abs(diry))
-    paste0()
+    ## declare a character vector of correct length
+        # get the max length.. need calls to abs?? perhaps.. TODO
+        # declare LatMove TODO
+        # declare LongMove TODO
+    ## fill in the vector
+    LatMove <- rep(dirx, abs(deltx)) # needs work, TODO
+    LongMove <- rep(diry, abs(delty)) # needs work, TODO
+    ## paste0 the vectors together 
+    pasted <- paste0(LongMove, LatMove)
+    # and return the sample of them
+    sample(pasted)
 }
 
-dstLoop <- function(m, srcx, srcy, dstx, dsty)
+# dstLoop <- function(m, srcx, srcy, dstx, dsty)
 
 
-BelousovZhabotinskyFun <- function(m, srcx, srcy, dstx, dsty)
+# BelousovZhabotinskyFun <- function(m, srcx, srcy, dstx, dsty)
 
