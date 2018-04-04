@@ -34,8 +34,8 @@ constructPath <- function(srcx, srcy, dstx, dsty){
         # declare LongMove TODO
     LongMove vector(mode="character", length = len(maxLen))
     ## fill in the vector
-    LatMove <- rep(dirx, abs(deltx)) # needs work, TODO
-    LongMove <- rep(diry, abs(delty)) # needs work, TODO
+    LatMove <- rep(dirx, abs(deltx), length.out = maxLen) # needs work, TODO
+    LongMove <- rep(diry, abs(delty), length.out = maxLen) # needs work, TODO
     ## paste0 the vectors together 
     pasted <- paste0(LongMove, LatMove)
     # and return the sample of them
