@@ -28,8 +28,11 @@ constructPath <- function(srcx, srcy, dstx, dsty){
     diry <- if( delty <= 0) "N" else "S"
     ## declare a character vector of correct length
         # get the max length.. need calls to abs?? perhaps.. TODO
+    maxLen <- max((abs(deltx)), abs(delty))
         # declare LatMove TODO
+    LatMove <- c(len(maxLen))
         # declare LongMove TODO
+    LongMove <- c(len(maxLen))
     ## fill in the vector
     LatMove <- rep(dirx, abs(deltx)) # needs work, TODO
     LongMove <- rep(diry, abs(delty)) # needs work, TODO
