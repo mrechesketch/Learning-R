@@ -30,9 +30,9 @@ constructPath <- function(srcx, srcy, dstx, dsty){
         # get the max length.. need calls to abs?? perhaps.. TODO
     maxLen <- max((abs(deltx)), abs(delty))
         # declare LatMove TODO
-    LatMove <- c(len(maxLen))
+    LatMove <- vector(mode="character", length = len(maxLen))
         # declare LongMove TODO
-    LongMove <- c(len(maxLen))
+    LongMove vector(mode="character", length = len(maxLen))
     ## fill in the vector
     LatMove <- rep(dirx, abs(deltx)) # needs work, TODO
     LongMove <- rep(diry, abs(delty)) # needs work, TODO
