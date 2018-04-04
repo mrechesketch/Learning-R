@@ -16,3 +16,9 @@ The trick here is to get two vectors of equal length (what is the appropriate le
 I left you comments and hints in the contructPath function. You will need to write **3** lines of new code and make fixes **2** lines. All lines are clearly marked and you don't need to deviate from that order. 
 
 P.S. For this function let us assume we are never moving only North-South or only East-West (that could mess it up..) 
+
+## PROBLEM 2: In-Session Assignment: Control Charts
+
+In an effort not to fall down the __deep__ hole that is image processing, we are not going to get into videos. Instead we're going to develop some control charts. 
+
+Let's pretend you are a teacher of a class and you give all the students a test with some questions on it. All questions are worth 10 points. You have designed the class and the test so that students who are doing well and not cheating should average about an 80% on the test. Students with above a 95% average are probably cheating and students with lower than a 65% average are failing =/. I want a   
