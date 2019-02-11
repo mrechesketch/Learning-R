@@ -30,7 +30,9 @@ it to it's own MD file.
 # we don't need to lose our minds (yet). We can assume all elements are 'distinct'
 
 # TODO: SIDE QUESTION: how many distinct orderings does c('a', 'a', 'b') have?
+3
 # what about a vector items the Counter is {'a': 4, 'b': 4, 'c':2} 
+?
 # we're not going to program this but this is a nice warm up 
 # because we are going to delve into combinatorics 
 
